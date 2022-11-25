@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 require("../../api/lowmanVerifierAPI.js");
 const api = require("../../api/lowmanVerifierAPI");
 const { data } = require("./ping");
@@ -13,6 +13,8 @@ module.exports = {
         .setDescription("Bungie name to lookup (with tag)")
         .setRequired(true)
     ), async execute(interaction, client) {
+
+    //loading message
     const message = await interaction.deferReply({
       fetchReply: true
     });
@@ -21,14 +23,45 @@ module.exports = {
 
     api.getLowmans(username).then((data) => {
 
+      //embed
+      const embed = new EmbedBuilder()
+        .setTitle("Lowman Stats")
+        .setColor(0x18e1ee)
+        .addFields([
+          {
+            name: "King's Fall",
+            value: returnTag(data.kf),
+            inline: true
+          },
+          {
+            name: "Vow of the Disciple",
+            value: returnTag(data.vow),
+            inline: true
+          },
+          {
+            name: "Vault of Glass",
+            value: returnTag(data.vog),
+            inline: true
+          },
+          {
+            name: "Deepstone Crypt",
+            value: returnTag(data.dsc),
+            inline: true
+          },
+          {
+            name: "Garden of Salvation",
+            value: returnTag(data.gos),
+            inline: true
+          },
+          {
+            name: "Last Wish",
+            value: returnTag(data.lw),
+            inline: true
+          }
+        ]);
+
       interaction.editReply({
-        content: `Lowmans:
-        kf: { normal: ${data.kf["lowest"]}, flawless: ${data.kf["lowestFlawless"]} },
-        vow: { normal: ${data.vow["lowest"]}, flawless: ${data.vow["lowestFlawless"]} },
-        vog: { normal: ${data.vog["lowest"]}, flawless: ${data.vog["lowestFlawless"]} },
-        dsc: { normal: ${data.dsc["lowest"]}, flawless: ${data.dsc["lowestFlawless"]} },
-        gos: { normal: ${data.gos["lowest"]}, flawless: ${data.gos["lowestFlawless"]} },
-        lw: { normal: ${data.lw["lowest"]}, flawless: ${data.lw["lowestFlawless"]} }`
+        embeds: [embed]
       });
     });
   }
@@ -54,4 +87,18 @@ class LowmanStats {
   toString() {
     return `LowmanStats {\nkf: { ${this.kf} },\nvow: { ${this.vog} },\ndsc: { ${this.dsc} },\ngos: { ${this.gos} },\nlw: { ${this.lw} }`;
   }
+}
+
+function returnTag(raid){
+  if (raid["lowestFlawless"] === 2) {
+    return "Duo Flawless";
+  } else if(raid["lowestFlawless"]=== 3 && raid["lowest"] === 2){
+    return "Duo | Trio Flawless";
+  } else if (raid["lowestFlawless"] === 3){
+    return "Trio Flawless";
+  } else if(raid["lowest"] === 2){
+    return "Duo";
+  } else if(raid["lowest"] === 3){
+    return "Trio";
+  } else return "x"
 }
