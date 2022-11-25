@@ -1,2 +1,2 @@
-# bungie-auth-bot
+# lowman-bot
  
