@@ -1,7 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 require("../../api/lowmanVerifierAPI.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const api = require("../../api/lowmanVerifierAPI");
-const { data } = require("./ping");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,18 +11,18 @@ module.exports = {
         .setName("username")
         .setDescription("Bungie name to lookup (with tag)")
         .setRequired(true)
-    ), async execute(interaction, client) {
+    ),
+  async execute(interaction, client) {
 
-    //loading message
+    const username = interaction.options.get("username").value;
+
+    // loading message
     const message = await interaction.deferReply({
       fetchReply: true
     });
 
-    const username = interaction.options.get("username").value;
-
+    // get stats then build embed
     api.getLowmans(username).then((data) => {
-
-      //embed
       const embed = new EmbedBuilder()
         .setTitle("Lowman Stats")
         .setColor(0x18e1ee)
@@ -44,7 +43,7 @@ module.exports = {
             inline: true
           },
           {
-            name: "Deepstone Crypt",
+            name: "Deep Stone Crypt",
             value: returnTag(data.dsc),
             inline: true
           },
@@ -60,6 +59,7 @@ module.exports = {
           }
         ]);
 
+      // update message with embed
       interaction.editReply({
         embeds: [embed]
       });
@@ -82,10 +82,6 @@ class LowmanStats {
     this.dsc = dsc;
     this.gos = gos;
     this.lw = lw;
-  }
-
-  toString() {
-    return `LowmanStats {\nkf: { ${this.kf} },\nvow: { ${this.vog} },\ndsc: { ${this.dsc} },\ngos: { ${this.gos} },\nlw: { ${this.lw} }`;
   }
 }
 
