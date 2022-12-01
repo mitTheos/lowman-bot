@@ -11,10 +11,9 @@ async function getPGCR(activityID) {
     }
   };
   let data
-  await axios(config)
+ await axios(config)
     .then(function(response) {
-      // console.log(JSON.stringify(response.data));
-      data =  response.data;
+      data = response.data;
     })
     .catch(function(error) {
       console.log(error);
