@@ -6,8 +6,8 @@ const raidReportAPI = require("../../api/raidReportAPI.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("played-with")
-    .setDescription("Return the People you have done lowmans with in the past month")
+    .setName("monthly-stats")
+    .setDescription("Return stats on the past month")
     .addStringOption((option) =>
       option
         .setName("username")
@@ -23,26 +23,57 @@ module.exports = {
       fetchReply: true
     });
     getPlayedWith(username, (callback) => {
-      const playedWithList = callback[0]
-      const speedList = callback[1]
-      console.log(speedList)
+      const playedWithList = callback[0];
+      const speedList = callback[1];
+      const pb = new MonthlyPB(speedList);
 
       const embed = new EmbedBuilder()
-        .setTitle("Lowman Stats")
+        .setTitle("Players you've played with this month")
         .setColor(0x18e1ee)
         .addFields([
           {
-            name: "Number of unique players you've done lowmans with in the past month",
+            name: "Players",
             value: playedWithList.length.toString()
+          }
+        ]);
+      const embed2 = new EmbedBuilder()
+        .setTitle("Fastest lowmans this month")
+        .setColor(0x18e1ee)
+        .addFields([
+          {
+            name: "KF",
+            value: convertTime(pb.kf),
+            inline: true
           },
           {
-            name: "Players:",
-            value: playedWithList.join(", ")
+            name: "VOW",
+            value: convertTime(pb.vow),
+            inline: true
+          },
+          {
+            name: "VOG",
+            value: convertTime(pb.vog),
+            inline: true
+          },
+          {
+            name: "DSC",
+            value: convertTime(pb.dsc),
+            inline: true
+          },
+          {
+            name: "GOS",
+            value: convertTime(pb.gos),
+            inline: true
+          },
+          {
+            name: "LW",
+            value: convertTime(pb.lw),
+            inline: true
           }
         ]);
 
       interaction.editReply({
-        embeds: [embed]
+        embeds: [embed, embed2]
       });
     });
   }
@@ -51,14 +82,14 @@ module.exports = {
 const getPlayedWith = (username, callback) => {
   getInstances(username, (returnList) => {
     //callback username in [0] and array of instances in [1]
-    const username = returnList[0]
-    const hashcodeMap = returnList[1]
-    const instances = Array.from( hashcodeMap.keys())
+    const username = returnList[0];
+    const hashcodeMap = returnList[1];
+    const instances = Array.from(hashcodeMap.keys());
     addPlayers(username, instances, (list) => {
-      const speedList = []
-      const instanceList = Array.from(list[1].keys())
-      for(const instance of instanceList){
-        speedList.push(new Speed(instance, list[1].get(instance), hashcodeMap.get(instance)))
+      const speedList = [];
+      const instanceList = Array.from(list[1].keys());
+      for (const instance of instanceList) {
+        speedList.push(new Speed(instance, list[1].get(instance), hashcodeMap.get(instance)));
       }
       callback([list[0], speedList]);
     });
@@ -79,7 +110,7 @@ const addPlayers = async (username, instances, callback) => {
       }
     }
   }
-  const returnList = [list, speedMap]
+  const returnList = [list, speedMap];
   callback(returnList);
 };
 
@@ -118,7 +149,7 @@ async function getInstanceInfoThisMonth(instance) {
     if (dateOneMonthAgo <= instanceDate) {
 
       //speed times
-        speedMap.set(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"]);
+      speedMap.set(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"]);
 
       //players
       for (const entry of response.entries) {
@@ -132,7 +163,7 @@ async function getInstanceInfoThisMonth(instance) {
 }
 
 const getInstances = (username, callback) => {
-  let instanceHashcodeMap = new Map()
+  let instanceHashcodeMap = new Map();
   raidReportAPI.search(username).then((data) => {
     const membershipId = data.response[0]["membershipId"];
     const name = data.response[0]["bungieGlobalDisplayName"];
@@ -149,7 +180,7 @@ const getInstances = (username, callback) => {
           if (lowmans != null) {
             for (const lowman of lowmans) {
               const instanceId = lowman["instanceId"];
-              instanceHashcodeMap.set(instanceId, activity["activityHash"])
+              instanceHashcodeMap.set(instanceId, activity["activityHash"]);
             }
           }
         }
@@ -159,6 +190,22 @@ const getInstances = (username, callback) => {
     });
   });
 };
+
+function convertTime(time) {
+  if (time == null) {
+    return "x";
+  } else if (time / 3600 >= 1) {
+    const hours = Math.floor(time / 3600);
+    time = time - hours;
+    const minutes = Math.floor((time - hours * 3600) / 60);
+    const seconds = time - minutes * 60 - hours * 3600;
+    return `${hours}h ${minutes}m ${seconds}s`;
+  } else {
+    const minutes = Math.floor((time) / 60);
+    const seconds = time - minutes * 60;
+    return `${minutes}m ${seconds}s`;
+  }
+}
 
 class Speed {
   instance;
@@ -173,3 +220,66 @@ class Speed {
   }
 }
 
+class MonthlyPB {
+  kf;
+  vow;
+  vog;
+  dsc;
+  gos;
+  lw;
+
+  constructor(speedList) {
+    this.kf = null;
+    this.vow = null;
+    this.vog = null;
+    this.dsc = null;
+    this.gos = null;
+    this.lw = null;
+
+
+    speedList.forEach(element => {
+      // kf
+      if (element.raid === 1374392663) {
+        if (this.kf > element.activityTime || this.kf == null) {
+          this.kf = element.activityTime;
+        }
+      }
+      // vow
+      else if (element.raid === 1441982566) {
+        if (this.vow > element.activityTime || this.vow == null) {
+          this.vow = element.activityTime;
+        }
+      }
+      // vog
+      else if (element.raid === 3881495763) {
+        if (this.vog > element.activityTime || this.vog == null) {
+          this.vog = element.activityTime;
+        }
+      }
+      // dsc
+      else if (element.raid === 910380154) {
+        if (this.dsc > element.activityTime || this.dsc == null) {
+          this.dsc = element.activityTime;
+        }
+      }
+      // gos1
+      else if (element.raid === 3458480158) {
+        if (this.gos > element.activityTime || this.gos == null) {
+          this.gos = element.activityTime;
+        }
+      }
+      // gos2
+      else if (element.raid === 2659723068) {
+        if (this.gos > element.activityTime || this.gos == null) {
+          this.gos = element.activityTime;
+        }
+      }
+      // lw
+      else if (element.raid === 2122313384) {
+        if (this.lw > element.activityTime || this.lw == null) {
+          this.lw = element.activityTime;
+        }
+      }
+    });
+  }
+}
