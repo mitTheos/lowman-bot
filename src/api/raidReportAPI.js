@@ -3,9 +3,10 @@ const axios = require("axios");
 module.exports = { search, raidStats };
 
 async function search(username) {
+  const encodedURL = encodeURI(`https://api.raidreport.dev/search/${username}`)
   const config = {
     method: "get",
-    url: `https://api.raidreport.dev/search/${username}`,
+    url: encodedURL,
     headers: {}
   };
   let data;
