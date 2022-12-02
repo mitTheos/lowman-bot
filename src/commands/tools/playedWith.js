@@ -61,7 +61,6 @@ const getPlayedWith = (username, callback) =>{
     const playerListPromise = await getPlayers(instance)
     for(const player of playerListPromise){
       if(!list.includes(player) && player !== username){
-        console.log(`p: ${player} | u: ${username}`)
         list.push(player)
       }
     }
