@@ -22,11 +22,11 @@ async function search(username) {
 async function raidStats(membershipId) {
   const config = {
     method: "get",
-    url: "https://api.raidreport.dev/raid/player/4611686018457582666",
+    url: `https://api.raidreport.dev/raid/player/${membershipId}`,
     headers: {}
   };
 
-  let data;
+  let data = null;
   await axios(config)
     .then(function(response) {
       data = response.data;

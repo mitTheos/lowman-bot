@@ -10,7 +10,7 @@ async function getPGCR(activityID) {
       "X-API-Key": "fa0dd5570093453ebb6bbbd3c8e087a2",
     }
   };
-  let data
+  let data = null
  await axios(config)
     .then(function(response) {
       data = response.data;

@@ -1,6 +1,6 @@
 require("../../api/bungieAPI.js");
 require("../../api/raidReportAPI.js");
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI.js");
 const raidReportAPI = require("../../api/raidReportAPI.js");
 
@@ -22,44 +22,62 @@ module.exports = {
     const message = await interaction.deferReply({
       fetchReply: true
     });
-
     getPlayedWith(username, (playedWithList) => {
-      console.log(`main: ${playedWithList}`)
+      console.log(`plasyers: ${playedWithList}`)
+
+      const embed = new EmbedBuilder()
+        .setTitle("Lowman Stats")
+        .setColor(0x18e1ee)
+        .addFields([
+          {
+            name: "Number of unique players you've done lowmans with",
+            value: playedWithList.length.toString(),
+          },
+          {
+            name: "Players:",
+            value: playedWithList.join(', '),
+          },
+          ])
+
+      interaction.editReply({
+        embeds: [embed]
+      });
     })
   }
 };
 
 const getPlayedWith = (username, callback) =>{
   getInstances(username, (instances) =>{
-    addPlayers(instances).then(r => callback(r))
-    console.log("3")
+    addPlayers(username, instances, (list)=>{
+      callback(list)
+    })
   })
-  console.log("4")
 }
 
-async function addPlayers(instances){
+ const addPlayers =async (username, instances, callback) =>{
   let list = []
   for(const instance of instances){
-    await getPlayers(instance, (players) => {
-      list.push(players)
-      console.log("1")
-    })
+    const playerListPromise = await getPlayers(instance)
+    for(const player of playerListPromise){
+      if(!list.includes(player)){
+        list.push(player)
+      }
+    }
   }
-  return list
+  callback(list)
 }
 
-const getPlayers = (instance, callback) => {
+async function getPlayers(instance) {
   let playersList = [];
-  bungieAPI.getPGCR(instance).then((data) => {
+  await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
     for (const entry of response.entries) {
       const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
       const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
-      // console.log(`${name}#${tag}`);
-      playersList += `${name}#${tag}`;
+      playersList.push(`${name}#${tag}`);
     }
-    callback(playersList)
   });
+  return playersList
 }
 
 const getInstances = (username, callback) => {
@@ -82,7 +100,6 @@ const getInstances = (username, callback) => {
           }
         }
       }
-      // console.log(`before return: ${instanceList}`)
       callback(instanceList)
     });
   });
