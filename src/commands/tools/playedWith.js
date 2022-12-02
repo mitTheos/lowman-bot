@@ -6,7 +6,7 @@ const raidReportAPI = require("../../api/raidReportAPI.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("playedwith")
+    .setName("played-with")
     .setDescription("Return the People you have done lowmans with")
     .addStringOption((option) =>
       option
@@ -23,7 +23,7 @@ module.exports = {
       fetchReply: true
     });
     getPlayedWith(username, (playedWithList) => {
-      console.log(`plasyers: ${playedWithList}`)
+      console.log(`players: ${playedWithList}`)
 
       const embed = new EmbedBuilder()
         .setTitle("Lowman Stats")
@@ -47,8 +47,9 @@ module.exports = {
 };
 
 const getPlayedWith = (username, callback) =>{
-  getInstances(username, (instances) =>{
-    addPlayers(username, instances, (list)=>{
+  getInstances(username, (usernameAndInstances) =>{
+    //callback username in [0] and array of instances in [1]
+    addPlayers(usernameAndInstances[0], usernameAndInstances[1], (list)=>{
       callback(list)
     })
   })
@@ -59,7 +60,8 @@ const getPlayedWith = (username, callback) =>{
   for(const instance of instances){
     const playerListPromise = await getPlayers(instance)
     for(const player of playerListPromise){
-      if(!list.includes(player)){
+      if(!list.includes(player) && player !== username){
+        console.log(`p: ${player} | u: ${username}`)
         list.push(player)
       }
     }
@@ -84,6 +86,9 @@ const getInstances = (username, callback) => {
   const instanceList = []
   raidReportAPI.search(username).then((data) => {
     const membershipId = data.response[0]["membershipId"];
+    const name = data.response[0]["bungieGlobalDisplayName"]
+    const tag = data.response[0]["bungieGlobalDisplayNameCode"]
+    const username = `${name}#${tag}`
 
     raidReportAPI.raidStats(membershipId).then((data) => {
       const activities = data.response["activities"];
@@ -100,7 +105,8 @@ const getInstances = (username, callback) => {
           }
         }
       }
-      callback(instanceList)
+      const nameAndList = [username, instanceList]
+      callback(nameAndList)
     });
   });
 }
