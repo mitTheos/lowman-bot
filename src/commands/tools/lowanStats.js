@@ -4,7 +4,7 @@ const api = require("../../api/lowmanVerifierAPI");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("stats")
+    .setName("lowman-stats")
     .setDescription("Return completed lowmans")
     .addStringOption((option) =>
       option
@@ -24,7 +24,7 @@ module.exports = {
     // get stats then build embed
     api.getLowmans(username).then((data) => {
       const embed = new EmbedBuilder()
-        .setTitle("Lowman Stats")
+        .setTitle("lowman Stats")
         .setColor(0x18e1ee)
         .addFields([
           {
