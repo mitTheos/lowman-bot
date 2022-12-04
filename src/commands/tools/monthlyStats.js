@@ -114,25 +114,6 @@ const addPlayers = async (username, instances, callback) => {
   callback(returnList);
 };
 
-async function getInstanceInfo(instance) {
-  let playersList = [];
-  const speedMap = new Map();
-  await bungieAPI.getPGCR(instance).then((data) => {
-    const response = data.Response;
-
-    //speed times
-    speedMap.set(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"]);
-
-    //players
-    for (const entry of response.entries) {
-      const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
-      const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
-      playersList.push(`${name}#${tag}`);
-    }
-  });
-  return [playersList, speedMap];
-}
-
 async function getInstanceInfoThisMonth(instance) {
   let playersList = [];
   const speedMap = new Map();
@@ -179,8 +160,10 @@ const getInstances = (username, callback) => {
 
           if (lowmans != null) {
             for (const lowman of lowmans) {
-              const instanceId = lowman["instanceId"];
-              instanceHashcodeMap.set(instanceId, activity["activityHash"]);
+              if(lowman["fresh"] === true) {
+                const instanceId = lowman["instanceId"];
+                instanceHashcodeMap.set(instanceId, activity["activityHash"]);
+              }
             }
           }
         }
