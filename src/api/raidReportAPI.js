@@ -3,7 +3,7 @@ const axios = require("axios");
 module.exports = { search, raidStats };
 
 async function search(username) {
-  const encodedURL = encodeURI(`https://api.raidreport.dev/search/${username}`)
+  const encodedURL = encodeURI(encodeURI(`https://api.raidreport.dev/search/${username}`)).toLowerCase().replace('#', '%2523')
   const config = {
     method: "get",
     url: encodedURL,
