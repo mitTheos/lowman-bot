@@ -85,24 +85,30 @@ const getPlayedWith = (username, callback) => {
     const username = returnList[0];
     const hashcodeMap = returnList[1];
     const instances = Array.from(hashcodeMap.keys());
-    addPlayers(username, instances, (list) => {
+    console.log(`instances: ${instances}`)
+    addPlayers(username, instances, hashcodeMap, (list) => {
       const speedList = [];
       const instanceList = Array.from(list[1].keys());
+      console.log(`instanceList ${instanceList}`)
       for (const instance of instanceList) {
-        speedList.push(new Speed(instance, list[1].get(instance), hashcodeMap.get(instance)));
+        speedList.push.apply(speedList, list[1]);
       }
       callback([list[0], speedList]);
     });
   });
 };
 
-const addPlayers = async (username, instances, callback) => {
+const addPlayers = async (username, instances, hashcodeMap, callback) => {
   let list = [];
-  let speedMap = new Map();
+  let speedList = [];
   for (const instance of instances) {
-    const instanceInfoPromise = await getInstanceInfoThisMonth(instance);
+    console.log(`instance: ${instance}`)
+    // instances still correct
+    const instanceInfoPromise = await getInstanceInfoThisMonth(instance, hashcodeMap);
     const playerList = instanceInfoPromise[0];
-    speedMap = new Map([...speedMap, ...instanceInfoPromise[1]]);
+    //TODO console.logs not triggering here
+    speedList.forEach((e)=> console.log(e.instance))
+    speedList.push.apply(instanceInfoPromise[1])
     for (const player of playerList) {
       //check if player is unique and not the users whose data has been requested
       if (!list.includes(player) && player !== username) {
@@ -110,13 +116,14 @@ const addPlayers = async (username, instances, callback) => {
       }
     }
   }
-  const returnList = [list, speedMap];
+  const returnList = [list, speedList];
+  speedList.forEach((e)=>console.log(e.printSpeed()));
   callback(returnList);
 };
 
-async function getInstanceInfoThisMonth(instance) {
+async function getInstanceInfoThisMonth(instance, hashcodeMap) {
   let playersList = [];
-  const speedMap = new Map();
+  let speedList = []
   await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
     //ISO dates
@@ -129,7 +136,7 @@ async function getInstanceInfoThisMonth(instance) {
     if (dateOneMonthAgo <= instanceDate) {
 
       //speed times
-      speedMap.set(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"]);
+      speedList.push(new Speed(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], hashcodeMap.get(instance)));
 
       //players
       for (const entry of response.entries) {
@@ -139,7 +146,7 @@ async function getInstanceInfoThisMonth(instance) {
       }
     }
   });
-  return [playersList, speedMap];
+  return [playersList, speedList];
 }
 
 const getInstances = (username, callback) => {
@@ -199,6 +206,10 @@ class Speed {
     this.instance = instance;
     this.activityTime = activityTime;
     this.raid = raid;
+  }
+
+  printSpeed(){
+    return `instance: ${this.instance}, activityTime: ${this.activityTime}, raid: ${this.raid}`
   }
 }
 
