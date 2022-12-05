@@ -119,7 +119,6 @@ async function getInstanceInfoThisMonth(instance) {
   const speedMap = new Map();
   await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
-
     //ISO dates
     const dateNow = new Date();
     dateNow.setMonth(dateNow.getMonth() - 1);

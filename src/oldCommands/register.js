@@ -1,7 +1,7 @@
 require('dotenv').config();
-require("../../api/lowmanVerifierAPI.js");
+require("../api/lowmanVerifierAPI.js");
 const { SlashCommandBuilder, GuildMemberRoleManager } = require("discord.js");
-const api = require("../../api/lowmanVerifierAPI");
+const api = require("../api/lowmanVerifierAPI");
 const env = process.env;
 const guildId = env.GUILD_ID;
 

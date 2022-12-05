@@ -1,6 +1,6 @@
-require("../../api/bungieAPI.js");
+require("../api/bungieAPI.js");
 const { SlashCommandBuilder } = require("discord.js");
-const api = require("../../api/bungieAPI.js");
+const api = require("../api/bungieAPI.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,9 +24,9 @@ module.exports = {
     api.getPGCR(instanceId).then((data) => {
       getPlayers(data.Response)
       // update message with embed
-      // interaction.editReply({
-      //   message: data["Response"]
-      // });
+      interaction.editReply({
+        message: data["Response"]
+      });
     });
   }
 };
