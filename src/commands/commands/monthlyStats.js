@@ -23,6 +23,7 @@ module.exports = {
       fetchReply: true
     });
     getPlayedWith(username, (callback) => {
+      console.log(`Getting monthly stats for: ${username}`)
       const playedWithList = callback[0];
       const lowmanList = callback[1];
       const pb = new MonthlyPB(lowmanList);
@@ -108,8 +109,6 @@ const addPlayers = async (username, instances, hashcodeMap, callback) => {
     }
   }
   const returnList = [uniquePlayerList, lowmanList];
-  lowmanList.forEach((e)=>console.log(e));
-
   callback(returnList);
 };
 
