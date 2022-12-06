@@ -24,8 +24,8 @@ module.exports = {
     });
     getPlayedWith(username, (callback) => {
       const playedWithList = callback[0];
-      const speedList = callback[1];
-      const pb = new MonthlyPB(speedList);
+      const lowmanList = callback[1];
+      const pb = new MonthlyPB(lowmanList);
 
       const embed = new EmbedBuilder()
         .setTitle("Players you've played with this month")
@@ -85,45 +85,37 @@ const getPlayedWith = (username, callback) => {
     const username = returnList[0];
     const hashcodeMap = returnList[1];
     const instances = Array.from(hashcodeMap.keys());
-    console.log(`instances: ${instances}`)
     addPlayers(username, instances, hashcodeMap, (list) => {
-      const speedList = [];
-      const instanceList = Array.from(list[1].keys());
-      console.log(`instanceList ${instanceList}`)
-      for (const instance of instanceList) {
-        speedList.push.apply(speedList, list[1]);
-      }
-      callback([list[0], speedList]);
+      callback([list[0],list[1]]);
     });
   });
 };
 
 const addPlayers = async (username, instances, hashcodeMap, callback) => {
-  let list = [];
-  let speedList = [];
+  let uniquePlayerList = [];
+  let lowmanList = [];
   for (const instance of instances) {
-    console.log(`instance: ${instance}`)
-    // instances still correct
-    const instanceInfoPromise = await getInstanceInfoThisMonth(instance, hashcodeMap);
-    const playerList = instanceInfoPromise[0];
-    //TODO console.logs not triggering here
-    speedList.forEach((e)=> console.log(e.instance))
-    speedList.push.apply(instanceInfoPromise[1])
-    for (const player of playerList) {
-      //check if player is unique and not the users whose data has been requested
-      if (!list.includes(player) && player !== username) {
-        list.push(player);
+    const lowmanListPromise = await getInstanceInfoThisMonth(instance, hashcodeMap);
+    lowmanListPromise.forEach((e)=>lowmanList.push(e));
+    let playerList = [];
+    lowmanListPromise.forEach((e)=>e.players.forEach((f)=> playerList.push(f)));
+    // const playerList = lowmanList.players;
+    for (const player of playerList ) {
+      //check if player is unique and that they are not the users whose data has been requested
+      if (!uniquePlayerList.includes(player) && player !== username) {
+        uniquePlayerList.push(player);
       }
     }
   }
-  const returnList = [list, speedList];
-  speedList.forEach((e)=>console.log(e.printSpeed()));
+  const returnList = [uniquePlayerList, lowmanList];
+  lowmanList.forEach((e)=>console.log(e));
+
   callback(returnList);
 };
 
 async function getInstanceInfoThisMonth(instance, hashcodeMap) {
   let playersList = [];
-  let speedList = []
+  let lowmanList = []
   await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
     //ISO dates
@@ -135,8 +127,6 @@ async function getInstanceInfoThisMonth(instance, hashcodeMap) {
     //only get data from instances that are a Month or less old
     if (dateOneMonthAgo <= instanceDate) {
 
-      //speed times
-      speedList.push(new Speed(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], hashcodeMap.get(instance)));
 
       //players
       for (const entry of response.entries) {
@@ -144,9 +134,12 @@ async function getInstanceInfoThisMonth(instance, hashcodeMap) {
         const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
         playersList.push(`${name}#${tag}`);
       }
+      //speed times
+      lowmanList.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"],playersList, hashcodeMap.get(instance)));
     }
   });
-  return [playersList, speedList];
+  // lowmanList.forEach((e)=>console.log(e.printSpeed()));
+  return lowmanList;
 }
 
 const getInstances = (username, callback) => {
@@ -196,15 +189,17 @@ function convertTime(time) {
   }
 }
 
-class Speed {
+class Lowman {
   instance;
   activityTime;
+  players;
   raid;
 
 
-  constructor(instance, activityTime, raid) {
+  constructor(instance, activityTime,players, raid) {
     this.instance = instance;
     this.activityTime = activityTime;
+    this.players = players;
     this.raid = raid;
   }
 
@@ -221,7 +216,7 @@ class MonthlyPB {
   gos;
   lw;
 
-  constructor(speedList) {
+  constructor(lowmanList) {
     this.kf = null;
     this.vow = null;
     this.vog = null;
@@ -230,47 +225,47 @@ class MonthlyPB {
     this.lw = null;
 
 
-    speedList.forEach(element => {
+    lowmanList.forEach(lowman => {
       // kf
-      if (element.raid === 1374392663) {
-        if (this.kf > element.activityTime || this.kf == null) {
-          this.kf = element.activityTime;
+      if (lowman.raid === 1374392663) {
+        if (this.kf > lowman.activityTime || this.kf == null) {
+          this.kf = lowman.activityTime;
         }
       }
       // vow
-      else if (element.raid === 1441982566) {
-        if (this.vow > element.activityTime || this.vow == null) {
-          this.vow = element.activityTime;
+      else if (lowman.raid === 1441982566) {
+        if (this.vow > lowman.activityTime || this.vow == null) {
+          this.vow = lowman.activityTime;
         }
       }
       // vog
-      else if (element.raid === 3881495763) {
-        if (this.vog > element.activityTime || this.vog == null) {
-          this.vog = element.activityTime;
+      else if (lowman.raid === 3881495763) {
+        if (this.vog > lowman.activityTime || this.vog == null) {
+          this.vog = lowman.activityTime;
         }
       }
       // dsc
-      else if (element.raid === 910380154) {
-        if (this.dsc > element.activityTime || this.dsc == null) {
-          this.dsc = element.activityTime;
+      else if (lowman.raid === 910380154) {
+        if (this.dsc > lowman.activityTime || this.dsc == null) {
+          this.dsc = lowman.activityTime;
         }
       }
       // gos1
-      else if (element.raid === 3458480158) {
-        if (this.gos > element.activityTime || this.gos == null) {
-          this.gos = element.activityTime;
+      else if (lowman.raid === 3458480158) {
+        if (this.gos > lowman.activityTime || this.gos == null) {
+          this.gos = lowman.activityTime;
         }
       }
       // gos2
-      else if (element.raid === 2659723068) {
-        if (this.gos > element.activityTime || this.gos == null) {
-          this.gos = element.activityTime;
+      else if (lowman.raid === 2659723068) {
+        if (this.gos > lowman.activityTime || this.gos == null) {
+          this.gos = lowman.activityTime;
         }
       }
       // lw
-      else if (element.raid === 2122313384) {
-        if (this.lw > element.activityTime || this.lw == null) {
-          this.lw = element.activityTime;
+      else if (lowman.raid === 2122313384) {
+        if (this.lw > lowman.activityTime || this.lw == null) {
+          this.lw = lowman.activityTime;
         }
       }
     });
