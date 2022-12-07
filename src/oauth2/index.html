@@ -14,6 +14,7 @@
           transform: translate(-50%, -50%);
       }
       .button-64 {
+          margin: 10px;
           align-items: center;
           background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
           border: 0;
@@ -68,7 +69,11 @@
 <div id="center">
   <button class="button-64" role="button"
           onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=http%3A%2F%2Flocalhost%3A53134&response_type=code&scope=identify%20email%20guilds%20role_connections.write';">
-    Authorize
+    Authorize Discord
+  </button>
+  <button class="button-64" role="button"
+          onclick="window.location.href='https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code';">
+    Authorize Bungie
   </button>
 </div>
 </body>
