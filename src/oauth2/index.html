@@ -1,45 +1,81 @@
-<div id="info">Hoi!</div>
-<a id="login" style="display: none;"
-   href="https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=http%3A%2F%2Flocalhost%3A53134&response_type=code&scope=identify%20email%20guilds%20role_connections.write">Identify
-  Yourself</a>
-<script>
-  function generateRandomString() {
-    let randomString = "";
-    const randomNumber = Math.floor(Math.random() * 10);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+      body {
+          background-image: url("https://imgur.com/Vs3CemK.png");
+          background-repeat: no-repeat;
+          background-size:100% auto;
+      }
 
-    for (let i = 0; i < 20 + randomNumber; i++) {
-      randomString += String.fromCharCode(33 + Math.floor(Math.random() * 94));
-    }
+      #center {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+      }
+      .button-64{
+          width: 200%;
+          height: 200%;
+      }
+      .button-64 {
+          align-items: center;
+          background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
+          border: 0;
+          border-radius: 8px;
+          box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+          box-sizing: border-box;
+          color: #FFFFFF;
+          display: flex;
+          font-family: Phantomsans, sans-serif;
+          font-size: 20px;
+          justify-content: center;
+          line-height: 1em;
+          max-width: 100%;
+          min-width: 140px;
+          padding: 3px;
+          text-decoration: none;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+          white-space: nowrap;
+          cursor: pointer;
+      }
 
-    return randomString;
-  }
+      .button-64:active,
+      .button-64:hover {
+          outline: 0;
+      }
 
-  window.onload = () => {
+      .button-64 span {
+          background-color: rgb(5, 6, 45);
+          padding: 16px 24px;
+          border-radius: 6px;
+          width: 100%;
+          height: 100%;
+          transition: 300ms;
+      }
 
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
-    const [accessToken, tokenType, state] = [fragment.get("access_token"), fragment.get("token_type"), fragment.get("state")];
+      .button-64:hover span {
+          background: none;
+      }
 
-    if (!accessToken) {
-      const randomString = generateRandomString();
-      localStorage.setItem("oauth-state", randomString);
-      document.getElementById("login").href += `&state=${btoa(randomString)}`;
-      return (document.getElementById("login").style.display = "block");
-    }
-
-    if (localStorage.getItem("oauth-state") !== atob(decodeURIComponent(state))) {
-      return console.log("There's a possibility you've been clickjacked!");
-    } else {
-      fetch("https://discord.com/api/users/@me", {
-        headers: {
-          authorization: `${tokenType} ${accessToken}`
-        }
-      })
-        .then(result => result.json())
-        .then(response => {
-          const { username, discriminator } = response;
-          document.getElementById("info").innerText += ` ${username}#${discriminator}`;
-        })
-        .catch(console.error);
-    }
-  };
-</script>
+      @media (min-width: 768px) {
+          .button-64 {
+              font-size: 24px;
+              min-width: 196px;
+          }
+      }
+  </style>
+  <title>Lowman Bot Authorization</title>
+</head>
+<body>
+<div id="center">
+  <button class="button-64" role="button"
+          onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=http%3A%2F%2Flocalhost%3A53134&response_type=code&scope=identify%20email%20guilds%20role_connections.write';">
+    Authorize
+  </button>
+</div>
+</body>
+</html>
