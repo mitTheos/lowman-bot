@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/bot.js",
   "scripts": {
-    "test": "node ."
+    "start-bot": "node .",
+    "start-server": "node src/oauth2/index.js"
   },
   "author": "Theos",
   "license": "ISC",
@@ -17,7 +18,9 @@
     "dataclass": "^2.1.1",
     "discord-api-types": "0.36.2",
     "discord.js": "^14.0.1",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "undici": "^5.13.0"
   },
   "devDependencies": {
     "prettier": "^2.8.0"
