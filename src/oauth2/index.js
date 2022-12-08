@@ -11,7 +11,11 @@ const options = {
 const app = express();
 const server = https.createServer(options, app);
 
-app.get("/", async ({ query }, response) => {
+app.get("/", async ({query}, response) =>{
+  return response.sendFile("src/oauth2/index.html", { root: "." });
+});
+
+app.get("/discord", async ({ query }, response) => {
   const { code } = query;
 
   if (code) {
@@ -23,7 +27,7 @@ app.get("/", async ({ query }, response) => {
           client_secret: discordClientSecret,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://localhost:${port}`,
+          redirect_uri: `https://localhost:${port}/discord`,
           scope: "identify"
         }).toString(),
         headers: {
@@ -32,14 +36,15 @@ app.get("/", async ({ query }, response) => {
       });
 
       const oauthData = await tokenResponseData.body.json();
-      console.log(oauthData);
       const userResult = await request("https://discord.com/api/users/@me", {
         headers: {
           authorization: `${oauthData.token_type} ${oauthData.access_token}`
         }
       }).catch(console.error);
 
-      console.log(await userResult.body.json());
+      const response = await userResult.body.json();
+      const discordId = response["id"];
+      console.log(`Discord id: ${discordId}`);
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
       // tokenResponseData.statusCode will be 401
@@ -78,7 +83,7 @@ app.get("/bungie/", async ({ query }, response) => {
       }).catch(console.error);
       const response = await userResult.body.json();
       const destinyMembershipId = Object.values(response["Response"]["membershipOverrides"])[0]["membershipIdOverriding"]
-      console.log(`D2MembershipId: ${destinyMembershipId}`)
+      console.log(`D2 membership id: ${destinyMembershipId}`)
 
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
