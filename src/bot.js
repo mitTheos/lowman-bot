@@ -1,6 +1,6 @@
 require('dotenv').config();
-
-const {TOKEN} = process.env;
+const {TOKEN, DATABASETOKEN} = process.env;
+const {connect} = require('mongoose');
 const {Client, Collection, GatewayIntentBits} = require('discord.js');
 const fs = require('fs');
 
@@ -18,5 +18,6 @@ for (const folder of functionFolders) {
 client.handleEvents();
 client.handleCommands();
 client.login(TOKEN);
+connect(DATABASETOKEN).catch(console.error);
 
 
