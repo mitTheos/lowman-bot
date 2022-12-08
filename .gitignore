@@ -1,4 +1,4 @@
 .env
-src/oauth2/config/
+src\oauth2\config\
 .idea
 node_modules
