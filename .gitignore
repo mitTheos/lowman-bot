@@ -1,4 +1,5 @@
 .env
-src/oauth2/config/
+src/oauth2/config/ca.crt
+src/oauth2/config/ca.key
 .idea
 node_modules
