@@ -15,7 +15,6 @@ module.exports = {
       getBest(users, async (best) => {
 console.log(best)
         const embed = new EmbedBuilder({
-          "content": "<@244162314532683788> best goat",
           "type": "rich",
           "title": `Fastest Last Wish`,
           "description": `Fastest lowman LW last month`,
@@ -33,7 +32,7 @@ console.log(best)
         }
         });
 
-        await channel.send({ embeds: [embed] }).catch(console.error);
+        await channel.send({"content": "<@244162314532683788> best goat", embeds: [embed] }).catch(console.error);
 
         await interaction.editReply({
           content: `Announcement posted!`
