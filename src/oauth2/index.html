@@ -2,80 +2,49 @@
 <html lang="en">
 <head>
   <style>
-      body {
-          background: black;
-      }
-      
-      #center {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-      }
+    /* https://codepen.io/getflourish/pen/zYqRzmv */
 
-      .button-64 {
-          margin: 10px;
-          align-items: center;
-          background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
-          border: 0;
-          border-radius: 8px;
-          box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-          box-sizing: border-box;
-          color: #FFFFFF;
-          display: flex;
-          font-family: Phantomsans, sans-serif;
-          font-size: 20px;
-          justify-content: center;
-          line-height: 1em;
-          max-width: 100%;
-          min-width: 140px;
-          padding: 3px;
-          text-decoration: none;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: manipulation;
-          white-space: nowrap;
-          cursor: pointer;
-      }
+    body {
+      background: #4c268f;
+      color: #99eeb4;
+      height: 100vh;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    span {
+      position: relative;
+      font-family: "Avenir Next", sans-serif;
+      font-weight: 900;
+      font-size: 64px;
+      text-transform: uppercase;
+      font-style: italic;
+      letter-spacing: 0.05em;
+      display: inline-block;
+    }
+    span:before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      content: attr(filter-content);
 
-      .button-64:active,
-      .button-64:hover {
-          outline: 0;
-      }
-
-      .button-64 span {
-          background-color: rgb(5, 6, 45);
-          padding: 16px 24px;
-          border-radius: 6px;
-          width: 100%;
-          height: 100%;
-          transition: 300ms;
-      }
-
-      .button-64:hover span {
-          background: none;
-      }
-
-      @media (min-width: 768px) {
-          .button-64 {
-              font-size: 24px;
-              min-width: 196px;
-          }
-      }
+      filter: url(#motion-blur-filter);
+    }
+    svg {
+      display: none;
+    }
   </style>
   <title>Lowman Bot Authorization</title>
 </head>
 <body>
-<div id="center">
-  <button class="button-64" role="button"
-          onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A53134%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write';">
-    Authorize Discord
-  </button>
-  <button class="button-64" role="button"
-          onclick="window.location.href='https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code';">
-    Authorize Bungie
-  </button>
+<div class="container">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <filter id="motion-blur-filter" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="100 0"></feGaussianBlur>
+    </filter>
+  </svg>
+  <span filter-content="S">Authorization Successful!</span>
 </div>
 </body>
 </html>
