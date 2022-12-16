@@ -10,8 +10,8 @@ const chalk = require('chalk')
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 const options = {
-  key: fs.readFileSync("C:/Users/kti/Documents/ssl-certificate/cert.key"),
-  cert: fs.readFileSync("C:/Users/kti/Documents/ssl-certificate/cert.crt")
+  key: fs.readFileSync("C:/ssl-certificate/cert.key"),
+  cert: fs.readFileSync("C:/ssl-certificate/cert.crt")
 };
 
 const app = express();
@@ -21,7 +21,7 @@ let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
-  return response.sendFile("src/oauth2/index.html", { root: "." });
+  return response.redirect('https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A53134%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write');
 });
 
 app.get("/discord", async ({ query }, response) => {
@@ -60,7 +60,7 @@ app.get("/discord", async ({ query }, response) => {
     }
   }
 
-  return response.sendFile("src/oauth2/index.html", { root: "." });
+  return response.redirect('https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code');
 });
 
 app.get("/bungie/", async ({ query }, response) => {
