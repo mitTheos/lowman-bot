@@ -17,13 +17,20 @@ module.exports = {
                 console.log(best)
                 const embed = new EmbedBuilder({
                     "type": "rich", "title": `Fastest Last Wish`, "description": `Fastest lowman LW last month`, "color": 0x00FFFF, "fields": [{
-                        "name": convertTime(best.lw), "value": "\u200B"
+                        "name": convertTime(best.gos[0]), "value": "\u200B"
                     }], "image": {
                         "url": `https://imgur.com/Vs3CemK.png`, "height": 0, "width": 0
                     }
                 });
 
-                await channel.send({"content": "<@244162314532683788> best goat", embeds: [embed]}).catch(console.error);
+                let discordId = null
+                users.forEach((user)=>{
+                   if(user["d2MembershipId"] == best.gos[1]){
+                       discordId = user["discordId"];
+                   }
+                });
+
+                await channel.send({"content": `<@${discordId}> best goat`, embeds: [embed]}).catch(console.error);
 
                 await interaction.editReply({
                     content: `Announcement posted!`
@@ -50,31 +57,43 @@ function convertTime(time) {
 }
 
 const getBest = (data, callback) => {
-    let best = new Pb();
+    let best = new Best();
     let counter = 0;
     for (const e of data) {
         getPb(e["d2MembershipId"], (pb) => {
             if (pb.playedUsersCountMonthly > best.playedUsersCountMonthly[0]) {
-                best.playedUsersCountMonthly[0] = [pb.playedUsersCountMonthly, pb.membershipId];
-                best.playedUsersMonthly[0] = [pb.playedUsersMonthly, pb.membershipId];
+                best.playedUsersCountMonthly = [pb.playedUsersCountMonthly, pb.membershipId];
+                best.playedUsersMonthly = [pb.playedUsersMonthly, pb.membershipId];
             }
-            if (pb.kf < best.kf || best.kf === null) {
-                best.kf = pb.kf;
+            if (pb.kf < best.kf[0] || best.kf[0] === null) {
+                if (pb.kf !== null) {
+                    best.kf = [pb.kf, pb.membershipId];
+                }
             }
-            if (pb.vow < best.vow || best.vow === null) {
-                best.vow = pb.vow;
+            if (pb.vow < best.vow[0] || best.vow[0] === null) {
+                if (pb.vow !== null) {
+                    best.vow = [pb.vow, pb.membershipId];
+                }
             }
-            if (pb.vog < best.vog || best.vog === null) {
-                best.vog = pb.vog;
+            if (pb.vog < best.vog[0] || best.vog[0] === null) {
+                if (pb.vog !== null) {
+                    best.vog = [pb.vog, pb.membershipId];
+                }
             }
-            if (pb.dsc < best.dsc || best.dsc === null) {
-                best.dsc = pb.dsc;
+            if (pb.dsc < best.dsc[0] || best.dsc[0] === null) {
+                if (pb.dsc !== null) {
+                    best.dsc = [pb.dsc, pb.membershipId];
+                }
             }
-            if (pb.gos < best.gos || best.gos === null) {
-                best.gos = pb.gos;
+            if (pb.gos < best.gos[0] || best.gos[0] === null) {
+                if (pb.gos !== null) {
+                    best.gos = [pb.gos, pb.membershipId];
+                }
             }
-            if (pb.lw < best.lw || best.lw === null) {
-                best.lw = pb.lw;
+            if (pb.lw < best.lw[0] || best.lw[0] === null) {
+                if (pb.lw !== null) {
+                    best.lw = [pb.lw, pb.membershipId];
+                }
             }
             if (counter === data.length - 1) {
                 callback(best);
@@ -266,5 +285,27 @@ class Pb {
                 }
             });
         }
+    }
+}
+
+class Best {
+    playedUsersMonthly;
+    playedUsersCountMonthly;
+    kf;
+    vow;
+    vog;
+    dsc;
+    gos;
+    lw;
+
+    constructor(playedUsersMonthly, lowmanList) {
+        this.playedUsersMonthly = [null, null];
+        this.playedUsersCountMonthly = [null, null];
+        this.kf = [null, null];
+        this.vow = [null, null];
+        this.vog = [null, null];
+        this.dsc = [null, null];
+        this.gos = [null, null];
+        this.lw = [null, null];
     }
 }
