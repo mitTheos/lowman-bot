@@ -17,18 +17,20 @@ module.exports = {
                 console.log(best)
                 const embed = new EmbedBuilder({
                     "type": "rich", "title": `Fastest Last Wish`, "description": `Fastest lowman LW last month`, "color": 0x00FFFF, "fields": [{
-                        "name": convertTime(best.gos[0]), "value": "\u200B"
+                        "name": convertTime(best.gos.activityTime), "value": "\u200B"
                     }], "image": {
                         "url": `https://imgur.com/Vs3CemK.png`, "height": 0, "width": 0
                     }
                 });
 
                 let discordId = null
-                users.forEach((user)=>{
-                   if(user["d2MembershipId"] == best.gos[1]){
-                       discordId = user["discordId"];
-                   }
-                });
+                // best.gos.players.forEach((player) => {
+                //     users.forEach((user) => {
+                //         if (user["d2MembershipId"] === player) {
+                //             discordId = user["discordId"];
+                //         }
+                //     });
+                // })
 
                 await channel.send({"content": `<@${discordId}> best goat`, embeds: [embed]}).catch(console.error);
 
@@ -65,34 +67,34 @@ const getBest = (data, callback) => {
                 best.playedUsersCountMonthly = [pb.playedUsersCountMonthly, pb.membershipId];
                 best.playedUsersMonthly = [pb.playedUsersMonthly, pb.membershipId];
             }
-            if (pb.kf < best.kf[0] || best.kf[0] === null) {
-                if (pb.kf !== null) {
-                    best.kf = [pb.kf, pb.membershipId];
+            if (pb.kf.activityTime < best.kf.activityTime || best.kf.activityTime === null) {
+                if (pb.kf.activityTime !== null) {
+                    best.kf = new Activity(pb.activityTime, pb.players);
                 }
             }
-            if (pb.vow < best.vow[0] || best.vow[0] === null) {
-                if (pb.vow !== null) {
-                    best.vow = [pb.vow, pb.membershipId];
+            if (pb.vow.activityTime < best.vow.activityTime || best.vow.activityTime === null) {
+                if (pb.vow.activityTime !== null) {
+                    best.vow = new Activity(pb.activityTime, pb.players);
                 }
             }
-            if (pb.vog < best.vog[0] || best.vog[0] === null) {
-                if (pb.vog !== null) {
-                    best.vog = [pb.vog, pb.membershipId];
+            if (pb.vog.activityTime < best.vog.activityTime || best.vog.activityTime === null) {
+                if (pb.vog.activityTime !== null) {
+                    best.vog = new Activity(pb.activityTime, pb.players);
                 }
             }
-            if (pb.dsc < best.dsc[0] || best.dsc[0] === null) {
-                if (pb.dsc !== null) {
-                    best.dsc = [pb.dsc, pb.membershipId];
+            if (pb.dsc.activityTime < best.dsc.activityTime || best.dsc.activityTime === null) {
+                if (pb.dsc.activityTime !== null) {
+                    best.dsc = new Activity(pb.activityTime, pb.players);
                 }
             }
-            if (pb.gos < best.gos[0] || best.gos[0] === null) {
-                if (pb.gos !== null) {
-                    best.gos = [pb.gos, pb.membershipId];
+            if (pb.gos.activityTime < best.gos.activityTime || best.gos.activityTime === null) {
+                if (pb.gos.activityTime !== null) {
+                    best.gos = new Activity(pb.activityTime, pb.players);
                 }
             }
-            if (pb.lw < best.lw[0] || best.lw[0] === null) {
-                if (pb.lw !== null) {
-                    best.lw = [pb.lw, pb.membershipId];
+            if (pb.lw.activityTime < best.lw.activityTime || best.lw.activityTime === null) {
+                if (pb.lw.activityTime !== null) {
+                    best.lw = new Activity(pb.activityTime, pb.players);
                 }
             }
             if (counter === data.length - 1) {
@@ -118,6 +120,8 @@ const getPb = (membershipId, callback) => {
     getInstances(membershipId, (hashcodeMap) => {
         addPlayers(hashcodeMap, (list) => {
             const pb = new Pb(membershipId, list[0], list[1]);
+            console.log(`pb:`)
+            console.log(pb)
             callback(pb)
         });
     });
@@ -211,6 +215,16 @@ class Lowman {
     }
 }
 
+class Activity {
+    activityTime;
+    players;
+
+    constructor(activityTime, players) {
+        this.activityTime = activityTime;
+        this.players = players;
+    }
+}
+
 class Pb {
     membershipId;
     playedUsersMonthly;
@@ -232,55 +246,61 @@ class Pb {
         } else {
             this.playedUsersCountMonthly = null;
         }
-        this.kf = null;
-        this.vow = null;
-        this.vog = null;
-        this.dsc = null;
-        this.gos = null;
-        this.lw = null;
+        this.kf = new Activity();
+        this.vow = new Activity();
+        this.vog = new Activity();
+        this.dsc = new Activity();
+        this.gos = new Activity();
+        this.lw = new Activity();
 
+        //TODO correctly add ActivityTime
         if (lowmanList != null) {
             lowmanList.forEach(lowman => {
                 // kf
                 if (lowman.raid === 1374392663) {
-                    if (this.kf > lowman.activityTime || this.kf == null) {
-                        this.kf = lowman.activityTime;
+                    console.log("logging kf")
+                    console.log(this.kf)
+                    if (this.kf.activityTime > lowman.activityTime) {
+                        this.kf = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // vow
                 else if (lowman.raid === 1441982566) {
-                    if (this.vow > lowman.activityTime || this.vow == null) {
-                        this.vow = lowman.activityTime;
+                    if (this.vow.activityTime > lowman.activityTime) {
+                        this.vow = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // vog
                 else if (lowman.raid === 3881495763) {
-                    if (this.vog > lowman.activityTime || this.vog == null) {
-                        this.vog = lowman.activityTime;
+                    if (this.vog.activityTime > lowman.activityTime) {
+                        this.vog = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // dsc
                 else if (lowman.raid === 910380154) {
-                    if (this.dsc > lowman.activityTime || this.dsc == null) {
-                        this.dsc = lowman.activityTime;
+                    console.log("logging dsc")
+                    console.log(this.kf)
+                    if (this.dsc.activityTime > lowman.activityTime || this.dsc.activityTime == null) {
+                        this.dsc = new Activity(lowman.activityTime, lowman.players);
                     }
+                    console.log(this.kf)
                 }
                 // gos1
                 else if (lowman.raid === 3458480158) {
-                    if (this.gos > lowman.activityTime || this.gos == null) {
-                        this.gos = lowman.activityTime;
+                    if (this.gos.activityTime > lowman.activityTime) {
+                        this.gos = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // gos2
                 else if (lowman.raid === 2659723068) {
-                    if (this.gos > lowman.activityTime || this.gos == null) {
-                        this.gos = lowman.activityTime;
+                    if (this.gos.activityTime > lowman.activityTime) {
+                        this.gos = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // lw
                 else if (lowman.raid === 2122313384) {
-                    if (this.lw > lowman.activityTime || this.lw == null) {
-                        this.lw = lowman.activityTime;
+                    if (this.lw.activityTime > lowman.activityTime) {
+                        this.lw = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
             });
@@ -298,14 +318,14 @@ class Best {
     gos;
     lw;
 
-    constructor(playedUsersMonthly, lowmanList) {
-        this.playedUsersMonthly = [null, null];
-        this.playedUsersCountMonthly = [null, null];
-        this.kf = [null, null];
-        this.vow = [null, null];
-        this.vog = [null, null];
-        this.dsc = [null, null];
-        this.gos = [null, null];
-        this.lw = [null, null];
+    constructor() {
+        this.playedUsersMonthly = new Activity();
+        this.playedUsersCountMonthly = new Activity();
+        this.kf = new Activity();
+        this.vow = new Activity();
+        this.vog = new Activity();
+        this.dsc = new Activity();
+        this.gos = new Activity();
+        this.lw = new Activity();
     }
 }
