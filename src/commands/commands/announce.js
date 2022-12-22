@@ -305,11 +305,8 @@ class Pb {
     this.gos = new Activity();
     this.lw = new Activity();
 
-    //TODO unique check for players
     if (lowmanList != null) {
-      //make players unique
       lowmanList.forEach(lowman => {
-
         // kf
         if (lowman.raid === 1374392663) {
           if (this.kf.activityTime > lowman.activityTime || this.kf.activityTime === undefined) {
