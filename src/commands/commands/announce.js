@@ -2,12 +2,12 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI");
 const raidReportAPI = require("../../api/raidReportAPI");
 const User = require("../../schemas/user");
-const { GUILDID, CHANNELID } = process.env;
+const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder().setName("announce").setDescription("Announce monthly Stats"), async execute(interaction, client) {
-    const guild = await client.guilds.fetch(GUILDID).catch(console.error);
-    const channel = await guild.channels.fetch(CHANNELID).catch(console.error);
+    const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
+    const channel = await guild.channels.fetch(CHANNEL_ID).catch(console.error);
     await interaction.deferReply({
       fetchReply: true
     });
@@ -16,12 +16,12 @@ module.exports = {
       getBest(users, async (best) => {
         console.log(best);
         const messageArray = [
-          createMessage(users, best.lw.activityTime, best.lw.players, "Last Wish", "https://imgur.com/Vs3CemK.png"),
-          createMessage(users, best.gos.activityTime, best.gos.players, "Garden of Salvation", "https://imgur.com/a/BF7WVHk")
+          createMessage(users, best.lw.players, best.lw.activityTime, "Last Wish", "https://imgur.com/Vs3CemK.png"),
+          createMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation")
         ]
-        messageArray.forEach( async (message)=>{
+        for (const message of messageArray) {
           await channel.send(message).catch(console.error);
-        })
+        }
 
         await interaction.editReply({
           content: `Announcement posted!`
@@ -142,8 +142,8 @@ const addPlayers = async (hashcodeMap, callback) => {
   let playerList = [];
   for (const instance of Array.from(hashcodeMap.keys())) {
     const lowmanListPromise = await getInstanceInfo(instance, hashcodeMap);
-    lowmanListPromise[0].forEach((e) => lowmanList.push(e));
-    lowmanListPromise[0].forEach((e) => e.players.forEach((f) => playerList.push(f)));
+    lowmanListPromise.forEach((e) => lowmanList.push(e));
+    lowmanListPromise.forEach((e) => e.players.forEach((f) => playerList.push(f)));
 
     //make players unique
     playerList = [...new Map(playerList.filter(Boolean).map(item =>
@@ -173,7 +173,6 @@ async function getInstanceInfo(instance, hashcodeMap) {
     //only get data from instances that are a Month or less old
     if (dateOneMonthAgo <= instanceDate) {
 
-
       //players
       for (const entry of response.entries) {
         const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
@@ -185,29 +184,21 @@ async function getInstanceInfo(instance, hashcodeMap) {
       lowmanListMonthly.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], playersListMonthly, hashcodeMap.get(instance)));
     }
   });
-  return [lowmanListMonthly];
+  return lowmanListMonthly;
 }
 
 function createEmbed(raid, time, img) {
   return new EmbedBuilder({
-    "type": "rich", "title": `Fastest ${raid}`, "description": `Fastest lowman ${raid} last month`, "color": 0x00FFFF, "fields": [{
-      "name": convertTime(time), "value": "\u200B"
-    }], "image": {
-      "url": `${img}`, "height": 0, "width": 0
+    type: "rich", title: `Fastest ${raid}`, description: `Fastest lowman ${raid} last month`, color: 0x00FFFF, fields: [{
+      name: convertTime(time), value: "\u200B"
+    }], image: {
+      url: `${img}`, height: 0, width: 0
     }
   });
 }
 
 function createContent(players) {
-  let users = [];
-
-  players.forEach((player) => {
-    if (typeof player === "string") {
-      users.push(`<@${player}>`);
-    } else {
-      users.push(player.name);
-    }
-  });
+const users = getRegistered(players);
 
   let content;
   if (users.length < 1) {
@@ -221,8 +212,26 @@ function createContent(players) {
   return content;
 }
 
-function createMessage(users, activityTime, players, raidTitle, img) {
+function getRegistered(players){
+  let users = [];
+
+  players.forEach((player) => {
+    if (typeof player === "string") {
+      users.push(`<@${player}>`);
+    } else {
+      users.push(player.name);
+    }
+  });
+  return users;
+}
+
+function createMessage(users, players, activityTime, raidTitle, img) {
   const embed = createEmbed(raidTitle, activityTime, img);
+  const content = createContent(getPlayerList(users, players));
+  return { "content": content, embeds: [embed] }
+}
+
+function getPlayerList(users, players){
   const playerList = [];
   users.forEach((user) => {
     if(players !== undefined) {
@@ -235,9 +244,7 @@ function createMessage(users, activityTime, players, raidTitle, img) {
       });
     }
   });
-  const content = createContent(playerList);
-
-  return { "content": content, embeds: [embed] }
+  return playerList;
 }
 
 
@@ -297,7 +304,6 @@ class Pb {
     } else {
       this.playedUsersCountMonthly = null;
     }
-    //TODO initialize with empty Activity unnecessary?
     this.kf = new Activity();
     this.vow = new Activity();
     this.vog = new Activity();

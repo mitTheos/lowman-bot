@@ -2,7 +2,7 @@ const { request } = require("undici");
 const express = require("express");
 const User = require("../schemas/user");
 require("dotenv").config();
-const { DATABASETOKEN } = process.env;
+const { DATABASE_TOKEN } = process.env;
 const { discordClientId, discordClientSecret, bungieClientId, bungieClientSecret, port, apiKey } = require("./config.json");
 const fs = require("fs");
 const https = require("https");
@@ -16,7 +16,7 @@ const options = {
 
 const app = express();
 const server = https.createServer(options, app);
-connect(DATABASETOKEN).catch(console.error);
+connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
 
