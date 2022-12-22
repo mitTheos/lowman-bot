@@ -5,7 +5,7 @@ const User = require("../../schemas/user");
 const { GUILDID, CHANNELID } = process.env;
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("pb").setDescription("Return my pb"), async execute(interaction, client) {
+  data: new SlashCommandBuilder().setName("announce").setDescription("Announce monthly Stats"), async execute(interaction, client) {
     const guild = await client.guilds.fetch(GUILDID).catch(console.error);
     const channel = await guild.channels.fetch(CHANNELID).catch(console.error);
     await interaction.deferReply({
