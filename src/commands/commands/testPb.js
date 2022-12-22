@@ -67,34 +67,34 @@ const getBest = (data, callback) => {
                 best.playedUsersCountMonthly = [pb.playedUsersCountMonthly, pb.membershipId];
                 best.playedUsersMonthly = [pb.playedUsersMonthly, pb.membershipId];
             }
-            if (pb.kf.activityTime < best.kf.activityTime || best.kf.activityTime === null) {
-                if (pb.kf.activityTime !== null) {
-                    best.kf = new Activity(pb.activityTime, pb.players);
+            if (pb.kf.activityTime < best.kf.activityTime || best.kf.activityTime === undefined) {
+                if (pb.kf.activityTime !== undefined) {
+                    best.kf = new Activity(pb.kf.activityTime, pb.kf.players);
                 }
             }
-            if (pb.vow.activityTime < best.vow.activityTime || best.vow.activityTime === null) {
-                if (pb.vow.activityTime !== null) {
-                    best.vow = new Activity(pb.activityTime, pb.players);
+            if (pb.vow.activityTime < best.vow.activityTime || best.vow.activityTime === undefined) {
+                if (pb.vow.activityTime !== undefined) {
+                    best.vow = new Activity(pb.vow.activityTime, pb.vow.players);
                 }
             }
-            if (pb.vog.activityTime < best.vog.activityTime || best.vog.activityTime === null) {
-                if (pb.vog.activityTime !== null) {
-                    best.vog = new Activity(pb.activityTime, pb.players);
+            if (pb.vog.activityTime < best.vog.activityTime || best.vog.activityTime === undefined) {
+                if (pb.vog.activityTime !== undefined) {
+                    best.vog = new Activity(pb.vog.activityTime, pb.vog.players);
                 }
             }
-            if (pb.dsc.activityTime < best.dsc.activityTime || best.dsc.activityTime === null) {
-                if (pb.dsc.activityTime !== null) {
-                    best.dsc = new Activity(pb.activityTime, pb.players);
+            if (pb.dsc.activityTime < best.dsc.activityTime || best.dsc.activityTime === undefined) {
+                if (pb.dsc.activityTime !== undefined) {
+                    best.dsc = new Activity(pb.dsc.activityTime, pb.dsc.players);
                 }
             }
-            if (pb.gos.activityTime < best.gos.activityTime || best.gos.activityTime === null) {
-                if (pb.gos.activityTime !== null) {
-                    best.gos = new Activity(pb.activityTime, pb.players);
+            if (pb.gos.activityTime < best.gos.activityTime || best.gos.activityTime === undefined) {
+                if (pb.gos.activityTime !== undefined) {
+                    best.gos = new Activity(pb.gos.activityTime, pb.gos.players);
                 }
             }
-            if (pb.lw.activityTime < best.lw.activityTime || best.lw.activityTime === null) {
-                if (pb.lw.activityTime !== null) {
-                    best.lw = new Activity(pb.activityTime, pb.players);
+            if (pb.lw.activityTime < best.lw.activityTime || best.lw.activityTime === undefined) {
+                if (pb.lw.activityTime !== undefined) {
+                    best.lw = new Activity(pb.lw.activityTime, pb.lw.players);
                 }
             }
             if (counter === data.length - 1) {
@@ -253,53 +253,47 @@ class Pb {
         this.gos = new Activity();
         this.lw = new Activity();
 
-        //TODO correctly add ActivityTime
         if (lowmanList != null) {
             lowmanList.forEach(lowman => {
                 // kf
                 if (lowman.raid === 1374392663) {
-                    console.log("logging kf")
-                    console.log(this.kf)
-                    if (this.kf.activityTime > lowman.activityTime) {
+                    if (this.kf.activityTime > lowman.activityTime || this.kf.activityTime === undefined) {
                         this.kf = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // vow
                 else if (lowman.raid === 1441982566) {
-                    if (this.vow.activityTime > lowman.activityTime) {
+                    if (this.vow.activityTime > lowman.activityTime || this.vow.activityTime === undefined) {
                         this.vow = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // vog
                 else if (lowman.raid === 3881495763) {
-                    if (this.vog.activityTime > lowman.activityTime) {
+                    if (this.vog.activityTime > lowman.activityTime || this.vog.activityTime === undefined) {
                         this.vog = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // dsc
                 else if (lowman.raid === 910380154) {
-                    console.log("logging dsc")
-                    console.log(this.kf)
-                    if (this.dsc.activityTime > lowman.activityTime || this.dsc.activityTime == null) {
+                    if (this.dsc.activityTime > lowman.activityTime || this.dsc.activityTime === undefined) {
                         this.dsc = new Activity(lowman.activityTime, lowman.players);
                     }
-                    console.log(this.kf)
                 }
                 // gos1
                 else if (lowman.raid === 3458480158) {
-                    if (this.gos.activityTime > lowman.activityTime) {
+                    if (this.gos.activityTime > lowman.activityTime || this.gos.activityTime === undefined) {
                         this.gos = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // gos2
                 else if (lowman.raid === 2659723068) {
-                    if (this.gos.activityTime > lowman.activityTime) {
+                    if (this.gos.activityTime > lowman.activityTime || this.gos.activityTime === undefined) {
                         this.gos = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
                 // lw
                 else if (lowman.raid === 2122313384) {
-                    if (this.lw.activityTime > lowman.activityTime) {
+                    if (this.lw.activityTime > lowman.activityTime || this.lw.activityTime === undefined) {
                         this.lw = new Activity(lowman.activityTime, lowman.players);
                     }
                 }
@@ -319,8 +313,8 @@ class Best {
     lw;
 
     constructor() {
-        this.playedUsersMonthly = new Activity();
-        this.playedUsersCountMonthly = new Activity();
+        this.playedUsersMonthly = [null, null];
+        this.playedUsersCountMonthly =[null, null];
         this.kf = new Activity();
         this.vow = new Activity();
         this.vog = new Activity();
