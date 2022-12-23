@@ -6,23 +6,33 @@ const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder().setName("announce").setDescription("Announce monthly Stats"), async execute(interaction, client) {
+    // Discord server and channel from .env
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
     const channel = await guild.channels.fetch(CHANNEL_ID).catch(console.error);
+    // processing command message
     await interaction.deferReply({
       fetchReply: true
     });
     getData(async (users) => {
-      console.log(users);
       getBest(users, async (best) => {
-        console.log(best);
+
+        // create messages
         const messageArray = [
-          createMessage(users, best.lw.players, best.lw.activityTime, "Last Wish", "https://imgur.com/Vs3CemK.png"),
-          createMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation")
-        ]
+          createPlayersMessage(users, best.playedUsersCountMonthly[1], best.playedUsersCountMonthly[0]),
+          createRaidMessage(users, best.lw.players, best.lw.activityTime, "Last Wish", "https://imgur.com/Vs3CemK.png"),
+          createRaidMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation", "https://i.imgur.com/q5MFHiF.jpg"),
+          createRaidMessage(users, best.vow.players, best.vow.activityTime, "Vow of the disciple", "https://i.imgur.com/PJYwWJg.jpg"),
+          createRaidMessage(users, best.kf.players, best.kf.activityTime, "King's Fall", "https://i.imgur.com/OyLU8Oy.jpg"),
+          createRaidMessage(users, best.vog.players, best.vog.activityTime, "Vault of Glass", "https://i.imgur.com/YWxkqZx.jpg"),
+          createRaidMessage(users, best.dsc.players, best.dsc.activityTime, "Deep Stone Crypt", "https://i.imgur.com/0dVwJJd.png")
+        ];
+
+        // send messages
         for (const message of messageArray) {
           await channel.send(message).catch(console.error);
         }
 
+        // update message. Command has been completed!
         await interaction.editReply({
           content: `Announcement posted!`
         });
@@ -31,6 +41,8 @@ module.exports = {
   }
 };
 
+// format seconds into h:mm:ss/mm:ss
+// (h:mm:ss if time is > 1h)
 function convertTime(time) {
   if (time === null || time === undefined) {
     return "x";
@@ -47,6 +59,8 @@ function convertTime(time) {
   }
 }
 
+// get PB of all the registered users and
+// collect the best times/the highest ppl played with and return them in a Best Object
 const getBest = (data, callback) => {
   let best = new Best();
   let counter = 0;
@@ -95,6 +109,7 @@ const getBest = (data, callback) => {
   }
 };
 
+// retrieve data from DB
 getData = (callback) => {
   User.find({}, function(err, result) {
     if (err) {
@@ -105,16 +120,19 @@ getData = (callback) => {
   });
 };
 
+// get the PB with all the data on the person with the membershipId
 const getPb = (membershipId, callback) => {
   getInstances(membershipId, (hashcodeMap) => {
-    addPlayers(hashcodeMap, (list) => {
-      const pb = new Pb(membershipId, list[0], list[1]);
+    addPlayers(hashcodeMap, (array) => {
+      const pb = new Pb(membershipId, array[0], array[1]);
       callback(pb);
     });
   });
 };
 
+// get all the instances that were fresh lowmans from player with the membershipId
 const getInstances = (membershipId, callback) => {
+  // Map with (instanceId, activityHash)
   let instanceHashcodeMap = new Map();
   raidReportAPI.raidStats(membershipId).then((data) => {
     const activities = data.response["activities"];
@@ -137,34 +155,38 @@ const getInstances = (membershipId, callback) => {
   });
 };
 
+// return array of unique players the person played with
+// and return the array of lowmans with the players also unique per instance
 const addPlayers = async (hashcodeMap, callback) => {
-  let lowmanList = [];
-  let playerList = [];
+  let lowmans = [];
+  let players = [];
   for (const instance of Array.from(hashcodeMap.keys())) {
-    const lowmanListPromise = await getInstanceInfo(instance, hashcodeMap);
-    lowmanListPromise.forEach((e) => lowmanList.push(e));
-    lowmanListPromise.forEach((e) => e.players.forEach((f) => playerList.push(f)));
+    const lowmanArrayPromise = await getInstanceInfo(instance, hashcodeMap);
+    lowmanArrayPromise.forEach((e) => lowmans.push(e));
+    lowmanArrayPromise.forEach((e) => e.players.forEach((f) => players.push(f)));
 
     //make players unique
-    playerList = [...new Map(playerList.filter(Boolean).map(item =>
+    players = [...new Map(players.filter(Boolean).map(item =>
       [item["membershipId"], item])).values()];
 
-    //make players in lowmanList unique
-    lowmanList.forEach(lowman => {
+    //make players in lowmanArray unique
+    lowmans.forEach(lowman => {
       lowman.players = [...new Map(lowman.players.filter(Boolean).map(item =>
         [item["membershipId"], item])).values()];
     });
   }
-  const returnList = [playerList, lowmanList];
-  callback(returnList);
+  const returnArray = [players, lowmans];
+  callback(returnArray);
 };
 
+// get the speed times and the players from the instance
 async function getInstanceInfo(instance, hashcodeMap) {
-  let playersListMonthly = [];
-  let lowmanListMonthly = [];
+  let monthlyPlayers = [];
+  let monthlyLowmans = [];
   await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
-    //ISO dates
+
+    // get ISO dates
     const dateNow = new Date();
     dateNow.setMonth(dateNow.getMonth() - 1);
     const dateOneMonthAgo = dateNow.toISOString();
@@ -178,18 +200,19 @@ async function getInstanceInfo(instance, hashcodeMap) {
         const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
         const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
         const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
-        playersListMonthly.push(new Player(`${name}#${tag}`, membershipId));
+        monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
       }
       //speed times
-      lowmanListMonthly.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], playersListMonthly, hashcodeMap.get(instance)));
+      monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
     }
   });
-  return lowmanListMonthly;
+  return monthlyLowmans;
 }
 
+// create the embed for speed acknowledgement
 function createEmbed(raid, time, img) {
   return new EmbedBuilder({
-    type: "rich", title: `Fastest ${raid}`, description: `Fastest lowman ${raid} last month`, color: 0x00FFFF, fields: [{
+    title: `Fastest ${raid}`, description: `Fastest lowman ${raid} last month`, color: 0x00FFFF, fields: [{
       name: convertTime(time), value: "\u200B"
     }], image: {
       url: `${img}`, height: 0, width: 0
@@ -197,54 +220,84 @@ function createEmbed(raid, time, img) {
   });
 }
 
+// create the message associated with the speed embed
 function createContent(players) {
-const users = getRegistered(players);
-
+  const users = formatRegistered(players);
   let content;
   if (users.length < 1) {
     content = "no one cleared this raid this month";
   } else if (users.length === 1) {
     content = users[0] + " has the fastest clear";
   } else {
-    let userString = users.slice(0, -1).join(', ')+' & '+users.slice(-1);
-    content = userString + " have the fastest clear";
+    let usersString = users.slice(0, -1).join(", ") + " & " + users.slice(-1);
+    content = usersString + " have the fastest clear";
   }
   return content;
 }
 
-function getRegistered(players){
-  let users = [];
+// format the player for output as discord message
+// return discord tag with id if registered
+// return bungie name if not
+function formatRegistered(players) {
+  let formattedPlayers = [];
 
   players.forEach((player) => {
     if (typeof player === "string") {
-      users.push(`<@${player}>`);
+      formattedPlayers.push(`<@${player}>`);
     } else {
-      users.push(player.name);
+      formattedPlayers.push(player.name);
     }
   });
-  return users;
+  return formattedPlayers;
 }
 
-function createMessage(users, players, activityTime, raidTitle, img) {
+// create message with embed and content
+function createRaidMessage(users, players, activityTime, raidTitle, img) {
   const embed = createEmbed(raidTitle, activityTime, img);
-  const content = createContent(getPlayerList(users, players));
-  return { "content": content, embeds: [embed] }
+  const content = createContent(getRegistered(users, players));
+  return { "content": content, embeds: [embed] };
 }
 
-function getPlayerList(users, players){
-  const playerList = [];
+// check db for a discordId associated with the Player
+// return Player if they are not in the db
+function getRegistered(users, players) {
+  const checkedPlayers = [];
   users.forEach((user) => {
-    if(players !== undefined) {
+    if (players !== undefined) {
       players.forEach((player) => {
         if (user["d2MembershipId"] === player.membershipId) {
-          playerList.push(user["discordId"]);
+          checkedPlayers.push(user["discordId"]);
         } else {
-          playerList.push(player);
+          checkedPlayers.push(player);
         }
       });
     }
   });
-  return playerList;
+  return checkedPlayers;
+}
+
+// create the message to acknowledge the player that played with the most unique players this month
+function createPlayersMessage(users, bestPlayer, playerAmount) {
+  let registeredUsers = getRegistered(users, [new Player(null, bestPlayer)]);
+  let formattedRegisteredUsers = formatRegistered(registeredUsers);
+  if (formattedRegisteredUsers.length === 1) {
+    return {
+      content: `${formattedRegisteredUsers[0]} is the best mentor`,
+      embeds: [
+        {
+          title: `Players played with`,
+          description: `Amount of unique players played with last month`,
+          color: 0x00FFFF,
+          fields: [
+            {
+              name: `Players: `,
+              value: playerAmount
+            }
+          ]
+        }
+      ]
+    };
+  } else return { content: `error: Player not found` };
 }
 
 
@@ -294,7 +347,7 @@ class Pb {
   gos;
   lw;
 
-  constructor(membershipId, playedUsersMonthly, lowmanList) {
+  constructor(membershipId, playedUsersMonthly, lowmanArray) {
     this.membershipId = membershipId;
     this.playedUsersMonthly = playedUsersMonthly;
     if (playedUsersMonthly != null) {
@@ -311,8 +364,8 @@ class Pb {
     this.gos = new Activity();
     this.lw = new Activity();
 
-    if (lowmanList != null) {
-      lowmanList.forEach(lowman => {
+    if (lowmanArray != null) {
+      lowmanArray.forEach(lowman => {
         // kf
         if (lowman.raid === 1374392663) {
           if (this.kf.activityTime > lowman.activityTime || this.kf.activityTime === undefined) {
