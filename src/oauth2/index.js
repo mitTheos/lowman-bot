@@ -108,4 +108,4 @@ app.get("/bungie/", async ({ query }, response) => {
   return response.sendFile("src/oauth2/index.html", { root: "." });
 });
 
-server.listen(PORT, () => console.log(`Server started at https://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server started at https://localhost:${PORT}`));
