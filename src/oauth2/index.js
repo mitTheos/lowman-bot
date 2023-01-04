@@ -2,8 +2,7 @@ const { request } = require("undici");
 const express = require("express");
 const User = require("../schemas/user");
 require("dotenv").config();
-const { DATABASE_TOKEN } = process.env;
-const { discordClientId, discordClientSecret, bungieClientId, bungieClientSecret, port, apiKey } = require("./config.json");
+const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY } = process.env;
 const fs = require("fs");
 const https = require("https");
 const chalk = require('chalk')
@@ -21,7 +20,7 @@ let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
-  return response.redirect('https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A53134%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write');
+  return response.redirect('https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A7171%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write');
 });
 
 app.get("/discord", async ({ query }, response) => {
@@ -31,11 +30,11 @@ app.get("/discord", async ({ query }, response) => {
       const tokenResponseData = await request("https://discord.com/api/oauth2/token", {
         method: "POST",
         body: new URLSearchParams({
-          client_id: discordClientId,
-          client_secret: discordClientSecret,
+          client_id: DISCORD_CLIENT_ID,
+          client_secret: DISCORD_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://localhost:${port}/discord`,
+          redirect_uri: `https://localhost:${PORT}/discord`,
           scope: "identify"
         }).toString(),
         headers: {
@@ -71,11 +70,11 @@ app.get("/bungie/", async ({ query }, response) => {
       const tokenResponseData = await request("https://www.bungie.net/platform/app/oauth/token/", {
         method: "POST",
         body: new URLSearchParams({
-          client_id: bungieClientId,
-          client_secret: bungieClientSecret,
+          client_id: DISCORD_CLIENT_ID,
+          client_secret: BUNGIE_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://localhost:${port}/bungie`
+          redirect_uri: `https://localhost:${PORT}/bungie`
         }).toString(),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -85,7 +84,7 @@ app.get("/bungie/", async ({ query }, response) => {
       const oauthData = await tokenResponseData.body.json();
       const userResult = await request("https://www.bungie.net/Platform/User/GetCurrentBungieAccount/", {
         headers: {
-          "X-API-Key": `${apiKey}`,
+          "X-API-Key": `${API_KEY}`,
           Authorization: `${oauthData.token_type} ${oauthData.access_token}`
         }
       }).catch(console.error);
@@ -114,4 +113,4 @@ app.get("/bungie/", async ({ query }, response) => {
   return response.sendFile("src/oauth2/index.html", { root: "." });
 });
 
-server.listen(port, () => console.log(`Server started at https://localhost:${port}`));
+server.listen(PORT, () => console.log(`Server started at https://localhost:${PORT}`));
