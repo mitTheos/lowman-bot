@@ -86,7 +86,7 @@ app.get("/bungie/", async ({ query }, response) => {
       console.log(response)
       console.log(Object.values(response["Response"]["destinyMemberships"]))
       console.log(Object.values(response["Response"]["membershipOverrides"])[0])
-      d2MembershipId = Object.values(response["Response"]["membershipOverrides"])[0]["membershipIdOverriding"];
+      d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"];
       console.log(`D2 membership id: ${d2MembershipId}`);
 
 
