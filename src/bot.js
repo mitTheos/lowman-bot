@@ -18,7 +18,6 @@ for (const folder of functionFolders) {
 client.handleEvents();
 client.handleCommands();
 console.log(TOKEN);
-client.login(TOKEN);
 connect(DATABASE_TOKEN).catch(console.error);
 
 
