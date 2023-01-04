@@ -16,7 +16,7 @@ module.exports = {
       .setTitle("Register")
       .addFields({
         name: "Authorize",
-        value: "https://localhost:53134"
+        value: "https://lowman-bot.up.railway.app/"
         }
       );
 
