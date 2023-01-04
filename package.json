@@ -1,5 +1,5 @@
 {
-  "name": "bungie-auth-bot",
+  "name": "lowman-bot",
   "version": "1.0.0",
   "main": "src/bot.js",
   "scripts": {
