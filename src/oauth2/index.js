@@ -1,11 +1,10 @@
+require('dotenv').config();
 const { request } = require("undici");
 const express = require("express");
 const User = require("../schemas/user");
-require("dotenv").config();
 const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY } = process.env;
-const fs = require("fs");
 const https = require("https");
-const chalk = require('chalk')
+const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 
@@ -16,7 +15,7 @@ let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
-  return response.redirect('https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A7171%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write');
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A7171%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write");
 });
 
 app.get("/discord", async ({ query }, response) => {
@@ -55,7 +54,7 @@ app.get("/discord", async ({ query }, response) => {
     }
   }
 
-  return response.redirect('https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code');
+  return response.redirect("https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code");
 });
 
 app.get("/bungie/", async ({ query }, response) => {
@@ -66,7 +65,7 @@ app.get("/bungie/", async ({ query }, response) => {
       const tokenResponseData = await request("https://www.bungie.net/platform/app/oauth/token/", {
         method: "POST",
         body: new URLSearchParams({
-          client_id: DISCORD_CLIENT_ID,
+          client_id: BUNGIE_CLIENT_ID,
           client_secret: BUNGIE_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
@@ -86,10 +85,10 @@ app.get("/bungie/", async ({ query }, response) => {
       }).catch(console.error);
       const response = await userResult.body.json();
       d2MembershipId = Object.values(response["Response"]["membershipOverrides"])[0]["membershipIdOverriding"];
-      console.log(`D2 membership id: ${d2MembershipId}`)
+      console.log(`D2 membership id: ${d2MembershipId}`);
 
 
-      if(discordId!=null && d2MembershipId!= null) {
+      if (discordId != null && d2MembershipId != null) {
         let userProfile = await User.findOne({ discordId: discordId });
         if (!userProfile) userProfile = await new User({
           _id: mongoose.Types.ObjectId(),
