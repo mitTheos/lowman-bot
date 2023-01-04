@@ -8,13 +8,9 @@ const https = require("https");
 const chalk = require('chalk')
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
-const options = {
-  key: fs.readFileSync("C:/ssl-certificate/cert.key"),
-  cert: fs.readFileSync("C:/ssl-certificate/cert.crt")
-};
 
 const app = express();
-const server = https.createServer(options, app);
+const server = https.createServer(app);
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
