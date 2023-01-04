@@ -9,13 +9,12 @@ const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 
 const app = express();
-const server = https.createServer(app);
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
-  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flocalhost%3A7171%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write");
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman-bot.up.railway.app%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write");
 });
 
 app.get("/discord", async ({ query }, response) => {
@@ -29,7 +28,7 @@ app.get("/discord", async ({ query }, response) => {
           client_secret: DISCORD_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://localhost:${PORT}/discord`,
+          redirect_uri: `https://lowman-bot.up.railway.app/discord`,
           scope: "identify"
         }).toString(),
         headers: {
@@ -69,7 +68,7 @@ app.get("/bungie/", async ({ query }, response) => {
           client_secret: BUNGIE_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://localhost:${PORT}/bungie`
+          redirect_uri: `https://lowman-bot.up.railway.app/bungie`
         }).toString(),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -108,4 +107,4 @@ app.get("/bungie/", async ({ query }, response) => {
   return response.sendFile("src/oauth2/index.html", { root: "." });
 });
 
-app.listen(PORT, () => console.log(`Server started at https://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server started at https://lowman-bot.up.railway.app/`));
