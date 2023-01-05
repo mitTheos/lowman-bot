@@ -7,6 +7,7 @@ const https = require("https");
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
+const { response } = require("express");
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
@@ -14,7 +15,12 @@ let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
-  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman-bot.up.railway.app%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20role_connections.write");
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman-bot.up.railway.app%2Fdiscord&response_type=code&scope=identify%20guilds%20role_connections.write");
+});
+
+app.get("/invite", async ({query}, response) =>{
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman-bot.up.railway.app%2Fdiscord&scope=applications.commands");
+
 });
 
 app.get("/discord", async ({ query }, response) => {
