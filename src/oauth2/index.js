@@ -15,11 +15,11 @@ let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
-  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman-bot.up.railway.app%2Fdiscord&response_type=code&scope=identify%20guilds%20role_connections.write");
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman.app%2Fdiscord&response_type=code&scope=identify%20guilds%20role_connections.write");
 });
 
 app.get("/invite", async ({query}, response) =>{
-  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman-bot.up.railway.app%2Fdiscord&scope=applications.commands");
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman.app&scope=applications.commands");
 
 });
 
@@ -34,7 +34,7 @@ app.get("/discord", async ({ query }, response) => {
           client_secret: DISCORD_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://lowman-bot.up.railway.app/discord`,
+          redirect_uri: `https://lowman.app/discord`,
           scope: "identify"
         }).toString(),
         headers: {
@@ -74,7 +74,7 @@ app.get("/bungie/", async ({ query }, response) => {
           client_secret: BUNGIE_CLIENT_SECRET,
           code,
           grant_type: "authorization_code",
-          redirect_uri: `https://lowman-bot.up.railway.app/bungie`
+          redirect_uri: `https://lowman.app/bungie`
         }).toString(),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -113,4 +113,4 @@ app.get("/bungie/", async ({ query }, response) => {
   return response.sendFile("src/oauth2/index.html", { root: "." });
 });
 
-app.listen(PORT, () => console.log(`Server started at https://lowman-bot.up.railway.app/`));
+app.listen(PORT, () => console.log(`Server started at https://lowman.app/`));
