@@ -9,10 +9,14 @@ module.exports = {
     // Discord server and channel from .env
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
     const channel = await guild.channels.fetch(CHANNEL_ID).catch(console.error);
-    // processing command message
+
+    // loading message
+    console.log("===Announcement===");
     await interaction.deferReply({
       fetchReply: true
     });
+
+    // processing command message
     console.log("getting data for announcement...");
     getData(async (users) => {
       console.log("db data received, calculating PBs...");
@@ -68,6 +72,7 @@ const getBest = (data, callback) => {
   let counter = 0;
   for (const e of data) {
     getPb(e["d2MembershipId"], (pb) => {
+      console.log(`calculated pb for ${pb.membershipId}`);
       if (pb.playedUsersCountMonthly > best.playedUsersCountMonthly[0]) {
         best.playedUsersCountMonthly = [pb.playedUsersCountMonthly, pb.membershipId];
         best.playedUsersMonthly = [pb.playedUsersMonthly, pb.membershipId];
@@ -124,7 +129,6 @@ getData = (callback) => {
 
 // get the PB with all the data on the person with the membershipId
 const getPb = (membershipId, callback) => {
-  console.log(`getting pb for ${membershipId}`);
   getInstances(membershipId, (hashcodeMap) => {
     addPlayers(hashcodeMap, (array) => {
       const pb = new Pb(membershipId, array[0], array[1]);

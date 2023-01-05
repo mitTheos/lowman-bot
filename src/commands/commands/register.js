@@ -8,6 +8,7 @@ module.exports = {
     .setDescription("register to Lowman Bot"),
   async execute(interaction, client) {
     // loading message
+    console.log("===Register===");
     await interaction.deferReply({
       fetchReply: true
     });

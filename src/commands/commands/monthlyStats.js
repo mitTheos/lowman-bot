@@ -19,6 +19,7 @@ module.exports = {
     const username = interaction.options.get("username").value;
 
     // loading message
+    console.log("===MonthlyStats===")
     const message = await interaction.deferReply({
       fetchReply: true
     });
