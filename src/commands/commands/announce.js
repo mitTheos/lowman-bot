@@ -13,11 +13,11 @@ module.exports = {
     await interaction.deferReply({
       fetchReply: true
     });
-    console.log("getting data for announcement...")
+    console.log("getting data for announcement...");
     getData(async (users) => {
-      console.log("db data received, calculating PBs...")
+      console.log("db data received, calculating PBs...");
       getBest(users, async (best) => {
-        console.log("data for announcement ready!")
+        console.log("data for announcement ready!");
         // create messages
         const messageArray = [
           createPlayersMessage(users, best.playedUsersCountMonthly[1], best.playedUsersCountMonthly[0]),
