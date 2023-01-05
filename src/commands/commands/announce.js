@@ -265,17 +265,20 @@ function createRaidMessage(users, players, activityTime, raidTitle, img) {
 // return Player if they are not in the db
 function getRegistered(users, players) {
   const checkedPlayers = [];
-  users.forEach((user) => {
-    if (players !== undefined) {
-      players.forEach((player) => {
-        if (user["d2MembershipId"] === player.membershipId) {
+  if (players !== undefined) {
+    players.forEach((player) => {
+      let isRegistered = false;
+      users.forEach((user) => {
+        if (user["d2MembershipId"] === player.membershipId && isRegistered === false) {
+          isRegistered = true;
           checkedPlayers.push(user["discordId"]);
-        } else {
-          checkedPlayers.push(player);
         }
       });
-    }
-  });
+      if(isRegistered === false){
+        checkedPlayers.push(player);
+      }
+    });
+  }
   return checkedPlayers;
 }
 
