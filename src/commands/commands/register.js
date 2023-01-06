@@ -47,6 +47,6 @@ module.exports = {
     await interaction.editReply({
       components: [row],
       embeds: [embed]
-    });
+    }).then(console.log("Registration message posted!"));
   }
 };

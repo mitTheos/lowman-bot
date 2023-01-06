@@ -23,7 +23,7 @@ module.exports = {
     const message = await interaction.deferReply({
       fetchReply: true
     });
-    getPlayedWith(username, (callback) => {
+    getPlayedWith(username, async (callback) => {
       console.log(`Getting monthly stats for: ${username}`)
       const playedWithList = callback[0];
       const lowmanList = callback[1];
@@ -74,9 +74,9 @@ module.exports = {
           }
         ]);
 
-      interaction.editReply({
+      await interaction.editReply({
         embeds: [embed, embed2]
-      });
+      }).then(console.log("Monthly Stats posted!"));
     });
   }
 };
