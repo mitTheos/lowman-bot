@@ -6,7 +6,8 @@ const { ButtonStyle } = require("discord-api-types/v10");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("register")
-    .setDescription("register to Lowman Bot"),
+    .setDescription("register to Lowman Bot")
+    .setDMPermission(false),
   async execute(interaction, client) {
     // loading message
     console.log("===Register===");

@@ -2,10 +2,16 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI");
 const raidReportAPI = require("../../api/raidReportAPI");
 const User = require("../../schemas/user");
+const { PermissionFlagsBits } = require("discord-api-types/v8.mjs");
 const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("announce").setDescription("Announce monthly Stats"), async execute(interaction, client) {
+  data: new SlashCommandBuilder()
+    .setName("announce")
+    .setDescription("Announce monthly Stats")
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  async execute(interaction, client) {
     // Discord server and channel from .env
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
     const channel = await guild.channels.fetch(CHANNEL_ID).catch(console.error);

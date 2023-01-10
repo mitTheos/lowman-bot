@@ -3,6 +3,7 @@ require("../../api/raidReportAPI.js");
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI.js");
 const raidReportAPI = require("../../api/raidReportAPI.js");
+const { PermissionFlagsBits } = require("discord-api-types/v8.mjs");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,7 +14,9 @@ module.exports = {
         .setName("username")
         .setDescription("Bungie username")
         .setRequired(true)
-    ),
+    )
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   async execute(interaction, client) {
 
     const username = interaction.options.get("username").value;

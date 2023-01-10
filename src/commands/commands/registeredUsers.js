@@ -4,6 +4,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("registered-users")
     .setDescription("Show the number of registered users")
+    .setDMPermission(false),
   async execute(interaction) {
     console.log("===Registered Users===");
 
