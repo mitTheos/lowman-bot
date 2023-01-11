@@ -3,7 +3,7 @@ require("../../api/raidReportAPI.js");
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI.js");
 const raidReportAPI = require("../../api/raidReportAPI.js");
-const { PermissionFlagsBits } = require("discord-api-types/v8.mjs");
+const { PermissionFlagsBits } = require("discord-api-types/v10");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,18 +16,18 @@ module.exports = {
         .setRequired(true)
     )
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   async execute(interaction, client) {
 
     const username = interaction.options.get("username").value;
 
     // loading message
-    console.log("===MonthlyStats===")
+    console.log("===MonthlyStats===");
     const message = await interaction.deferReply({
       fetchReply: true
     });
     getPlayedWith(username, async (callback) => {
-      console.log(`Getting monthly stats for: ${username}`)
+      console.log(`Getting monthly stats for: ${username}`);
       const playedWithList = callback[0];
       const lowmanList = callback[1];
       const pb = new MonthlyPB(lowmanList);
@@ -91,7 +91,7 @@ const getPlayedWith = (username, callback) => {
     const hashcodeMap = returnList[1];
     const instances = Array.from(hashcodeMap.keys());
     addPlayers(username, instances, hashcodeMap, (list) => {
-      callback([list[0],list[1]]);
+      callback([list[0], list[1]]);
     });
   });
 };
@@ -101,11 +101,11 @@ const addPlayers = async (username, instances, hashcodeMap, callback) => {
   let lowmanList = [];
   for (const instance of instances) {
     const lowmanListPromise = await getInstanceInfoThisMonth(instance, hashcodeMap);
-    lowmanListPromise.forEach((e)=>lowmanList.push(e));
+    lowmanListPromise.forEach((e) => lowmanList.push(e));
     let playerList = [];
-    lowmanListPromise.forEach((e)=>e.players.forEach((f)=> playerList.push(f)));
+    lowmanListPromise.forEach((e) => e.players.forEach((f) => playerList.push(f)));
     // const playerList = lowmanList.players;
-    for (const player of playerList ) {
+    for (const player of playerList) {
       //check if player is unique and that they are not the users whose data has been requested
       if (!uniquePlayerList.includes(player) && player !== username) {
         uniquePlayerList.push(player);
@@ -118,7 +118,7 @@ const addPlayers = async (username, instances, hashcodeMap, callback) => {
 
 async function getInstanceInfoThisMonth(instance, hashcodeMap) {
   let playersList = [];
-  let lowmanList = []
+  let lowmanList = [];
   await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
     //ISO dates
@@ -138,7 +138,7 @@ async function getInstanceInfoThisMonth(instance, hashcodeMap) {
         playersList.push(`${name}#${tag}`);
       }
       //speed times
-      lowmanList.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"],playersList, hashcodeMap.get(instance)));
+      lowmanList.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], playersList, hashcodeMap.get(instance)));
     }
   });
   // lowmanList.forEach((e)=>console.log(e.printSpeed()));
@@ -162,7 +162,7 @@ const getInstances = (username, callback) => {
 
           if (lowmans != null) {
             for (const lowman of lowmans) {
-              if(lowman["fresh"] === true) {
+              if (lowman["fresh"] === true) {
                 const instanceId = lowman["instanceId"];
                 instanceHashcodeMap.set(instanceId, activity["activityHash"]);
               }
@@ -199,15 +199,15 @@ class Lowman {
   raid;
 
 
-  constructor(instance, activityTime,players, raid) {
+  constructor(instance, activityTime, players, raid) {
     this.instance = instance;
     this.activityTime = activityTime;
     this.players = players;
     this.raid = raid;
   }
 
-  printSpeed(){
-    return `instance: ${this.instance}, activityTime: ${this.activityTime}, raid: ${this.raid}`
+  printSpeed() {
+    return `instance: ${this.instance}, activityTime: ${this.activityTime}, raid: ${this.raid}`;
   }
 }
 

@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI");
 const raidReportAPI = require("../../api/raidReportAPI");
 const User = require("../../schemas/user");
-const { PermissionFlagsBits } = require("discord-api-types/v8.mjs");
+const { PermissionFlagsBits } = require("discord-api-types/v10");
 const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     .setName("announce")
     .setDescription("Announce monthly Stats")
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   async execute(interaction, client) {
     // Discord server and channel from .env
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
@@ -284,7 +284,7 @@ function getRegistered(users, players) {
           checkedPlayers.push(user["discordId"]);
         }
       });
-      if(isRegistered === false){
+      if (isRegistered === false) {
         checkedPlayers.push(player);
       }
     });
