@@ -19,7 +19,7 @@ app.get("/", async ({ query }, response) => {
 });
 
 app.get("/invite", async ({query}, response) =>{
-  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman.app&scope=applications.commands");
+  return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&scope=applications.commands");
 
 });
 
