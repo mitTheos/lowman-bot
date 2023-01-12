@@ -47,7 +47,8 @@ module.exports = {
         // update message. Command has been completed!
         await interaction.editReply({
           content: `Announcement posted!`
-        }).then(console.log("Announcement posted!"));
+        });
+        console.log("Announcement posted!");
       });
     });
   }
