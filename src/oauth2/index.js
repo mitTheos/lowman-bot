@@ -11,7 +11,7 @@ const { response } = require("express");
 const assign = require("../commands/commands/assignRoles")
 const { getPlayer, addRoles } = require("../functions/helpers/assignRolesHelper");
 const { Client, GatewayIntentBits } = require("discord.js");
-const { GUILD_ID } = process.env;
+const { GUILD_ID, TOKEN } = process.env;
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
@@ -108,6 +108,7 @@ app.get("/bungie/", async ({ query }, response) => {
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
         const client = new Client({intents: GatewayIntentBits.Guilds});
+        await client.login(TOKEN);
         const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 
         getPlayer(d2MembershipId, async (player) => {
