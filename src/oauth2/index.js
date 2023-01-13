@@ -2,17 +2,14 @@ require('dotenv').config();
 const { request } = require("undici");
 const express = require("express");
 const User = require("../schemas/user");
-const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY } = process.env;
-const https = require("https");
+const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY, GUILD_ID, TOKEN } = process.env;
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
-const { response } = require("express");
-const assign = require("../commands/commands/assignRoles")
 const { getPlayer, addRoles } = require("../functions/helpers/assignRolesHelper");
 const { Client, GatewayIntentBits } = require("discord.js");
-const { GUILD_ID, TOKEN } = process.env;
 
+const client = new Client({intents: GatewayIntentBits.Guilds});
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
@@ -107,8 +104,6 @@ app.get("/bungie/", async ({ query }, response) => {
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
-        const client = new Client({intents: GatewayIntentBits.Guilds});
-        await client.login(TOKEN);
         const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 
         getPlayer(d2MembershipId, async (player) => {
@@ -128,3 +123,4 @@ app.get("/bungie/", async ({ query }, response) => {
 });
 
 app.listen(PORT, () => console.log(`Server started at https://lowman.app/`));
+client.login(TOKEN);
