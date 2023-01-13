@@ -26,17 +26,25 @@ module.exports = {
     getData(async (users) => {
       console.log("db data received, calculating roles...");
 
+      let userCounter = 1;
       for (const user of users) {
         getPlayer(user["d2MembershipId"], async (player) => {
           const member = await guild.members.fetch(user["discordId"]);
           await addRoles(member, player, guild);
+
+          // check if this was the last user to assign roles to
+          if (userCounter === users.length) {
+            await interaction.editReply({
+              content: `Roles assigned!`
+            });
+            console.log("Roles assigned!");
+          } else {
+            userCounter++;
+          }
         });
       }
     });
-    await interaction.editReply({
-      content: `Roles assigned!`
-    });
-    console.log("Roles assigned!");
+
   }
 };
 
@@ -53,7 +61,7 @@ getData = (callback) => {
 
 // get the Player with the membershipId
 const getPlayer = (membershipId, callback) => {
-  console.log(`adding roles for: ${membershipId}`);
+  console.log(`adding roles for ${membershipId}`);
   getLowmans(membershipId, (lowmanArray) => {
     callback(new Player(membershipId, lowmanArray));
   });
@@ -73,7 +81,9 @@ const getLowmans = (membershipId, callback) => {
         if (flawlesses != null) {
           for (const flawless of flawlesses) {
             if (flawless["accountCount"] <= 3) {
-              lowmanArray.push(new Lowman(flawless["instanceId"], flawless["accountCount"], true, activity["activityHash"]));
+              if (flawless["fresh"] === true) {
+                lowmanArray.push(new Lowman(flawless["instanceId"], flawless["accountCount"], true, activity["activityHash"]));
+              }
             }
           }
         }
@@ -96,16 +106,20 @@ async function addRoles(member, player, guild) {
   const kfTrio = await guild.roles.fetch(`1063101506917765191`);
   const kfTrioF = await guild.roles.fetch(`1063101543575978074`);
   const kfDuo = await guild.roles.fetch(`1063101578623582270`);
+  const kfTrioMF = await guild.roles.fetch(`1063375357689995315`);
 
   //vow
   const vowTrio = await guild.roles.fetch(`1063101620889604267`);
   const vowTrioF = await guild.roles.fetch(`1063101662794883132`);
+  const vowTrioMF = await guild.roles.fetch(`1063375418947797002`);
 
   //Vog
   const vogTrio = await guild.roles.fetch(`1063056843594805278`);
   const vogTrioF = await guild.roles.fetch(`1063056885080657993`);
   const vogDuo = await guild.roles.fetch(`1063056947189911602`);
   const vogDuoF = await guild.roles.fetch(`1063056975325315102`);
+  const vogTrioMF = await guild.roles.fetch(`1063375456683962428`);
+  const vogDuoMF = await guild.roles.fetch(`1063375498987700274`);
 
   //dsc
   const dscTrio = await guild.roles.fetch(`1063101719250215013`);
@@ -125,41 +139,56 @@ async function addRoles(member, player, guild) {
 
 
   //kf
-  if (player.kf.flawCount === 3) {
-    member.roles.add(kfTrioF);
-  }
-  if (player.kf.normCount < player.kf.flawCount || player.kf.flawCount === undefined) {
+  if (player.kfMaster.flawCount === 3) {
+    member.roles.add(kfTrioMF);
+
     if (player.kf.normCount === 2) {
       member.roles.add(kfDuo);
-    } else if (player.kf.normCount === 3) {
-      member.roles.add(kfTrio);
     }
+  } else if (player.kf.flawCount === 3) {
+    member.roles.add(kfTrioF);
+
+    if (player.kf.normCount === 2) {
+      member.roles.add(kfDuo);
+    }
+  } else if (player.kf.normCount === 2) {
+    member.roles.add(kfDuo);
+  } else if (player.kf.normCount === 3) {
+    member.roles.add(kfTrio);
   }
 
   //vow
-  if (player.vow.flawCount === 3) {
+  if (player.vowMaster.flawCount === 3) {
+    member.roles.add(vowTrioMF);
+  } else if (player.vow.flawCount === 3) {
     member.roles.add(vowTrioF);
+  } else if (player.vow.normCount === 3) {
+    member.roles.add(vowTrio);
   }
-  if (player.vow.flawCount === undefined) {
-    if (player.vow.normCount === 3) {
-      member.roles.add(vowTrio);
-    }
-  }
-
   //vog
-  if (player.vog.flawCount === 2) {
+  if (player.vogMaster.flawCount === 2) {
+    member.roles.add(vogDuoMF);
+  } else if (player.vogMaster === 3) {
+    member.roles.add(vogTrioMF);
+
+    if (player.vog.flawless === 2) {
+      member.roles.add(vogDuoF);
+    } else if (player.vog.normCount === 2) {
+      member.roles.add(vogDuo);
+    }
+  } else if (player.vog.flawCount === 2) {
     member.roles.add(vogDuoF);
   } else if (player.vog.flawCount === 3) {
     member.roles.add(vogTrioF);
-  }
-  if (player.vog.normCount < player.vog.flawCount || player.vog.flawCount === undefined) {
+
     if (player.vog.normCount === 2) {
       member.roles.add(vogDuo);
-    } else if (player.vog.normCount === 3) {
-      member.roles.add(vogTrio);
     }
+  } else if (player.vog.normCount === 2) {
+    member.roles.add(vogDuo);
+  } else if (player.vog.normCount === 3) {
+    member.roles.add(vogTrio);
   }
-
   //dsc
   if (player.dsc.flawCount === 2) {
     member.roles.add(dscDuoF);
@@ -173,7 +202,6 @@ async function addRoles(member, player, guild) {
       member.roles.add(dscTrio);
     }
   }
-
   //gos
   if (player.gos.flawCount === 3) {
     member.roles.add(gosTrioF);
@@ -185,7 +213,6 @@ async function addRoles(member, player, guild) {
       member.roles.add(gosTrio);
     }
   }
-
   //lw
   if (player.lw.flawCount === 3) {
     member.roles.add(lwTrioF);
@@ -218,8 +245,11 @@ class Lowman {
 class Player {
   membershipId;
   kf;
+  kfMaster;
   vow;
+  vowMaster;
   vog;
+  vogMaster;
   dsc;
   gos;
   lw;
@@ -227,8 +257,11 @@ class Player {
   constructor(membershipId, lowmans) {
     this.membershipId = membershipId;
     this.kf = new Raid();
+    this.kfMaster = new Raid();
     this.vow = new Raid();
+    this.vowMaster = new Raid();
     this.vog = new Raid();
+    this.vogMaster = new Raid();
     this.dsc = new Raid();
     this.gos = new Raid();
     this.lw = new Raid();
@@ -246,6 +279,17 @@ class Player {
             }
           }
         }
+        // kf Master
+        if (lowman.raid === 2964135793) {
+          if (this.kfMaster.normCount > lowman.playerCount || this.kfMaster.normCount === undefined) {
+            this.kfMaster.normCount = lowman.playerCount;
+          }
+          if (lowman.flawless === true) {
+            if (this.kfMaster.flawCount > lowman.playerCount || this.kfMaster.flawCount === undefined) {
+              this.kfMaster.flawCount = lowman.playerCount;
+            }
+          }
+        }
         // vow
         else if (lowman.raid === 1441982566) {
           if (this.vow.normCount > lowman.playerCount || this.vow.normCount === undefined) {
@@ -257,6 +301,17 @@ class Player {
             }
           }
         }
+        // vow Master
+        else if (lowman.raid === 4217492330) {
+          if (this.vowMaster.normCount > lowman.playerCount || this.vowMaster.normCount === undefined) {
+            this.vowMaster.normCount = lowman.playerCount;
+          }
+          if (lowman.flawless === true) {
+            if (this.vowMaster.flawCount > lowman.playerCount || this.vowMaster.flawCount === undefined) {
+              this.vowMaster.flawCount = lowman.playerCount;
+            }
+          }
+        }
         // vog
         else if (lowman.raid === 3881495763) {
           if (this.vog.normCount > lowman.playerCount || this.vog.normCount === undefined) {
@@ -265,6 +320,17 @@ class Player {
           if (lowman.flawless === true) {
             if (this.vog.flawCount > lowman.playerCount || this.vog.flawCount === undefined) {
               this.vog.flawCount = lowman.playerCount;
+            }
+          }
+        }
+        // vog Master
+        else if (lowman.raid === 1681562271) {
+          if (this.vogMaster.normCount > lowman.playerCount || this.vogMaster.normCount === undefined) {
+            this.vogMaster.normCount = lowman.playerCount;
+          }
+          if (lowman.flawless === true) {
+            if (this.vogMaster.flawCount > lowman.playerCount || this.vogMaster.flawCount === undefined) {
+              this.vogMaster.flawCount = lowman.playerCount;
             }
           }
         }
