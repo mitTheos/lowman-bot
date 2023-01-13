@@ -107,12 +107,9 @@ app.get("/bungie/", async ({ query }, response) => {
 
         let member;
         client.guilds.fetch(GUILD_ID).catch(console.error).then(async (guild) => {
-          console.log(guild)
           member = await guild.members.fetch(discordId);
-          console.log(member)
           getPlayer(d2MembershipId, async (player) => {
             await addRoles(member, player, guild);
-            console.log("roles assigned!")
           });
         })
       }
