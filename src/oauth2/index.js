@@ -9,6 +9,8 @@ const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 const { response } = require("express");
 const assign = require("../commands/commands/assignRoles")
+const { getPlayer, addRoles } = require("../functions/helpers/assignRolesHelper");
+const { GUILD_ID } = process.env;
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
@@ -104,9 +106,14 @@ app.get("/bungie/", async ({ query }, response) => {
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
-        assign(d2MembershipId (callback =>{
+        const client = new Client()
+        const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 
-        }))
+        getPlayer(d2MembershipId, async (player) => {
+          const member = await guild.members.fetch(discordId);
+          await addRoles(member, player, guild);
+          console.log("roles assigned!")
+        });
       }
 
     } catch (error) {
