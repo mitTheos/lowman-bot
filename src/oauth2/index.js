@@ -10,6 +10,7 @@ const { connect } = require("mongoose");
 const { response } = require("express");
 const assign = require("../commands/commands/assignRoles")
 const { getPlayer, addRoles } = require("../functions/helpers/assignRolesHelper");
+const { Client, GatewayIntentBits } = require("discord.js");
 const { GUILD_ID } = process.env;
 
 const app = express();
@@ -106,7 +107,7 @@ app.get("/bungie/", async ({ query }, response) => {
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
-        const client = new Client()
+        const client = new Client({intents: GatewayIntentBits.Guilds});
         const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 
         getPlayer(d2MembershipId, async (player) => {
