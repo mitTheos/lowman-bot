@@ -6,8 +6,7 @@ const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
-const { getPlayer, addRoles } = require("../functions/helpers/assignRolesHelper");
-const { Client, GatewayIntentBits } = require("discord.js");
+const { getPlayer, addRoles } = require("../functions/helpers/updateRolesHelper");
 const { client } = require("../bot");
 
 const app = express();

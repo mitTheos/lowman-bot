@@ -1,13 +1,13 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
 const { GUILD_ID } = process.env;
-const { addRoles, getPlayer } = require("../../functions/helpers/assignRolesHelper");
+const { addRoles, getPlayer } = require("../../functions/helpers/updateRolesHelper");
 const { getData } = require("../../functions/helpers/db");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("assign-roles")
-    .setDescription("Assign Lowman Roles based on lowman clears")
+    .setName("update-roles")
+    .setDescription("Update roles")
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   async execute(interaction, client) {
@@ -17,13 +17,13 @@ module.exports = {
 
 
     // loading message
-    console.log("===Assign Roles===");
+    console.log("===Update Roles===");
     await interaction.deferReply({
       fetchReply: true
     });
 
     // processing command
-    console.log("getting data for assignment...");
+    console.log("getting data for update...");
     getData(async (users) => {
       console.log("db data received, calculating roles...");
 
@@ -33,12 +33,12 @@ module.exports = {
           const member = await guild.members.fetch(user["discordId"]);
           await addRoles(member, player, guild);
 
-          // check if this was the last user to assign roles to
+          // check if this was the last user to update roles to
           if (userCounter === users.length) {
             await interaction.editReply({
-              content: `Roles assigned!`
+              content: `Roles updated!`
             });
-            console.log("Roles assigned!");
+            console.log("Roles updated!");
           } else {
             userCounter++;
           }
