@@ -14,7 +14,6 @@ const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
-const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 console.log(guild);
 
 app.get("/", async ({ query }, response) => {
@@ -107,12 +106,18 @@ app.get("/bungie/", async ({ query }, response) => {
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
 
+        let member;
+        client.guilds.fetch(GUILD_ID).catch(console.error).then(async (guild) => {
+          console.log(guild)
+          member = await guild.members.fetch(discordId);
+          console.log(member)
+          getPlayer(d2MembershipId, async (player) => {
+            await addRoles(member, player, guild);
+            console.log("roles assigned!")
+          });
+        })
 
-        getPlayer(d2MembershipId, async (player) => {
-          const member = await guild.members.fetch(discordId);
-          await addRoles(member, player, guild);
-          console.log("roles assigned!")
-        });
+
       }
 
     } catch (error) {
