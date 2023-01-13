@@ -15,6 +15,7 @@ module.exports = {
     // get Guild
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 
+
     // loading message
     console.log("===Assign Roles===");
     await interaction.deferReply({

@@ -14,6 +14,8 @@ const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
+const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
+console.log(guild);
 
 app.get("/", async ({ query }, response) => {
   return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman.app%2Fdiscord&response_type=code&scope=identify%20guilds%20role_connections.write");
@@ -104,7 +106,7 @@ app.get("/bungie/", async ({ query }, response) => {
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
-        const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
+
 
         getPlayer(d2MembershipId, async (player) => {
           const member = await guild.members.fetch(discordId);
