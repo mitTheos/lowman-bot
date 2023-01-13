@@ -14,7 +14,7 @@ for (const folder of functionFolders) {
     for (const file of functionFiles)
         require(`./functions/handlers/${file}`)(client);
 }
-require(`/src/oauth2/index,js`)(client);
+exports.client = client;
 
 client.handleEvents();
 client.handleCommands();

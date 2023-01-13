@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 const { getPlayer, addRoles } = require("../functions/helpers/assignRolesHelper");
 const { Client, GatewayIntentBits } = require("discord.js");
+const { client } = require("../bot");
 
-const client = new Client({intents: GatewayIntentBits.Guilds});
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
@@ -123,4 +123,3 @@ app.get("/bungie/", async ({ query }, response) => {
 });
 
 app.listen(PORT, () => console.log(`Server started at https://lowman.app/`));
-client.login(TOKEN);
