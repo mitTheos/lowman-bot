@@ -14,11 +14,11 @@ for (const folder of functionFolders) {
     for (const file of functionFiles)
         require(`./functions/handlers/${file}`)(client);
 }
-exports.client = client;
 
 client.handleEvents();
 client.handleCommands();
 client.login(TOKEN);
+exports.client = client;
 connect(DATABASE_TOKEN).catch(console.error);
 
 

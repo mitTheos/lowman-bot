@@ -123,4 +123,3 @@ app.get("/bungie/", async ({ query }, response) => {
 });
 
 app.listen(PORT, () => console.log(`Server started at https://lowman.app/`));
-client.login(TOKEN);
