@@ -8,6 +8,7 @@ const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 const { response } = require("express");
+const assign = require("../commands/commands/assignRoles")
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
@@ -102,6 +103,10 @@ app.get("/bungie/", async ({ query }, response) => {
         });
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
+
+        assign(d2MembershipId (callback =>{
+
+        }))
       }
 
     } catch (error) {
