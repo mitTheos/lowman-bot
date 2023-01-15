@@ -146,7 +146,7 @@ async function getInstanceInfo(instance, hashcodeMap) {
 // create the embed for speed acknowledgement
 function createEmbed(raid, time, img) {
   return new EmbedBuilder({
-    title: `Fastest ${raid}`, description: `Fastest lowman ${raid} last month`, color: 0x00FFFF, fields: [{
+    title: `Fastest ${raid}`, description: `Fastest lowman ${raid} last month`, color: 0xfa5c04, fields: [{
       name: convertTime(time), value: "\u200B"
     }], image: {
       url: `${img}`, height: 0, width: 0
@@ -224,7 +224,7 @@ exports.createPlayersMessage = function createPlayersMessage(users, bestPlayer, 
         {
           title: `Players played with`,
           description: `Amount of unique players played with last month`,
-          color: 0x00FFFF,
+          color: 0xfa5c04,
           fields: [
             {
               name: `Players: `,
