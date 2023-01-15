@@ -40,6 +40,7 @@ module.exports = {
         name: "Authorize your Discord and Bungie account to register",
         value:`*You may also register multiple Bungie accounts to one Discord account if you wish to do so*`
       })
+        .setColor(0xfa5c04)
       .setFooter({
         text: "https://lowman.app"
       })

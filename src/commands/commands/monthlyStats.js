@@ -36,7 +36,7 @@ module.exports = {
 
       const embed = new EmbedBuilder()
         .setTitle("Players you've played with this month")
-        .setColor(0x18e1ee)
+        .setColor(0xfa5c04)
         .addFields([
           {
             name: "Players",
@@ -45,7 +45,7 @@ module.exports = {
         ]);
       const embed2 = new EmbedBuilder()
         .setTitle("Fastest lowmans this month")
-        .setColor(0x18e1ee)
+        .setColor(0xfa5c04)
         .addFields([
           {
             name: "KF",
