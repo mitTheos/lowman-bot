@@ -37,7 +37,7 @@ module.exports = {
           createRaidMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation", "https://i.imgur.com/q5MFHiF.jpg"),
           createRaidMessage(users, best.vow.players, best.vow.activityTime, "Vow of the disciple", "https://i.imgur.com/PJYwWJg.jpg"),
           createRaidMessage(users, best.kf.players, best.kf.activityTime, "King's Fall", "https://i.imgur.com/OyLU8Oy.jpg"),
-          createRaidMessage(users, best.vog.players, best.vog.activityTime, "Vault of Glass", "https://i.imgur.com/YWxkqZx.jpg"),
+          createRaidMessage(users, best.vog.players, best.vog.activityTime, "Vault of Glass", "https://i.imgur.com/dMcnYnq.png"),
           createRaidMessage(users, best.dsc.players, best.dsc.activityTime, "Deep Stone Crypt", "https://i.imgur.com/0dVwJJd.png")
         ];
 

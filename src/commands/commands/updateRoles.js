@@ -33,6 +33,8 @@ module.exports = {
           const member = await guild.members.fetch(user["discordId"]);
           await addRoles(member, player, guild);
 
+          console.log(await member.roles.cache);
+
           // check if this was the last user to update roles to
           if (userCounter === users.length) {
             await interaction.editReply({
