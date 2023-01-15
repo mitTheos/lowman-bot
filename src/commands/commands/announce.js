@@ -33,12 +33,12 @@ module.exports = {
         // create messages
         const messageArray = [
           createPlayersMessage(users, best.playedUsersCountMonthly[1], best.playedUsersCountMonthly[0]),
-          createRaidMessage(users, best.lw.players, best.lw.activityTime, "Last Wish", "https://imgur.com/Vs3CemK.png"),
-          createRaidMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation", "https://i.imgur.com/q5MFHiF.jpg"),
-          createRaidMessage(users, best.vow.players, best.vow.activityTime, "Vow of the disciple", "https://i.imgur.com/PJYwWJg.jpg"),
-          createRaidMessage(users, best.kf.players, best.kf.activityTime, "King's Fall", "https://i.imgur.com/OyLU8Oy.jpg"),
+          createRaidMessage(users, best.kf.players, best.kf.activityTime, "King's Fall", "https://i.imgur.com/ShWT8Nq.png"),
+          createRaidMessage(users, best.vow.players, best.vow.activityTime, "Vow of the disciple", "https://i.imgur.com/MSwQTW1.png"),
           createRaidMessage(users, best.vog.players, best.vog.activityTime, "Vault of Glass", "https://i.imgur.com/dMcnYnq.png"),
-          createRaidMessage(users, best.dsc.players, best.dsc.activityTime, "Deep Stone Crypt", "https://i.imgur.com/0dVwJJd.png")
+          createRaidMessage(users, best.dsc.players, best.dsc.activityTime, "Deep Stone Crypt", "https://i.imgur.com/0dVwJJd.png"),
+          createRaidMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation", "https://i.imgur.com/EBfhOzf.png"),
+          createRaidMessage(users, best.lw.players, best.lw.activityTime, "Last Wish", "https://imgur.com/Vs3CemK.png")
         ];
 
         // send messages
