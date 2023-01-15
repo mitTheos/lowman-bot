@@ -179,7 +179,7 @@ exports.addRoles = async function addRoles(member, player, guild) {
 
     }
     if (player.lw.normCount < player.lw.flawCount || player.lw.flawCount === undefined) {
-        if (player.lw.flawCount === 1) {
+        if (player.lw.normCount === 1) {
             member.roles.add(lwSolo)
         } else if (player.lw.normCount === 2) {
             member.roles.add(lwDuo);
