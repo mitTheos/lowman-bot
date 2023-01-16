@@ -36,8 +36,8 @@ module.exports = {
     await interaction.deferReply({
       fetchReply: true
     });
-    console.log(interaction.value);
 
+    console.log(interaction.options.get("raid"))
     // processing command message
     console.log("getting data for announcement...");
     getData(async (users) => {
