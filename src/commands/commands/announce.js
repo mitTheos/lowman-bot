@@ -12,7 +12,18 @@ module.exports = {
     .setName("announce")
     .setDescription("Announce monthly Stats")
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .addStringOption(option =>
+    option.setName("Raid").setRequired(false)
+      .addChoices([{
+        name: "kf",
+        description: "King's Fall"
+      },
+        {
+          name: "vow",
+          description: "Vow of the Disciple"
+        }])),
+
   async execute(interaction, client) {
     // Discord server and channel from .env
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
