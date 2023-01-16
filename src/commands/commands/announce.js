@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, ApplicationCommandOptionBase } = require("discord.js");
 const bungieAPI = require("../../api/bungieAPI");
 const raidReportAPI = require("../../api/raidReportAPI");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
@@ -15,14 +15,7 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addStringOption(option =>
     option.setName("Raid").setRequired(false)
-      .addChoices([{
-        name: "kf",
-        description: "King's Fall"
-      },
-        {
-          name: "vow",
-          description: "Vow of the Disciple"
-        }])),
+      .addChoices({name: "kf", value: 1})),
 
   async execute(interaction, client) {
     // Discord server and channel from .env
