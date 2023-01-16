@@ -14,8 +14,8 @@ module.exports = {
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addStringOption(option =>
-    option.setName("Raid").setRequired(false)
-      .addChoices({name: "kf", value: 1})),
+    option.setName("Raid").setDescription("Specify a raid").setRequired(false)
+      .addChoices({name: "King's Fall", value: "kf"})),
 
   async execute(interaction, client) {
     // Discord server and channel from .env
