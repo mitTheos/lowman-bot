@@ -18,7 +18,12 @@ module.exports = {
       .setDescription("Specify a raid")
       .setRequired(false)
       .addChoices(
-        {name: "King's Fall", value: "kf"}
+        {name: "King's Fall", value: "kf"},
+        {name: "Vow of the Disciple", value: "vow"},
+        {name: "Vault of Glass", value: "vog"},
+        {name: "Deep Stone Crypt", value: "dsc"},
+        {name: "Garden of Salvation", value: "gos"},
+        {name: "Last Wish", value: "lw"},
       )),
 
   async execute(interaction, client) {
