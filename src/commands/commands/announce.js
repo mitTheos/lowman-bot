@@ -36,6 +36,7 @@ module.exports = {
     await interaction.deferReply({
       fetchReply: true
     });
+    console.log(interaction.value);
 
     // processing command message
     console.log("getting data for announcement...");
