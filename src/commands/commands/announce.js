@@ -18,7 +18,7 @@ module.exports = {
       .setDescription("Specify a raid")
       .setRequired(false)
       .addChoices(
-        {name: "King", value: "kf"}
+        {name: "King's Fall", value: "kf"}
       )),
 
   async execute(interaction, client) {
