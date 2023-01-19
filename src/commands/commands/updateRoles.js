@@ -9,7 +9,9 @@ module.exports = {
     .setName("update-roles")
     .setDescription("Update roles")
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .addUserOption(option =>
+      option.setName("user").setDescription("update roles of specified user").setRequired(false)),
   async execute(interaction, client) {
 
     // get Guild
@@ -31,11 +33,13 @@ module.exports = {
       for (const user of users) {
         getPlayer(user["d2MembershipId"], async (player) => {
           const member = await guild.members.fetch(user["discordId"]);
-          await addRoles(member, player, guild);
+          if(interaction.options.get("user") === null){
+            await addRoles(member, player, guild);
+          } else if(interaction.options.get("user").value === user["discordId"]){
+            await addRoles(member, player, guild);
+          }
 
-          //console.log(await member.roles.cache);
-
-          // check if this was the last user to update roles to
+          // check if this was the last user to update roles for
           if (userCounter === users.length) {
             await interaction.editReply({
               content: `Roles updated!`
