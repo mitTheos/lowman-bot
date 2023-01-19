@@ -18,7 +18,7 @@ module.exports = {
         .setRequired(true)
     )
     .setDMPermission(false)
-  .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   async execute(interaction, client) {
 
     const username = interaction.options.get("username").value;
@@ -81,7 +81,7 @@ module.exports = {
 
       await interaction.editReply({
         embeds: [embed, embed2]
-      }).then(console.log("Monthly Stats posted!"));
+      }).then(() => console.log("Monthly Stats posted!"));
     });
   }
 };
