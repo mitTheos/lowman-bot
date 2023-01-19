@@ -18,7 +18,7 @@ module.exports = {
     const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
 
     // loading message
-    console.log("===Update Roles===");
+    console.log("===Clear Roles===");
     await interaction.deferReply({
       fetchReply: true
     });
@@ -38,9 +38,7 @@ module.exports = {
             await clearRoles(member, player, guild);
           }
 
-          //console.log(await member.roles.cache);
-
-          // check if this was the last user to update roles to
+          // check if this was the last user to clear roles for
           if (userCounter === users.length) {
             await interaction.editReply({
               content: `Roles cleared!`
