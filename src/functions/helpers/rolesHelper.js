@@ -388,3 +388,131 @@ class Raid {
     this.flawCount = flawCount;
   }
 }
+
+class Roles {
+  legendF;
+  masterF;
+  kfTrio;
+  kfTrioF;
+  kfDuo;
+  kfTrioMF;
+  vowTrio;
+  vowTrioF;
+  vowTrioMF;
+  vogTrio;
+  vogTrioF;
+  vogDuo;
+  vogDuoF;
+  vogTrioMF;
+  vogDuoMF;
+  vogSolo;
+  dscTrio;
+  dscTrioF;
+  dscDuo;
+  dscDuoF;
+  gosTrio;
+  gosTrioF;
+  gosDuo;
+  lwTrio;
+  lwTrioF;
+  lwDuo;
+  lwSolo;
+  eowSolo;
+
+
+  constructor(legendF, masterF, kfTrio, kfTrioF, kfDuo, kfTrioMF, vowTrio, vowTrioF, vowTrioMF, vogTrio, vogTrioF, vogDuo, vogDuoF, vogTrioMF, vogDuoMF, vogSolo, dscTrio, dscTrioF, dscDuo, dscDuoF, gosTrio, gosTrioF, gosDuo, lwTrio, lwTrioF, lwDuo, lwSolo, eowSolo) {
+    this.legendF = legendF;
+    this.masterF = masterF;
+    this.kfTrio = kfTrio;
+    this.kfTrioF = kfTrioF;
+    this.kfDuo = kfDuo;
+    this.kfTrioMF = kfTrioMF;
+    this.vowTrio = vowTrio;
+    this.vowTrioF = vowTrioF;
+    this.vowTrioMF = vowTrioMF;
+    this.vogTrio = vogTrio;
+    this.vogTrioF = vogTrioF;
+    this.vogDuo = vogDuo;
+    this.vogDuoF = vogDuoF;
+    this.vogTrioMF = vogTrioMF;
+    this.vogDuoMF = vogDuoMF;
+    this.vogSolo = vogSolo;
+    this.dscTrio = dscTrio;
+    this.dscTrioF = dscTrioF;
+    this.dscDuo = dscDuo;
+    this.dscDuoF = dscDuoF;
+    this.gosTrio = gosTrio;
+    this.gosTrioF = gosTrioF;
+    this.gosDuo = gosDuo;
+    this.lwTrio = lwTrio;
+    this.lwTrioF = lwTrioF;
+    this.lwDuo = lwDuo;
+    this.lwSolo = lwSolo;
+    this.eowSolo = eowSolo;
+  }
+
+  async getRoles(guild) {
+    return new Roles(
+      await guild.roles.fetch(legendF_id),
+      await guild.roles.fetch(masterF_id),
+      await guild.roles.fetch(kfTrio_id),
+      await guild.roles.fetch(kfTrioF_id),
+      await guild.roles.fetch(kfDuo_id),
+      await guild.roles.fetch(kfTrioMF_id),
+      await guild.roles.fetch(vowTrio_id),
+      await guild.roles.fetch(vowTrioF_id),
+      await guild.roles.fetch(vowTrioMF_id),
+      await guild.roles.fetch(vogTrio_id),
+      await guild.roles.fetch(vogTrioF_id),
+      await guild.roles.fetch(vogDuo_id),
+      await guild.roles.fetch(vogDuoF_id),
+      await guild.roles.fetch(vogTrioMF_id),
+      await guild.roles.fetch(vogDuoMF_id),
+      await guild.roles.fetch(vogSolo_id),
+      await guild.roles.fetch(dscTrio_id),
+      await guild.roles.fetch(dscTrioF_id),
+      await guild.roles.fetch(dscDuo_id),
+      await guild.roles.fetch(dscDuoF_id),
+      await guild.roles.fetch(gosTrio_id),
+      await guild.roles.fetch(gosTrioF_id),
+      await guild.roles.fetch(gosDuo_id),
+      await guild.roles.fetch(lwTrio_id),
+      await guild.roles.fetch(lwTrioF_id),
+      await guild.roles.fetch(lwDuo_id),
+      await guild.roles.fetch(lwSolo_id),
+      await guild.roles.fetch(eowSolo_id)
+    );
+  }
+
+  getArray() {
+    return [
+      this.legendF,
+      this.masterF,
+      this.kfTrio,
+      this.kfTrioF,
+      this.kfDuo,
+      this.kfTrioMF,
+      this.vowTrio,
+      this.vowTrioF,
+      this.vowTrioMF,
+      this.vogTrio,
+      this.vogTrioF,
+      this.vogDuo,
+      this.vogDuoF,
+      this.vogTrioMF,
+      this.vogDuoMF,
+      this.vogSolo,
+      this.dscTrio,
+      this.dscTrioF,
+      this.dscDuo,
+      this.dscDuoF,
+      this.gosTrio,
+      this.gosTrioF,
+      this.gosDuo,
+      this.lwTrio,
+      this.lwTrioF,
+      this.lwDuo,
+      this.lwSolo,
+      this.eowSolo
+    ];
+}
