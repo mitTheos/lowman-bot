@@ -40,7 +40,6 @@ const getLowmans = (membershipId, callback) => {
 };
 
 exports.getPlayer = (membershipId, callback) => {
-  console.log(`changing roles for ${membershipId}`);
   getLowmans(membershipId, (lowmanArray) => {
     callback(new Player(membershipId, lowmanArray));
   });
