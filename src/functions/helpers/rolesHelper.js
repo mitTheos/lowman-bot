@@ -211,6 +211,20 @@ exports.addRoles = async function addRoles(member, player, guild) {
   console.log(`finished adding Roles for ${player.membershipId}`);
 };
 
+exports.clearRoles = async function clearRoles(member, player, guild) {
+  const roleInit = new Roles();
+  const roles = await roleInit.getRoles(guild);
+  const roleArray = roles.getArray();
+  
+  //remove all roles
+  let promiseArray = [];
+  for (const role of roleArray) {
+    promiseArray.push(member.roles.remove(role).catch(console.error));
+  }
+  await Promise.all(promiseArray);
+  console.log(`finished removing Roles for ${player.membershipId}`);
+};
+
 class Lowman {
   instance;
   playerCount;
