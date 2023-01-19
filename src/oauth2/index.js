@@ -2,7 +2,7 @@ require('dotenv').config();
 const { request } = require("undici");
 const express = require("express");
 const User = require("../schemas/user");
-const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY, GUILD_ID, TOKEN } = process.env;
+const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY, GUILD_ID } = process.env;
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
