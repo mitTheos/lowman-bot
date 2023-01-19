@@ -9,7 +9,9 @@ module.exports = {
     .setName("clear-roles")
     .setDescription("Removes all lowman roles")
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .addUserOption(option =>
+      option.setName("user").setDescription("clear roles of specified user").setRequired(false)),
   async execute(interaction, client) {
 
     // get Guild
@@ -30,7 +32,11 @@ module.exports = {
       for (const user of users) {
         getPlayer(user["d2MembershipId"], async (player) => {
           const member = await guild.members.fetch(user["discordId"]);
-          await clearRoles(member, player, guild);
+          if(interaction.options.get("user") === null){
+            await clearRoles(member, player, guild);
+          } else if(interaction.options.get("user").value === user["discordId"]){
+            await clearRoles(member, player, guild);
+          }
 
           //console.log(await member.roles.cache);
 
