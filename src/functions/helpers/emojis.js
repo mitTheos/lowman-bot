@@ -1,3 +1,6 @@
+exports.botEmoji_name = "lowmanBot";
+exports.botEmoji_id = "1065969775622225920"
+
 exports.kfEmoji_name = "kf";
 exports.kfEmoji_id = "1065892579121561671";
 exports.gosEmoji_name = "gos";

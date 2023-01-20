@@ -1,7 +1,4 @@
-require("../../api/bungieAPI.js");
-require("../../api/raidReportAPI.js");
-const { SlashCommandBuilder, EmbedBuilder, ComponentBuilder, ButtonBuilder, ActionRowBuilder } = require("discord.js");
-const { ButtonStyle } = require("discord-api-types/v10");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,40 +12,22 @@ module.exports = {
       fetchReply: true
     });
 
-    const button = {
-      label: "Register",
-      url: "https://lowman.app",
-      emoji: {
-        id: null,
-        name: `💀`
-      }
-    };
-
-    const row = new ActionRowBuilder()
-      .addComponents(
-        new ButtonBuilder()
-          .setLabel(`Register`)
-          .setStyle(ButtonStyle.Link)
-          .setEmoji(`💀`)
-          .setURL(`https://lowman.app`)
-      )
-
     const embed = new EmbedBuilder()
       .setTitle("Lowman Bot registration")
-      .setThumbnail("https://i.imgur.com/nnDl6aZ.jpeg")
+      .setThumbnail("https://i.imgur.com/JbfJeom.png")
       .addFields({
         name: "Authorize your Discord and Bungie account to register",
-        value:`*You may also register multiple Bungie accounts to one Discord account if you wish to do so*`
+        value: `*You may also register multiple Bungie accounts to one Discord account if you wish to do so*`
       })
-        .setColor(0xfa5c04)
+      .setColor(0xfa5c04)
       .setFooter({
-        text: "https://lowman.app"
+        text: `lowman.app`,
+        iconURL: `https://i.imgur.com/JbfJeom.png`
       })
       .setURL(`https://lowman.app`);
 
     await interaction.editReply({
-      components: [row],
       embeds: [embed]
-    }).then(console.log("Registration message posted!"));
+    }).then(() => console.log("Registration message posted!"));
   }
 };

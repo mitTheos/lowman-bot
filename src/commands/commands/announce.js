@@ -4,7 +4,7 @@ const { getData } = require("../../functions/helpers/db");
 const { getBest, createRaidMessage, createPlayersMessage } = require("../../functions/helpers/announceHelper");
 const { kfEmoji_id, wishEmoji_id, kfEmoji_name, vowEmoji_id, vowEmoji_name, vogEmoji_name, vogEmoji_id, dscEmoji_name, dscEmoji_id, gosEmoji_name, gosEmoji_id,
   wishEmoji_name
-} = require("../../functions/helpers/raidEmojis");
+} = require("../../functions/helpers/emojis");
 const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
