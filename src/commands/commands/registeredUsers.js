@@ -22,7 +22,7 @@ module.exports = {
 
       await interaction.editReply({
         embeds: [embed]
-      }).then(console.log("Registered users posted!"));
+      }).then(()=>console.log("Registered users posted!"));
     });
   }
 };
