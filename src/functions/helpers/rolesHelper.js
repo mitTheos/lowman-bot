@@ -3,7 +3,7 @@ const {
   legendF_id, masterF_id, kfTrio_id, kfTrioF_id, kfDuo_id, kfTrioMF_id, vowTrio_id, vowTrioF_id, vowTrioMF_id, vogTrio_id, vogTrioF_id, vogDuo_id, vogDuoF_id,
   vogTrioMF_id, vogDuoMF_id, vogSolo_id, dscTrio_id, dscTrioF_id, dscDuo_id, dscDuoF_id, gosTrio_id, gosTrioF_id, gosDuo_id, lwTrio_id, lwTrioF_id, lwDuo_id, lwSolo_id,
   eowSolo_id
-} = require("./roles");
+} = require("../../config/roles");
 
 //get all lowman instances
 const getLowmans = (membershipId, callback) => {

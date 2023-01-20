@@ -4,7 +4,8 @@ const { getData } = require("../../functions/helpers/db");
 const { getBest, createRaidMessage, createPlayersMessage } = require("../../functions/helpers/announceHelper");
 const { kfEmoji_id, wishEmoji_id, kfEmoji_name, vowEmoji_id, vowEmoji_name, vogEmoji_name, vogEmoji_id, dscEmoji_name, dscEmoji_id, gosEmoji_name, gosEmoji_id,
   wishEmoji_name
-} = require("../../functions/helpers/emojis");
+} = require("../../config/emojis");
+const {guild_id, announce_channel_id} = require("../../config/guild");
 const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
@@ -29,8 +30,8 @@ module.exports = {
 
   async execute(interaction, client) {
     // Discord server and channel from .env
-    const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
-    const channel = await guild.channels.fetch(CHANNEL_ID).catch(console.error);
+    const guild = await client.guilds.fetch(guild_id).catch(console.error);
+    const channel = await guild.channels.fetch(announce_channel_id).catch(console.error);
 
     // loading message
     console.log("===Announcement===");
@@ -47,7 +48,7 @@ module.exports = {
 
         const mentorMessage = createPlayersMessage(best.mentor);
         const kfMessage = createRaidMessage(best.kf.players, best.kf.activityTime, `<:${kfEmoji_name}:${kfEmoji_id}>`, "King's Fall", "https://i.imgur.com/ShWT8Nq.png");
-        const vowMessage = createRaidMessage(best.vow.players, best.vow.activityTime, `<:${vowEmoji_name}:${vowEmoji_id}>`, "Vow of the disciple", "https://i.imgur.com/MSwQTW1.png");
+        const vowMessage = createRaidMessage(best.vow.players, best.vow.activityTime, `<:${vowEmoji_name}:${vowEmoji_id}>`, "Vow of the Disciple", "https://i.imgur.com/MSwQTW1.png");
         const vogMessage = createRaidMessage(best.vog.players, best.vog.activityTime, `<:${vogEmoji_name}:${vogEmoji_id}>`, "Vault of Glass", "https://i.imgur.com/dMcnYnq.png");
         const dscMessage = createRaidMessage(best.dsc.players, best.dsc.activityTime, `<:${dscEmoji_name}:${dscEmoji_id}>`,"Deep Stone Crypt", "https://i.imgur.com/y603L7T.png");
         const gosMessage = createRaidMessage(best.gos.players, best.gos.activityTime, `<:${gosEmoji_name}:${gosEmoji_id}>`, "Garden of Salvation", "https://i.imgur.com/EBfhOzf.png");
