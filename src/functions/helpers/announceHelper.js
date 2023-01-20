@@ -151,11 +151,11 @@ async function getInstanceInfo(id, instance, hashcodeMap) {
 }
 
 // create the embed for speed acknowledgement
-function createEmbed(emoji, raidTitle, date, description, time, img) {
+function createEmbed(emoji, raidTitle, description, time, img) {
 
   return new EmbedBuilder({
-    title: `${emoji} ${raidTitle} - Fastest Lowman of ${date}!`, description: description, color: 0xfa5c04, fields: [{
-      name: convertTime(time), value: "\u200B"
+    title: `${emoji} ${raidTitle} - Fastest Lowman (${getMessageDate()})`, description: description, color: 0xfa5c04, fields: [{
+      name: `Time: ${convertTime(time)}`, value: "\u200B"
     }], image: {
       url: `${img}`, height: 0, width: 0
     }
@@ -183,16 +183,16 @@ exports.createRaidMessage = function createRaidMessage(players, activityTime, em
     description = `Completed by: ${playersFormatted}!`;
   }
 
-  const embed = createEmbed(emoji, raidTitle, getMessageDate(), description, activityTime, img);
+  const embed = createEmbed(emoji, raidTitle, description, activityTime, img);
   return { embeds: [embed] };
 };
 
-// create the message to acknowledge the player that played with the most unique players this month
+// create the message to acknowledge the player that played with the most, unique players this month
 exports.createPlayersMessage = function createPlayersMessage(mentor) {
   return {
     embeds: [
       {
-        title: `Mentor - Most players helped in ${getMessageDate()}!`,
+        title: `Mentor - Most players helped (${getMessageDate()})`,
         description: `Mentor: ${mentor.name}`,
         color: 0xfa5c04,
         fields: [
