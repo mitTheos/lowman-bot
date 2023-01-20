@@ -2,6 +2,9 @@ const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
 const { getData } = require("../../functions/helpers/db");
 const { getBest, createRaidMessage, createPlayersMessage } = require("../../functions/helpers/announceHelper");
+const { kfEmoji_id, wishEmoji_id, kfEmoji_name, vowEmoji_id, vowEmoji_name, vogEmoji_name, vogEmoji_id, dscEmoji_name, dscEmoji_id, gosEmoji_name, gosEmoji_id,
+  wishEmoji_name
+} = require("../../functions/helpers/raidEmojis");
 const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
@@ -42,13 +45,13 @@ module.exports = {
       getBest(users, async (best) => {
         console.log("data for announcement ready!");
 
-        const mentorMessage = createPlayersMessage(users, best.playedUsersCountMonthly[1], best.playedUsersCountMonthly[0]);
-        const kfMessage = createRaidMessage(users, best.kf.players, best.kf.activityTime, "King's Fall", "https://i.imgur.com/ShWT8Nq.png");
-        const vowMessage = createRaidMessage(users, best.vow.players, best.vow.activityTime, "Vow of the disciple", "https://i.imgur.com/MSwQTW1.png");
-        const vogMessage = createRaidMessage(users, best.vog.players, best.vog.activityTime, "Vault of Glass", "https://i.imgur.com/dMcnYnq.png");
-        const dscMessage = createRaidMessage(users, best.dsc.players, best.dsc.activityTime, "Deep Stone Crypt", "https://i.imgur.com/y603L7T.png");
-        const gosMessage = createRaidMessage(users, best.gos.players, best.gos.activityTime, "Garden of Salvation", "https://i.imgur.com/EBfhOzf.png");
-        const lwMessage = createRaidMessage(users, best.lw.players, best.lw.activityTime, "Last Wish", "https://i.imgur.com/FMDARhw.png");
+        const mentorMessage = createPlayersMessage(best.mentor);
+        const kfMessage = createRaidMessage(best.kf.players, best.kf.activityTime, `<:${kfEmoji_name}:${kfEmoji_id}>`, "King's Fall", "https://i.imgur.com/ShWT8Nq.png");
+        const vowMessage = createRaidMessage(best.vow.players, best.vow.activityTime, `<:${vowEmoji_name}:${vowEmoji_id}>`, "Vow of the disciple", "https://i.imgur.com/MSwQTW1.png");
+        const vogMessage = createRaidMessage(best.vog.players, best.vog.activityTime, `<:${vogEmoji_name}:${vogEmoji_id}>`, "Vault of Glass", "https://i.imgur.com/dMcnYnq.png");
+        const dscMessage = createRaidMessage(best.dsc.players, best.dsc.activityTime, `<:${dscEmoji_name}:${dscEmoji_id}>`,"Deep Stone Crypt", "https://i.imgur.com/y603L7T.png");
+        const gosMessage = createRaidMessage(best.gos.players, best.gos.activityTime, `<:${gosEmoji_name}:${gosEmoji_id}>`, "Garden of Salvation", "https://i.imgur.com/EBfhOzf.png");
+        const lwMessage = createRaidMessage(best.lw.players, best.lw.activityTime, `<:${wishEmoji_name}:${wishEmoji_id}>`, "Last Wish", "https://i.imgur.com/FMDARhw.png");
 
         // create messages
         let messageArray;

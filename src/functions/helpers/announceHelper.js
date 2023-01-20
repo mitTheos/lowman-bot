@@ -1,19 +1,19 @@
-
 // get PB of all the registered users and
 // collect the best times/the highest ppl played with and return them in a Best Object
 const raidReportAPI = require("../../api/raidReportAPI");
 const bungieAPI = require("../../api/bungieAPI");
 const { EmbedBuilder } = require("discord.js");
 const { convertTime } = require("./convertTime");
- exports.getBest = (data, callback) => {
+exports.getBest = (data, callback) => {
   let best = new Best();
   let counter = 0;
   for (const e of data) {
     getPb(e["d2MembershipId"], (pb) => {
       console.log(`calculated pb for ${pb.membershipId}`);
-      if (pb.playedUsersCountMonthly > best.playedUsersCountMonthly[0]) {
-        best.playedUsersCountMonthly = [pb.playedUsersCountMonthly, pb.membershipId];
-        best.playedUsersMonthly = [pb.playedUsersMonthly, pb.membershipId];
+      if (pb.mentor.playerCount > best.mentor.playerCount || best.mentor.playerCount === undefined) {
+        if (pb.mentor.playerCount !== undefined) {
+          best.mentor = new Mentor(pb.mentor.name, pb.mentor.players, pb.mentor.playerCount);
+        }
       }
       if (pb.kf.activityTime < best.kf.activityTime || best.kf.activityTime === undefined) {
         if (pb.kf.activityTime !== undefined) {
@@ -57,8 +57,8 @@ const { convertTime } = require("./convertTime");
 // get the PB with all the data on the person with the membershipId
 const getPb = (membershipId, callback) => {
   getInstances(membershipId, (hashcodeMap) => {
-    addPlayers(hashcodeMap, (array) => {
-      const pb = new Pb(membershipId, array[0], array[1]);
+    addPlayers(membershipId, hashcodeMap, (array) => {
+      const pb = new Pb(membershipId, array[0], array[1], array[2]);
       callback(pb);
     });
   });
@@ -91,13 +91,16 @@ const getInstances = (membershipId, callback) => {
 
 // return array of unique players the person played with
 // and return the array of lowmans with the players also unique per instance
-const addPlayers = async (hashcodeMap, callback) => {
+const addPlayers = async (id, hashcodeMap, callback) => {
   let lowmans = [];
   let players = [];
+  let username = null;
   for (const instance of Array.from(hashcodeMap.keys())) {
-    const lowmanArrayPromise = await getInstanceInfo(instance, hashcodeMap);
-    lowmanArrayPromise.forEach((e) => lowmans.push(e));
-    lowmanArrayPromise.forEach((e) => e.players.forEach((f) => players.push(f)));
+    const promise = await getInstanceInfo(id, instance, hashcodeMap);
+    username = promise[0];
+    const lowmanArray = promise[1];
+    lowmanArray.forEach((e) => lowmans.push(e));
+    lowmanArray.forEach((e) => e.players.forEach((f) => players.push(f)));
 
     //make players unique
     players = [...new Map(players.filter(Boolean).map(item =>
@@ -109,44 +112,49 @@ const addPlayers = async (hashcodeMap, callback) => {
         [item["membershipId"], item])).values()];
     });
   }
-  const returnArray = [players, lowmans];
+  const returnArray = [username, players, lowmans];
   callback(returnArray);
 };
 
 // get the speed times and the players from the instance
-async function getInstanceInfo(instance, hashcodeMap) {
+async function getInstanceInfo(id, instance, hashcodeMap) {
   let monthlyPlayers = [];
   let monthlyLowmans = [];
+  let username;
   await bungieAPI.getPGCR(instance).then((data) => {
     const response = data.Response;
 
-    // get ISO dates
+    // get dates
     const dateNow = new Date();
     dateNow.setMonth(dateNow.getMonth() - 1);
-    const dateOneMonthAgo = dateNow.toISOString();
-    const instanceDate = response["period"];
+    const instanceISODate = response["period"];
+    const instanceDate = new Date(instanceISODate);
 
-    //only get data from instances that are a Month or less old
-    if (dateOneMonthAgo <= instanceDate) {
+    //only get data from instances that are in the prior month
+    if (dateNow.getMonth() === instanceDate.getMonth()) {
 
       //players
       for (const entry of response.entries) {
         const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
         const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
         const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
+        if (membershipId === id) {
+          username = `${name}#${tag}`;
+        }
         monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
       }
       //speed times
       monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
     }
   });
-  return monthlyLowmans;
+  return [username, monthlyLowmans];
 }
 
 // create the embed for speed acknowledgement
-function createEmbed(raid, time, img) {
+function createEmbed(emoji, raidTitle, date, description, time, img) {
+
   return new EmbedBuilder({
-    title: `Fastest ${raid}`, description: `Fastest lowman ${raid} last month`, color: 0xfa5c04, fields: [{
+    title: `${emoji} ${raidTitle} - Fastest Lowman of ${date}!`, description: description, color: 0xfa5c04, fields: [{
       name: convertTime(time), value: "\u200B"
     }], image: {
       url: `${img}`, height: 0, width: 0
@@ -154,87 +162,57 @@ function createEmbed(raid, time, img) {
   });
 }
 
-// create the message associated with the speed embed
-function createContent(players) {
-  const users = formatRegistered(players);
-  let content;
-  if (users.length < 1) {
-    content = "no one cleared this raid this month";
-  } else if (users.length === 1) {
-    content = users[0] + " has the fastest clear";
-  } else {
-    let usersString = users.slice(0, -1).join(", ") + " & " + users.slice(-1);
-    content = usersString + " have the fastest clear";
-  }
-  return content;
-}
-
-// format the player for output as discord message
-// return discord tag with id if registered
-// return bungie name if not
-function formatRegistered(players) {
-  let formattedPlayers = [];
-
-  players.forEach((player) => {
-    if (typeof player === "string") {
-      formattedPlayers.push(`<@${player}>`);
-    } else {
-      formattedPlayers.push(player.name);
-    }
-  });
-  return formattedPlayers;
-}
-
-// create message with embed and content
-exports.createRaidMessage = function createRaidMessage(users, players, activityTime, raidTitle, img) {
-  const embed = createEmbed(raidTitle, activityTime, img);
-  const content = createContent(getRegistered(users, players));
-  return { "content": content, embeds: [embed] };
-}
-
-// check db for a discordId associated with the Player
-// return Player if they are not in the db
-function getRegistered(users, players) {
-  const checkedPlayers = [];
+// create message with embed
+exports.createRaidMessage = function createRaidMessage(players, activityTime, emoji, raidTitle, img) {
+  let playerArray = [];
   if (players !== undefined) {
     players.forEach((player) => {
-      let isRegistered = false;
-      users.forEach((user) => {
-        if (user["d2MembershipId"] === player.membershipId && isRegistered === false) {
-          isRegistered = true;
-          checkedPlayers.push(user["discordId"]);
-        }
-      });
-      if (isRegistered === false) {
-        checkedPlayers.push(player);
-      }
+      playerArray.push(`${player.name}`);
     });
   }
-  return checkedPlayers;
-}
+  //format players if any1 cleared the raid this month
+  let playersFormatted = null;
+  if (playerArray.length >= 1) {
+    playersFormatted = playerArray.slice(0, -1).join(", ") + " & " + playerArray.slice(-1);
+  }
+
+  let description = "No one completed the raid this month.";
+  // add players to description of any1 has cleared this month
+  if (playerArray.length >= 1) {
+    playersFormatted = playerArray.slice(0, -1).join(", ") + " & " + playerArray.slice(-1);
+    description = `Completed by: ${playersFormatted}!`;
+  }
+
+  const embed = createEmbed(emoji, raidTitle, getMessageDate(), description, activityTime, img);
+  return { embeds: [embed] };
+};
 
 // create the message to acknowledge the player that played with the most unique players this month
-exports.createPlayersMessage = function createPlayersMessage(users, bestPlayer, playerAmount) {
-  let registeredUsers = getRegistered(users, [new Player(null, bestPlayer)]);
-  let formattedRegisteredUsers = formatRegistered(registeredUsers);
-  if (formattedRegisteredUsers.length === 1) {
-    return {
-      content: `${formattedRegisteredUsers[0]} is the best mentor`,
-      embeds: [
-        {
-          title: `Players played with`,
-          description: `Amount of unique players played with last month`,
-          color: 0xfa5c04,
-          fields: [
-            {
-              name: `Players: `,
-              value: playerAmount
-            }
-          ]
-        }
-      ]
-    };
-  } else return { content: `error: Player not found` };
+exports.createPlayersMessage = function createPlayersMessage(mentor) {
+  return {
+    embeds: [
+      {
+        title: `Mentor - Most players helped in ${getMessageDate()}!`,
+        description: `Mentor: ${mentor.name}`,
+        color: 0xfa5c04,
+        fields: [
+          {
+            name: `Players:  ${mentor.playerCount}`,
+            value: "\u200B"
+          }
+        ]
+      }
+    ]
+  };
+};
+
+function getMessageDate() {
+  const dateNow = new Date();
+  // set the day of the month to 10 to avoid complications with months having different numbers of days
+  // since we only need the month and year this does not affect the date
+  dateNow.setDate(10);
+  dateNow.setMonth(dateNow.getMonth() - 1);
+  return dateNow.toLocaleString("default", { month: "long", year: "numeric" });
 }
 
 
@@ -273,10 +251,21 @@ class Activity {
   }
 }
 
+class Mentor {
+  name;
+  players;
+  playerCount;
+
+  constructor(name, players, playerCount) {
+    this.name = name;
+    this.players = players;
+    this.playerCount = playerCount;
+  }
+}
+
 class Pb {
   membershipId;
-  playedUsersMonthly;
-  playedUsersCountMonthly;
+  mentor;
   kf;
   vow;
   vog;
@@ -284,16 +273,17 @@ class Pb {
   gos;
   lw;
 
-  constructor(membershipId, playedUsersMonthly, lowmanArray) {
+  constructor(membershipId, username, playedUsersMonthly, lowmanArray) {
     this.membershipId = membershipId;
-    this.playedUsersMonthly = playedUsersMonthly;
+    let playerCount = null;
     if (playedUsersMonthly != null) {
       if (playedUsersMonthly.length > 1) {
-        this.playedUsersCountMonthly = playedUsersMonthly.length - 1;
+        playerCount = playedUsersMonthly.length - 1;
       }
     } else {
-      this.playedUsersCountMonthly = null;
+      playerCount = null;
     }
+    this.mentor = new Mentor(username, playedUsersMonthly, playerCount);
     this.kf = new Activity();
     this.vow = new Activity();
     this.vog = new Activity();
@@ -351,8 +341,7 @@ class Pb {
 }
 
 class Best {
-  playedUsersMonthly;
-  playedUsersCountMonthly;
+  mentor;
   kf;
   vow;
   vog;
@@ -361,8 +350,7 @@ class Best {
   lw;
 
   constructor() {
-    this.playedUsersMonthly = [null, null];
-    this.playedUsersCountMonthly = [null, null];
+    this.mentor = new Mentor();
     this.kf = new Activity();
     this.vow = new Activity();
     this.vog = new Activity();
