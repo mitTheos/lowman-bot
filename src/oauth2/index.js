@@ -50,6 +50,7 @@ app.get("/discord", async ({ query }, response) => {
       }).catch(console.error);
 
       const response = await userResult.body.json();
+      console.log(response);
       discordId = response["id"];
       console.log(`Discord id: ${discordId}`);
     } catch (error) {
