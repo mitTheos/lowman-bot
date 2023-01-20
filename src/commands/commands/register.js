@@ -14,7 +14,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Lowman Bot registration")
-      .setThumbnail("https://i.imgur.com/JbfJeom.png")
+      .setThumbnail("https://i.imgur.com/lhmYMyI.png")
       .addFields({
         name: "Authorize your Discord and Bungie account to register",
         value: `*You may also register multiple Bungie accounts to one Discord account if you wish to do so*`
@@ -22,7 +22,7 @@ module.exports = {
       .setColor(0xfa5c04)
       .setFooter({
         text: `lowman.app`,
-        iconURL: `https://i.imgur.com/JbfJeom.png`
+        iconURL: `https://i.imgur.com/lhmYMyI.png`
       })
       .setURL(`https://lowman.app`);
 
