@@ -17,7 +17,7 @@ module.exports = {
     getData(async (users) => {
       console.log("db data received, outputting message...");
       const embed = new EmbedBuilder()
-        .setTitle(`Current Amount of registered Users: ${users.length}`)
+        .setTitle(`Registered Users: ${users.length}`)
           .setColor(0xfa5c04);
 
       await interaction.editReply({
