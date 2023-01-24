@@ -216,7 +216,6 @@ exports.getMessageDate = function getMessageDate(modifier) {
   return dateNow.toLocaleString("default", { month: "long", year: "numeric" });
 }
 
-
 class Lowman {
   instance;
   activityTime;
