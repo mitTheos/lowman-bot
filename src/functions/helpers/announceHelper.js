@@ -154,7 +154,7 @@ async function getInstanceInfo(id, instance, hashcodeMap) {
 function createEmbed(emoji, raidTitle, description, time, img) {
 
   return new EmbedBuilder({
-    title: `${emoji} ${raidTitle} - Fastest Lowman (${getMessageDate()})`, description: description, color: 0xfa5c04, fields: [{
+    title: `${emoji} ${raidTitle} - Fastest Lowman (${exports.getMessageDate(-1)})`, description: description, color: 0xfa5c04, fields: [{
       name: `Time: ${convertTime(time)}`, value: "\u200B"
     }], image: {
       url: `${img}`, height: 0, width: 0
@@ -192,7 +192,7 @@ exports.createPlayersMessage = function createPlayersMessage(mentor) {
   return {
     embeds: [
       {
-        title: `Mentor - Most players helped (${getMessageDate()})`,
+        title: `Mentor - Most players helped (${exports.getMessageDate(-1)})`,
         description: `Mentor: ${mentor.name}`,
         color: 0xfa5c04,
         fields: [
@@ -206,12 +206,13 @@ exports.createPlayersMessage = function createPlayersMessage(mentor) {
   };
 };
 
-function getMessageDate() {
+// modifier = difference current date (0 = this month, 1 = next month (-1) = last month)
+exports.getMessageDate = function getMessageDate(modifier) {
   const dateNow = new Date();
   // set the day of the month to 10 to avoid complications with months having different numbers of days
   // since we only need the month and year this does not affect the date
   dateNow.setDate(10);
-  dateNow.setMonth(dateNow.getMonth() - 1);
+  dateNow.setMonth(dateNow.getMonth() + modifier);
   return dateNow.toLocaleString("default", { month: "long", year: "numeric" });
 }
 
