@@ -20,7 +20,8 @@ module.exports = {
     // loading message
     console.log("===Clear Roles===");
     await interaction.deferReply({
-      fetchReply: true
+      fetchReply: true,
+      ephemeral: true
     });
 
     // processing command

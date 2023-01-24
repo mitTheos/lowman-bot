@@ -36,7 +36,8 @@ module.exports = {
     // loading message
     console.log("===Announcement===");
     await interaction.deferReply({
-      fetchReply: true
+      fetchReply: true,
+      ephemeral: true
     });
 
     // processing command message
