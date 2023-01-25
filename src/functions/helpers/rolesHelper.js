@@ -4,7 +4,89 @@ const {
   vogTrioMF_id, vogDuoMF_id, vogSolo_id, dscTrio_id, dscTrioF_id, dscDuo_id, dscDuoF_id, gosTrio_id, gosTrioF_id, gosDuo_id, lwTrio_id, lwTrioF_id, lwDuo_id, lwSolo_id,
   eowSolo_id
 } = require("../../config/roles");
+const { getData } = require("./db");
+const { guild_id } = require("../../config/guild");
 
+exports.rolesClear = async function rolesClear(interaction, client){
+  // get Guild
+  const guild = await client.guilds.fetch(guild_id).catch(console.error);
+
+  // loading message
+  console.log("===Clear Roles===");
+  await interaction.deferReply({
+    fetchReply: true,
+    ephemeral: true
+  });
+
+  // processing command
+  console.log("getting data to clear roles...");
+  getData(async (users) => {
+    console.log("db data received, calculating roles...");
+
+    let userCounter = 1;
+    for (const user of users) {
+      getPlayer(user["d2MembershipId"], async (player) => {
+        const member = await guild.members.fetch(user["discordId"]);
+        if(interaction.options.get("user") === null){
+          await clearRoles(member, player, guild);
+        } else if(interaction.options.get("user").value === user["discordId"]){
+          await clearRoles(member, player, guild);
+        }
+
+        // check if this was the last user to clear roles for
+        if (userCounter === users.length) {
+          await interaction.editReply({
+            content: `Roles cleared!`
+          });
+          console.log("Roles cleared!");
+        } else {
+          userCounter++;
+        }
+      });
+    }
+  });
+}
+
+exports.rolesUpdate = async function rolesUpdate(interaction, client){
+
+  // get Guild
+  const guild = await client.guilds.fetch(guild_id).catch(console.error);
+
+
+  // loading message
+  console.log("===Update Roles===");
+  await interaction.deferReply({
+    fetchReply: true
+  });
+
+  // processing command
+  console.log("getting data for update...");
+  getData(async (users) => {
+    console.log("db data received, calculating roles...");
+
+    let userCounter = 1;
+    for (const user of users) {
+      getPlayer(user["d2MembershipId"], async (player) => {
+        const member = await guild.members.fetch(user["discordId"]);
+        if(interaction.options.get("user") === null){
+          await addRoles(member, player, guild);
+        } else if(interaction.options.get("user").value === user["discordId"]){
+          await addRoles(member, player, guild);
+        }
+
+        // check if this was the last user to update roles for
+        if (userCounter === users.length) {
+          await interaction.editReply({
+            content: `Roles updated!`
+          });
+          console.log("Roles updated!");
+        } else {
+          userCounter++;
+        }
+      });
+    }
+  });
+}
 //get all lowman instances
 const getLowmans = (membershipId, callback) => {
   let lowmanArray = [];
@@ -39,14 +121,14 @@ const getLowmans = (membershipId, callback) => {
   });
 };
 
-exports.getPlayer = (membershipId, callback) => {
+getPlayer = (membershipId, callback) => {
   getLowmans(membershipId, (lowmanArray) => {
     callback(new Player(membershipId, lowmanArray));
   });
 };
 
-exports.addRoles = async function addRoles(member, player, guild) {
-  await exports.clearRoles(member, player, guild);
+addRoles = async function addRoles(member, player, guild) {
+  await clearRoles(member, player, guild);
 
   const roleInit = new Roles();
   const roles = await roleInit.getRoles(guild);
@@ -173,7 +255,7 @@ exports.addRoles = async function addRoles(member, player, guild) {
   console.log(`finished adding Roles for ${player.membershipId}`);
 };
 
-exports.clearRoles = async function clearRoles(member, player, guild) {
+clearRoles = async function clearRoles(member, player, guild) {
   const roleInit = new Roles();
   const roles = await roleInit.getRoles(guild);
   const roleArray = roles.getArray();

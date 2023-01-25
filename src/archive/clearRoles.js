@@ -1,17 +1,18 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
 const { GUILD_ID } = process.env;
-const { addRoles, getPlayer, clearRoles } = require("../../functions/helpers/rolesHelper");
-const { getData } = require("../../functions/helpers/db");
+const { addRoles, getPlayer, clearRoles } = require("../functions/helpers/rolesHelper");
+const { getData } = require("../functions/helpers/db");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("clear-roles")
+    .setName("clearme")
     .setDescription("Removes all lowman roles")
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-    .addUserOption(option =>
-      option.setName("user").setDescription("clear roles of specified user").setRequired(false)),
+    .addSubcommand(subcommand => subcommand.setName("roles").setDescription("Removes all lowman roles").addUserOption(option =>
+      option.setName("user").setDescription("clear roles of specified user").setRequired(false))
+    ),
   async execute(interaction, client) {
 
     // get Guild
