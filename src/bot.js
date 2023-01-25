@@ -1,10 +1,10 @@
 require('dotenv').config();
 const {TOKEN, DATABASE_TOKEN} = process.env;
 const {connect} = require('mongoose');
-const {Client, Collection, GatewayIntentBits} = require('discord.js');
+const {Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
 
-const client = new Client({intents: GatewayIntentBits.Guilds});
+const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers], partials: [Partials.GuildMember]});
 client.commands = new Collection();
 client.commandArray = [];
 
