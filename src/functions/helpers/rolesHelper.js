@@ -9,40 +9,42 @@ const { guild_id } = require("../../config/guild");
 
 exports.dmArray = dmArray = [];
 
-exports.sendDM = async function sendDM() {
+exports.sendDM = async function sendDM(member) {
   dmArray.forEach((dm) => {
-    const removedRoles = [];
-    const removedMap = dm.rolesRemoved;
-    for (let value of removedMap.values()) {
-      removedRoles.push(value.name);
-    }
-    const addedRoles = [];
-    const addedMap = dm.rolesAdded;
-    for (let value of addedMap.values()) {
-      addedRoles.push(value.name);
-    }
+    if (member !== undefined && member.user.id === dm.member.user.id || member === undefined) {
+      const removedRoles = [];
+      const removedMap = dm.rolesRemoved;
+      for (let value of removedMap.values()) {
+        removedRoles.push(value.name);
+      }
+      const addedRoles = [];
+      const addedMap = dm.rolesAdded;
+      for (let value of addedMap.values()) {
+        addedRoles.push(value.name);
+      }
 
-    const addedSet = new Set(addedRoles);
-    const noAddedRemoveArray = removedRoles.filter((role) => {
-      return !addedSet.has(role);
-    });
+      const addedSet = new Set(addedRoles);
+      const noAddedRemoveArray = removedRoles.filter((role) => {
+        return !addedSet.has(role);
+      });
 
-    const removedSet = new Set(removedRoles);
-    const noRemovedAddedArray = addedRoles.filter((role) => {
-      return !removedSet.has(role);
-    });
+      const removedSet = new Set(removedRoles);
+      const noRemovedAddedArray = addedRoles.filter((role) => {
+        return !removedSet.has(role);
+      });
 
-    if (noRemovedAddedArray.length >= 1) {
-      const formattedAddedRoles = noRemovedAddedArray.join(", ");
-      dm.member.send(
-        `> \`The roles ${formattedAddedRoles} were added to you.\``
-      );
-    }
-    if (noAddedRemoveArray.length >= 1) {
-      const formattedRemovedRoles = noAddedRemoveArray.join(", ");
-      dm.member.send(
-        `> \`The roles ${formattedRemovedRoles} were removed to you.\``
-      );
+      if (noRemovedAddedArray.length >= 1) {
+        const formattedAddedRoles = noRemovedAddedArray.join(", ");
+        dm.member.send(
+          `> \`The roles ${formattedAddedRoles} were added to you.\``
+        );
+      }
+      if (noAddedRemoveArray.length >= 1) {
+        const formattedRemovedRoles = noAddedRemoveArray.join(", ");
+        dm.member.send(
+          `> \`The roles ${formattedRemovedRoles} were removed from you.\``
+        );
+      }
     }
   });
 };
@@ -52,7 +54,7 @@ exports.rolesClear = async function rolesClear(interaction, client) {
   const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
   // loading message
-  console.log("===Clear Roles===");
+  console.log("===Roles Clear===");
   await interaction.deferReply({
     fetchReply: true,
     ephemeral: true
@@ -88,16 +90,17 @@ exports.rolesClear = async function rolesClear(interaction, client) {
   });
 };
 
-exports.rolesUpdate = async function rolesUpdate(interaction, client) {
+exports.rolesUpdate = async function rolesUpdate(interaction, client, commandMember) {
 
   // get Guild
   const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
 
   // loading message
-  console.log("===Update Roles===");
+  console.log("===Roles Update===");
   await interaction.deferReply({
-    fetchReply: true
+    fetchReply: true,
+    ephemeral: true
   });
 
   // processing command
@@ -108,22 +111,44 @@ exports.rolesUpdate = async function rolesUpdate(interaction, client) {
     let userCounter = 1;
     for (const user of users) {
       getPlayer(user["d2MembershipId"], async (player) => {
-        const member = await guild.members.fetch(user["discordId"]);
-        if (interaction.options.get("user") === null) {
-          await addRoles(member, player, guild);
-        } else if (interaction.options.get("user").value === user["discordId"]) {
-          await addRoles(member, player, guild);
-        }
+        if (commandMember === undefined) {
+          const member = await guild.members.fetch(user["discordId"]);
+          if (interaction.options.get("user") === null) {
+            await addRoles(member, player, guild);
+          } else if (interaction.options.get("user").value === user["discordId"]) {
+            await addRoles(member, player, guild);
+          }
 
-        // check if this was the last user to update roles for
-        if (userCounter === users.length) {
+          // check if this was the last user to update roles for
+          if (userCounter === users.length) {
+            await interaction.editReply({
+              content: `Roles updated!`
+            });
+            console.log("Roles updated!");
+            await exports.sendDM();
+          } else {
+            userCounter++;
+          }
+        } else if (commandMember.user.id === user["discordId"]) {
+          await addRoles(commandMember, player, guild);
+
           await interaction.editReply({
             content: `Roles updated!`
           });
           console.log("Roles updated!");
-          await exports.sendDM();
+          await exports.sendDM(commandMember);
         } else {
-          userCounter++;
+          // check if this was the last user to update roles for
+          if (userCounter === users.length) {
+            await interaction.editReply({
+              content: `You are not registered yet.
+Make sure you register with \`/register\` before you use this command!`
+            });
+            console.log("User not registered!");
+            await exports.sendDM();
+          } else {
+            userCounter++;
+          }
         }
       });
     }
