@@ -5,7 +5,7 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("free")
-    .setDescription("free someone form jail")
+    .setDescription("vouch to free someone from jail")
     .setDMPermission(false)
     .addUserOption(option =>
       option.setName("user").setDescription("specify a user to free up").setRequired(true)),
