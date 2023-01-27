@@ -53,13 +53,6 @@ exports.rolesClear = async function rolesClear(interaction, client) {
   // get Guild
   const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
-  // loading message
-  console.log("===Roles Clear===");
-  await interaction.deferReply({
-    fetchReply: true,
-    ephemeral: true
-  });
-
   // processing command
   console.log("getting data to clear roles...");
   getData(async (users) => {
@@ -94,14 +87,6 @@ exports.rolesUpdate = async function rolesUpdate(interaction, client, commandMem
 
   // get Guild
   const guild = await client.guilds.fetch(guild_id).catch(console.error);
-
-
-  // loading message
-  console.log("===Roles Update===");
-  await interaction.deferReply({
-    fetchReply: true,
-    ephemeral: true
-  });
 
   // processing command
   console.log("getting data for update...");

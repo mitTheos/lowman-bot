@@ -11,6 +11,12 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .addSubcommand(subcommand => subcommand.setName("roles").setDescription("Update all of your current Lowman roles.")),
   async execute(interaction, client) {
+      // loading message
+      console.log("===Update Roles===");
+      await interaction.deferReply({
+          fetchReply: true,
+          ephemeral: true
+      });
       await rolesUpdate(interaction, client, interaction.member);
   }
 };
