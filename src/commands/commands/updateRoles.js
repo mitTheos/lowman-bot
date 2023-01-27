@@ -7,9 +7,9 @@ const { getData } = require("../../functions/helpers/db");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("update")
-    .setDescription("Removes all lowman roles")
+    .setDescription("Remove all of your current Lowman roles.")
     .setDMPermission(false)
-    .addSubcommand(subcommand => subcommand.setName("roles").setDescription("Updates all your lowman roles")),
+    .addSubcommand(subcommand => subcommand.setName("roles").setDescription("Update all of your current Lowman roles.")),
   async execute(interaction, client) {
       await rolesUpdate(interaction, client, interaction.member);
   }

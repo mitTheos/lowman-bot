@@ -3,7 +3,7 @@ const User = require("../../schemas/user");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("registered-users")
-    .setDescription("Show the number of registered users")
+    .setDescription("Display the amount of registered users with Lowman Bot.")
     .setDMPermission(false),
   async execute(interaction) {
     console.log("===Registered Users===");

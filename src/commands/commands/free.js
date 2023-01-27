@@ -5,10 +5,10 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("free")
-    .setDescription("vouch to free someone from jail")
+    .setDescription("Vouch to free someone from jail.")
     .setDMPermission(false)
     .addUserOption(option =>
-      option.setName("user").setDescription("specify a user to free up").setRequired(true)),
+      option.setName("user").setDescription("Specify a user to free up.").setRequired(true)),
   async execute(interaction, client) {
     // loading message
     console.log("===Free===");
@@ -17,7 +17,7 @@ module.exports = {
     });
     if (interaction.options.get("user").value !== null) {
       await interaction.editReply({
-        content: `Free up <@${interaction.options.get("user").value}>, he's done nothing wrong🙏`
+        content: `Free up <@${interaction.options.get("user").value}>, he's done nothing wrong. 🙏`
       }).then(() => console.log("Posted message!"));
     } else {
       await interaction.editReply({
