@@ -51,7 +51,6 @@ app.get("/discord", async ({ query }, response) => {
 
       const response = await userResult.body.json();
       discordId = response["id"];
-      console.log(`Discord id: ${discordId}`);
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
       // tokenResponseData.statusCode will be 401
