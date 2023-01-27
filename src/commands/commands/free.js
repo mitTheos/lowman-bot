@@ -8,7 +8,7 @@ module.exports = {
     .setName("free")
     .setDescription("Vouch to free someone from jail.")
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .addUserOption(option =>
       option.setName("user").setDescription("Specify a user to free up.").setRequired(true)),
   async execute(interaction, client) {

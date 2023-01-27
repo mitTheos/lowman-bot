@@ -19,7 +19,7 @@ module.exports = {
         .setRequired(true)
     )
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
   async execute(interaction, client) {
 
     // loading message

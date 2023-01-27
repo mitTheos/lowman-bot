@@ -8,12 +8,13 @@ const {
   kfEmoji_name, kfEmoji_id, vogEmoji_name, vogEmoji_id, vowEmoji_name, vowEmoji_id, dscEmoji_name, dscEmoji_id, gosEmoji_name, gosEmoji_id, wishEmoji_name,
   wishEmoji_id, crownEmoji_name, crownEmoji_id, scourgeEmoji_name, scourgeEmoji_id, leviEmoji_name, leviEmoji_id
 } = require("../../config/emojis");
-const { GUILD_ID } = process.env;
+const { PermissionFlagsBits } = require("discord-api-types/v10");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("achievements")
     .setDescription("Display a full list of all of your accomplishments.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .setDMPermission(false),
   async execute(interaction, client) {
 

@@ -1,9 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const User = require("../../schemas/user");
+const { PermissionFlagsBits } = require("discord-api-types/v10");
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("registered-users")
     .setDescription("Display the amount of registered users with Lowman Bot.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .setDMPermission(false),
   async execute(interaction) {
     console.log("===Registered Users===");

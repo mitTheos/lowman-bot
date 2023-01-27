@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("ping").setDescription("Return my ping").setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  data: new SlashCommandBuilder().setName("ping").setDescription("Return my ping").setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog),
   async execute(interaction, client) {
     console.log("===Ping===");
     const message = await interaction.deferReply({

@@ -1,9 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits } = require("discord-api-types/v10");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("register")
     .setDescription("Register your Bungie account with Lowman Bot.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .setDMPermission(false),
   async execute(interaction, client) {
     // loading message
