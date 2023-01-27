@@ -447,8 +447,11 @@ class Player {
         }
         // dsc
         else if (lowman.raid === 910380154) {
-          if (this.dsc.normCount > lowman.playerCount && lowman.playerCount >= 2 || this.dsc.normCount === undefined) {
-            this.dsc.normCount = lowman.playerCount;
+          if (this.dsc.normCount > lowman.playerCount|| this.dsc.normCount === undefined) {
+            //no role for solo taniks >:)
+            if(lowman.playerCount !== 1){
+              this.dsc.normCount = lowman.playerCount;
+            }
           }
           if (lowman.flawless === true) {
             if (this.dsc.flawCount > lowman.playerCount || this.dsc.flawCount === undefined) {
