@@ -90,7 +90,7 @@ app.get("/bungie/", async ({ query }, response) => {
         }
       }).catch(console.error);
       const response = await userResult.body.json();
-      d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"];
+      d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"].catch(`error didnt find attributes in ${response}`);
 
       if (discordId != null && d2MembershipId != null) {
         let userProfile = await User.findOne({ discordId: discordId });
