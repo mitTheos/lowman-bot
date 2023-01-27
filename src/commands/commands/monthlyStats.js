@@ -11,11 +11,11 @@ const {getMessageDate} = require("../../functions/helpers/announceHelper");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("monthly-stats")
-        .setDescription("Return stats on the past month")
+        .setDescription("Display your monthly lowman statistics.")
         .addStringOption((option) =>
             option
                 .setName("username")
-                .setDescription("Bungie username")
+                .setDescription("Bungie Username")
                 .setRequired(true)
         )
         .setDMPermission(false)
@@ -32,16 +32,16 @@ module.exports = {
         getPlayedWith(username, async (callback) => {
             if (callback !== null) {
                 const mentorEmbed = new EmbedBuilder()
-                    .setTitle(`Mentor stats (${getMessageDate(0)})`)
+                    .setTitle(`Mentors - (${getMessageDate(0)})`)
                     .setColor(0xfa5c04)
                     .addFields([
                         {
-                            name: "Players you've played with",
+                            name: "Unique players that you've played with:",
                             value: callback.playerCount.toString()
                         }
                     ]);
                 const raidEmbed = new EmbedBuilder()
-                    .setTitle(`Fastest lowmans (${getMessageDate(0)})`)
+                    .setTitle(`Fastest Lowmans - (${getMessageDate(0)})`)
                     .setColor(0xfa5c04)
                     .addFields([
                         {
@@ -50,12 +50,12 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: `<:${vowEmoji_name}:${vowEmoji_id}>VOW`,
+                            name: `<:${vowEmoji_name}:${vowEmoji_id}> VoTD`,
                             value: convertTime(callback.pb.vow),
                             inline: true
                         },
                         {
-                            name: `<:${vogEmoji_name}:${vogEmoji_id}> VOG`,
+                            name: `<:${vogEmoji_name}:${vogEmoji_id}> VoG`,
                             value: convertTime(callback.pb.vog),
                             inline: true
                         },
@@ -65,12 +65,12 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: `<:${gosEmoji_name}:${gosEmoji_id}> GOS`,
+                            name: `<:${gosEmoji_name}:${gosEmoji_id}> GoS`,
                             value: convertTime(callback.pb.gos),
                             inline: true
                         },
                         {
-                            name: `<:${wishEmoji_name}:${wishEmoji_id}> LW`,
+                            name: `<:${wishEmoji_name}:${wishEmoji_id}> Wish`,
                             value: convertTime(callback.pb.lw),
                             inline: true
                         }
@@ -78,10 +78,10 @@ module.exports = {
 
                 await interaction.editReply({
                     embeds: [mentorEmbed, raidEmbed]
-                }).then(() => console.log("Monthly Stats posted!"));
+                }).then(() => console.log("Monthly statistics posted!"));
             } else {
                 await interaction.editReply({
-                    content: "No user was found with that username! Please try again"
+                    content: "No user was found with that username! Please try again."
                 }).then(() => console.log("Error, no user was found"));
             }
         });
