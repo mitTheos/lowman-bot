@@ -170,6 +170,8 @@ const getLowmans = (membershipId, callback) => {
             if (flawless["accountCount"] <= 3) {
               if (flawless["fresh"] !== null) {
                 lowmanArray.push(new Lowman(flawless["instanceId"], flawless["accountCount"], true, activity["activityHash"]));
+              } else if (flawless["fresh"] === null) {
+                lowmanArray.push(new Lowman(flawless["instanceId"], flawless["accountCount"], false, activity["activityHash"]));
               }
             }
           }
