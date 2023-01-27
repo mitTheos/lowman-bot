@@ -188,13 +188,13 @@ const getLowmans = (membershipId, callback) => {
   });
 };
 
-getPlayer = (membershipId, callback) => {
+exports.getPlayer = getPlayer = (membershipId, callback) => {
   getLowmans(membershipId, (lowmanArray) => {
     callback(new Player(membershipId, lowmanArray));
   });
 };
 
-addRoles = async function addRoles(member, player, guild) {
+exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   await clearRoles(member, player, guild);
 
   const roleInit = new Roles();

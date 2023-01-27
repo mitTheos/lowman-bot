@@ -91,8 +91,6 @@ app.get("/bungie/", async ({ query }, response) => {
       }).catch(console.error);
       const response = await userResult.body.json();
       d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"];
-      console.log(`D2 membership id: ${d2MembershipId}`);
-
 
       if (discordId != null && d2MembershipId != null) {
         let userProfile = await User.findOne({ discordId: discordId });
