@@ -25,22 +25,22 @@ module.exports = {
         interaction.member.roles.cache.forEach((role) => {
             switch (role.id) {
                 case kfTrio_id:
-                    trioArray.push("• Trio King's Fall")
+                    trioArray.push("✦ **Trio:** King's Fall")
                     break;
                 case kfTrioF_id:
-                    trioArray.push("• Trio Flawless King's Fall")
+                    trioArray.push("✦ **Trio Flawless:** King's Fall")
                     break;
                 case kfDuo_id:
-                    duoArray.push("• Duo Oryx")
+                    duoArray.push("✦ **Duo:** Oryx")
                     break;
                 case kfTrioMF_id:
-                    trioArray.push("• Trio Flawless King's Fall (Master)")
+                    trioArray.push("**Trio Flawless:** King's Fall (Master)")
                     break;
                 case vowTrio_id:
-                    trioArray.push("• Trio Vow of the Disciple")
+                    trioArray.push("✦ **Trio:** Trio Vow of the Disciple")
                     break;
                 case vowTrioF_id:
-                    trioArray.push("• Trio Flawless Vow of the Disciple")
+                    trioArray.push("✦ **Trio Flawless:** Vow of the Disciple")
                     break;
                 case vowTrioMF_id:
                     trioArray.push("• Trio Flawless Vow of the Disciple (Master)")
@@ -97,7 +97,7 @@ module.exports = {
                     duoArray.push("• Duo Queen's Walk")
                     break;
                 case lwSolo_id:
-                    soloArray.push("<:${wishEmoji_name}:${wishEmoji_id}> Solo Queenwalk")
+                    soloArray.push("✦ **Solo:** Queenwalk")
                     break;
                 case eowSolo_id:
                     soloArray.push("• Solo Argos")
