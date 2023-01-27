@@ -11,12 +11,12 @@ const { GUILD_ID, CHANNEL_ID } = process.env;
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("announce")
-    .setDescription("Announce monthly Stats")
+    .setDescription("Send an announcement for the fastest raid times and most sherpas.")
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addStringOption(option =>
       option.setName("only")
-        .setDescription("Specify a Raid or Mentor to announce on its own")
+        .setDescription("Specify an individual raid or mentor.")
         .setRequired(false)
         .addChoices(
           { name: "Mentor", value: "mentor" },
