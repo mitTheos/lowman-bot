@@ -8,7 +8,7 @@ const {GUILD_ID} = process.env;
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("achievements")
-        .setDescription("Shows all of your lowman achievements")
+        .setDescription("Display a full list of all of your accomplishments.")
         .setDMPermission(false),
     async execute(interaction, client) {
 
@@ -97,7 +97,7 @@ module.exports = {
                     duoArray.push("• Duo Queen's Walk")
                     break;
                 case lwSolo_id:
-                    soloArray.push("Solo Queen's Walk")
+                    soloArray.push("<:${wishEmoji_name}:${wishEmoji_id}> Solo Queenwalk")
                     break;
                 case eowSolo_id:
                     soloArray.push("• Solo Argos")
@@ -110,16 +110,16 @@ module.exports = {
             .setColor(0xfa5c04)
             .addFields([
             {
-                name: "-- Solo --",
+                name: "**─ Solo ─**",
                 value: returnString(soloArray)
 
             },
             {
-                name: "-- Duo --",
+                name: "**─ Duo ─**",
                 value: returnString(duoArray)
             },
             {
-                name: "-- Trio --",
+                name: "**─ Trio ─**",
                 value: returnString(trioArray)
             }
         ]);
@@ -134,6 +134,6 @@ function returnString(array){
     if(array.length >=1){
         return array.join("\n")
     }else{
-        return "x"
+        return "N/A"
     }
 }
