@@ -184,12 +184,11 @@ const getLowmans = (membershipId, callback) => {
         }
       }
     }
-    const key = 'instance';
+    const key = "instance";
     const uniqueLowmanArray = [...new Map(lowmanArray.map(item =>
       [item[key], item])).values()];
     callback(uniqueLowmanArray);
   });
-
 };
 
 exports.getPlayer = getPlayer = (membershipId, callback) => {
@@ -451,7 +450,7 @@ class Player {
         }
         // dsc
         else if (lowman.raid === 910380154) {
-          if (this.dsc.normCount > lowman.playerCount || this.dsc.normCount === undefined) {
+          if (this.dsc.normCount > lowman.playerCount && lowman.playerCount >= 2 || this.dsc.normCount === undefined) {
             this.dsc.normCount = lowman.playerCount;
           }
           if (lowman.flawless === true) {
