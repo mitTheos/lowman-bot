@@ -26,6 +26,7 @@ module.exports = {
     let duoArray = [];
     let trioArray = [];
 
+    // Add Scourge, Crown and Eater icons and roles
     let list = interaction.member.roles.cache;
     const sortedRoles = list.sort((a, b) => (a.position < b.position) ? 1 : -1);
     sortedRoles.forEach((role) => {
