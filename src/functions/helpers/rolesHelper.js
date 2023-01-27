@@ -177,15 +177,17 @@ const getLowmans = (membershipId, callback) => {
 
         if (lowmans != null) {
           for (const lowman of lowmans) {
-            //check if there is already a flawless with that instance
-            const index = lowmanArray.findIndex(x => x.instance === lowman["instanceId"]);
-            index === -1 ? lowmanArray.push(new Lowman(lowman["instanceId"], lowman["accountCount"], false, activity["activityHash"])) : null;
+            lowmanArray.push(new Lowman(lowman["instanceId"], lowman["accountCount"], false, activity["activityHash"]));
           }
         }
       }
     }
-    callback(lowmanArray);
+    const key = 'instance';
+    const uniqueLowmanArray = [...new Map(lowmanArray.map(item =>
+      [item[key], item])).values()];
+    callback(uniqueLowmanArray);
   });
+
 };
 
 exports.getPlayer = getPlayer = (membershipId, callback) => {
