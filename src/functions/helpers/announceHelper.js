@@ -188,7 +188,7 @@ exports.createRaidMessage = function createRaidMessage(players, activityTime, em
 };
 
 // create the message to acknowledge the player that played with the most, unique players this month
-exports.createPlayersMessage = function createPlayersMessage(mentor) {
+exports.createPlayersMessage = function createPlayersMessage(mentor, img) {
   return {
     embeds: [
       {
@@ -200,7 +200,9 @@ exports.createPlayersMessage = function createPlayersMessage(mentor) {
             name: `Players:  ${mentor.playerCount}`,
             value: "\u200B"
           }
-        ]
+        ], image: {
+          url: `${img}`, height: 0, width: 0
+        }
       }
     ]
   };
@@ -214,7 +216,7 @@ exports.getMessageDate = function getMessageDate(modifier) {
   dateNow.setDate(10);
   dateNow.setMonth(dateNow.getMonth() + modifier);
   return dateNow.toLocaleString("default", { month: "long", year: "numeric" });
-}
+};
 
 class Lowman {
   instance;
