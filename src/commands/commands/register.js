@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("register")
-    .setDescription("register to Lowman Bot")
+    .setDescription("Register your Bungie account with Lowman Bot.")
     .setDMPermission(false),
   async execute(interaction, client) {
     // loading message
@@ -13,11 +13,11 @@ module.exports = {
     });
 
     const embed = new EmbedBuilder()
-      .setTitle("Lowman Bot registration")
+      .setTitle("Lowman Bot - Registration")
       .setThumbnail("https://i.imgur.com/lhmYMyI.png")
       .addFields({
-        name: "Authorize your Discord and Bungie account to register",
-        value: `*You may also register multiple Bungie accounts to one Discord account if you wish to do so*`
+        name: "Authorize your Discord and Bungie account to be registered.",
+        value: `*Multiple Bungie accounts can be linked to a single Discord account.*`
       })
       .setColor(0xfa5c04)
       .setFooter({
