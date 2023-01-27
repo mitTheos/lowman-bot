@@ -1,11 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const {
   kfDuo_id, kfTrio_id, kfTrioF_id, kfTrioMF_id, vowTrio_id, vowTrioF_id, vowTrioMF_id, vogTrio_id, vogTrioF_id, vogDuo_id, vogDuoF_id, vogTrioMF_id, vogDuoMF_id,
-  vogSolo_id, dscTrio_id, dscTrioF_id, dscDuo_id, dscDuoF_id, gosTrio_id, gosTrioF_id, gosDuo_id, lwTrio_id, lwTrioF_id, lwDuo_id, lwSolo_id, eowSolo_id
+  vogSolo_id, dscTrio_id, dscTrioF_id, dscDuo_id, dscDuoF_id, gosTrio_id, gosTrioF_id, gosDuo_id, lwTrio_id, lwTrioF_id, lwDuo_id, lwSolo_id, eowSolo_id, scourgeTrioF_id,
+  scourgeDuo_id, crownTrioF_id, crownDuoF_id, leviDuo_id
 } = require("../../config/roles");
 const {
   kfEmoji_name, kfEmoji_id, vogEmoji_name, vogEmoji_id, vowEmoji_name, vowEmoji_id, dscEmoji_name, dscEmoji_id, gosEmoji_name, gosEmoji_id, wishEmoji_name,
-  wishEmoji_id
+  wishEmoji_id, crownEmoji_name, crownEmoji_id, scourgeEmoji_name, scourgeEmoji_id, leviEmoji_name, leviEmoji_id
 } = require("../../config/emojis");
 const { GUILD_ID } = process.env;
 
@@ -106,8 +107,23 @@ module.exports = {
         case lwSolo_id:
           soloArray.push(`<:${wishEmoji_name}:${wishEmoji_id}> **Solo:** Queenswalk`);
           break;
+        case crownTrioF_id:
+          trioArray.push(`<:${crownEmoji_name}:${crownEmoji_id}> **Trio Flawless:** Crown of Sorrow`);
+          break
+        case crownDuoF_id:
+          duoArray.push(`<:${crownEmoji_name}:${crownEmoji_id}> **Duo Flawless:** Crown of Sorrow`);
+          break;
+        case scourgeTrioF_id:
+          trioArray.push(`<:${scourgeEmoji_name}:${scourgeEmoji_id}> **Trio Flawless:** Scourge of the Past`);
+          break;
+        case scourgeDuo_id:
+          duoArray.push(`<:${scourgeEmoji_name}:${scourgeEmoji_id}> **Duo:** Scourge of the Past`);
+          break;
+        case leviDuo_id:
+          duoArray.push(`<:${leviEmoji_name}:${leviEmoji_id}> **Duo:** Calus`);
+          break;
         case eowSolo_id:
-          soloArray.push(`✦ **Solo:** Argos`);
+          soloArray.push(`<:${leviEmoji_name}:${leviEmoji_id}> **Solo:** Argos`);
           break;
       }
     });
