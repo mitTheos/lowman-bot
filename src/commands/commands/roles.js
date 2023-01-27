@@ -16,9 +16,9 @@ module.exports = {
       option.setName("user").setDescription("clear roles of specified user").setRequired(true))
     ),
   async execute(interaction, client) {
-    if (interaction.options.getSubcommand() === "update") {
+    if (interaction.options.getSubcommand() === "refresh") {
       await rolesUpdate(interaction, client);
-    } else if (interaction.options.getSubcommand() === "clear") {
+    } else if (interaction.options.getSubcommand() === "remove") {
       await rolesClear(interaction, client);
     }
   }
