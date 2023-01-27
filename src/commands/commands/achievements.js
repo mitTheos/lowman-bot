@@ -34,16 +34,16 @@ module.exports = {
     sortedRoles.forEach((role) => {
       switch (role.id) {
         case kfTrioMF_id:
-          trioArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Trio Flawless:** King\`s Fall (Master)`);
+          trioArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Trio Flawless:** King's Fall (Master)`);
           break;
         case kfTrioF_id:
-          trioArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Trio Flawless:** King\`s Fall`);
+          trioArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Trio Flawless:** King's Fall`);
           break;
         case kfDuo_id:
           duoArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Duo:** Oryx`);
           break;
         case kfTrio_id:
-          trioArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Trio:** King\`s Fall`);
+          trioArray.push(`<:${kfEmoji_name}:${kfEmoji_id}> **Trio:** King's Fall`);
           break;
         case vowTrioMF_id:
           trioArray.push(`<:${vowEmoji_name}:${vowEmoji_id}> **Trio Flawless:** Vow of the Disciple (Master)`);
