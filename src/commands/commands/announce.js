@@ -6,7 +6,6 @@ const { kfEmoji_id, wishEmoji_id, kfEmoji_name, vowEmoji_id, vowEmoji_name, vogE
   wishEmoji_name
 } = require("../../config/emojis");
 const {guild_id, announce_channel_id} = require("../../config/guild");
-const { GUILD_ID, CHANNEL_ID } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder()
