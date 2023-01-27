@@ -34,7 +34,7 @@ module.exports = {
                     duoArray.push("✦ **Duo:** Oryx")
                     break;
                 case kfTrioMF_id:
-                    trioArray.push("**Trio Flawless:** King's Fall (Master)")
+                    trioArray.push("✦ **Trio Flawless:** King's Fall (Master)")
                     break;
                 case vowTrio_id:
                     trioArray.push("✦ **Trio:** Trio Vow of the Disciple")
@@ -43,64 +43,64 @@ module.exports = {
                     trioArray.push("✦ **Trio Flawless:** Vow of the Disciple")
                     break;
                 case vowTrioMF_id:
-                    trioArray.push("• Trio Flawless Vow of the Disciple (Master)")
+                    trioArray.push("✦ **Trio Flawless:** Vow of the Disciple (Master)")
                     break;
                 case vogTrio_id:
-                    trioArray.push("• Trio Vault of Glass")
+                    trioArray.push("✦ **Trio:** Vault of Glass")
                     break;
                 case vogTrioF_id:
-                    trioArray.push("•Trio Flawless Vault of Glass")
+                    trioArray.push("✦ **Trio Flawless:** Vault of Glass")
                     break;
                 case vogDuo_id :
-                    duoArray.push("• Duo Vault of Glass")
+                    duoArray.push("✦ **Duo:** Vault of Glass")
                     break;
                 case vogDuoF_id:
-                    duoArray.push("• Duo Flawless Vault of Glass")
+                    duoArray.push("✦ **Duo Flawless:** Vault of Glass")
                     break;
                 case vogTrioMF_id:
-                    trioArray.push("• Trio Flawless Vault of Glass (Master)")
+                    trioArray.push("✦ **Trio Flawless:** Vault of Glass (Master)")
                     break;
                 case vogDuoMF_id:
-                    duoArray.push("• Duo Flawless Vault of Glass (Master)")
+                    duoArray.push("•✦ **Duo Flawless:** Vault of Glass (Master)")
                     break;
                 case vogSolo_id:
-                    soloArray.push("• Solo Atheon")
+                    soloArray.push("✦ **Solo:** Atheon")
                     break;
                 case dscTrio_id:
-                    trioArray.push("• Trio Deep Stone Crypt")
+                    trioArray.push("✦ **Trio:** Deep Stone Crypt")
                     break;
                 case dscTrioF_id:
-                    trioArray.push("• Trio Flawless Deep Stone Crypt")
+                    trioArray.push("✦ **Trio Flawless:** Deep Stone Crypt")
                     break;
                 case dscDuo_id:
-                    duoArray.push("• Duo Deep Stone Crypt")
+                    duoArray.push("✦ **Duo:** Deep Stone Crypt")
                     break;
                 case dscDuoF_id:
-                    duoArray.push("• Duo Flawless Deep Stone Crypt")
+                    duoArray.push("✦ **Duo Flawless:** Deep Stone Crypt")
                     break;
                 case gosTrio_id:
-                    trioArray.push("• Trio Garden of Salvation")
+                    trioArray.push("✦ **Trio:** Garden of Salvation")
                     break;
                 case gosTrioF_id:
-                    trioArray.push("• Trio Flawless Garden of Salvation")
+                    trioArray.push("✦ **Trio Flawless:** Garden of Salvation")
                     break;
                 case gosDuo_id:
-                    duoArray.push("• Duo Sanctified Mind")
+                    duoArray.push("✦ **Duo:** Sanctified Mind")
                     break;
                 case lwTrio_id:
-                    trioArray.push("• Trio Last Wish")
+                    trioArray.push("✦ **Trio:** Last Wish")
                     break;
                 case lwTrioF_id:
-                    trioArray.push("• Trio Flawless Last Wish")
+                    trioArray.push("✦ **Trio Flawless:** Last Wish")
                     break;
                 case lwDuo_id:
-                    duoArray.push("• Duo Queen's Walk")
+                    duoArray.push("✦ **Duo:** Queenswalk")
                     break;
                 case lwSolo_id:
                     soloArray.push("✦ **Solo:** Queenwalk")
                     break;
                 case eowSolo_id:
-                    soloArray.push("• Solo Argos")
+                    soloArray.push("✦ **Solo:** Argos")
                     break;
             }
         })
