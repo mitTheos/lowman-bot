@@ -81,7 +81,7 @@ exports.rolesClear = async function rolesClear(interaction, client) {
             content: `Roles cleared!`
           });
           console.log("Roles cleared!");
-          await exports.sendDM();
+          await exports.sendDM(member);
         } else {
           userCounter++;
         }
@@ -125,7 +125,7 @@ exports.rolesUpdate = async function rolesUpdate(interaction, client, commandMem
               content: `Roles updated!`
             });
             console.log("Roles updated!");
-            await exports.sendDM();
+            await exports.sendDM(member);
           } else {
             userCounter++;
           }
@@ -145,7 +145,6 @@ exports.rolesUpdate = async function rolesUpdate(interaction, client, commandMem
 Make sure you register with \`/register\` before you use this command!`
             });
             console.log("User not registered!");
-            await exports.sendDM();
           } else {
             userCounter++;
           }
