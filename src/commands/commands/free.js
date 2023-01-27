@@ -1,12 +1,14 @@
 require("../../api/bungieAPI.js");
 require("../../api/raidReportAPI.js");
 const { SlashCommandBuilder } = require("discord.js");
+const { PermissionFlagsBits } = require("discord-api-types/v10");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("free")
     .setDescription("Vouch to free someone from jail.")
     .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
     .addUserOption(option =>
       option.setName("user").setDescription("Specify a user to free up.").setRequired(true)),
   async execute(interaction, client) {
