@@ -19,7 +19,7 @@ module.exports = {
                 .setRequired(true)
         )
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+        .setDefaultMemberPermissions(PermissionFlagsBits.AttachFiles),
     async execute(interaction, client) {
 
         // loading message
