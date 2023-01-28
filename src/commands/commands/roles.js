@@ -14,6 +14,12 @@ module.exports = {
       option.setName("user").setDescription("clear roles of specified user").setRequired(true))
     ),
   async execute(interaction, client) {
+    // loading message
+    console.log("===Force Refresh===");
+    await interaction.deferReply({
+      fetchReply: true
+    });
+
     if (interaction.options.getSubcommand() === "refresh") {
       await rolesUpdate(interaction, client);
     } else if (interaction.options.getSubcommand() === "remove") {
