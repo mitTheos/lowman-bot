@@ -2,12 +2,13 @@ require('dotenv').config();
 const { request } = require("undici");
 const express = require("express");
 const User = require("../schemas/user");
-const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY, GUILD_ID } = process.env;
+const { DATABASE_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, PORT, API_KEY } = process.env;
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const { connect } = require("mongoose");
 const { getPlayer, addRoles } = require("../functions/helpers/rolesHelper");
 const { client } = require("../bot");
+const {guild_id} = require("../config/guild");
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
@@ -102,7 +103,7 @@ app.get("/bungie/", async ({ query }, response) => {
 
 
         let member;
-        client.guilds.fetch(GUILD_ID).catch(console.error).then(async (guild) => {
+        client.guilds.fetch(guild_id).catch(console.error).then(async (guild) => {
           member = await guild.members.fetch(discordId);
           getPlayer(d2MembershipId, async (player) => {
             await addRoles(member, player, guild);

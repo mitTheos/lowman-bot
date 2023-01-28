@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
-const { GUILD_ID } = process.env;
-const { addRoles, getPlayer, clearRoles } = require("../functions/helpers/rolesHelper");
+const { getPlayer, clearRoles } = require("../functions/helpers/rolesHelper");
 const { getData } = require("../functions/helpers/db");
+const {guild_id} = require("../config/guild");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ module.exports = {
   async execute(interaction, client) {
 
     // get Guild
-    const guild = await client.guilds.fetch(GUILD_ID).catch(console.error);
+    const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
     // loading message
     console.log("===Clear Roles===");
