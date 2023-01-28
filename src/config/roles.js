@@ -1,41 +1,41 @@
 //flawless
-exports.legendF_id = "1051654155053322290"; //done
+exports.legendF_id = "1068755793777786890"; //done
 exports.masterF_id = "1049569916577140836"; //done
 
 //kf
 exports.kfTrio_id = `1068475605617754133`; //done
-exports.kfTrioF_id = `1042845434974044170`; //done
+exports.kfTrioF_id = `1068756747889684550`; //done 2.0
 exports.kfDuo_id = `1068474953692872784`; //done
-exports.kfTrioMF_id = `1042895011387277342`; //done
+exports.kfTrioMF_id = `1068755351681372240`; //done 2.0
 
 //vow
 exports.vowTrio_id = `1068475666087030815`; //done
-exports.vowTrioF_id = `1042844685288341595`; //done
-exports.vowTrioMF_id = `1042886172122304542`; //done
+exports.vowTrioF_id = `1068757006548205598`; //done 2.0
+exports.vowTrioMF_id = `1068757313365753856`; //done 2.0 
 
 //Vog
 exports.vogTrio_id = `1068475715546255472`; //done
-exports.vogTrioF_id = `1042845632949407844`; //done
+exports.vogTrioF_id = `1068755352331501628`; //done 2.0
 exports.vogDuo_id = `1068475359697321995`; //done
-exports.vogDuoF_id = `1042842971332169798`; //done
-exports.vogTrioMF_id = `1042861651650691232`; //done
-exports.vogDuoMF_id = `1042898096109133846`; //done
+exports.vogDuoF_id = `1068756901136973926`; //done 2.0
+exports.vogTrioMF_id = `1068755362909528064`; //done 2.0
+exports.vogDuoMF_id = `1042898096109133846`; //done 2.0 
 exports.vogSolo_id = `1068474790605766677`; //Atheon, done
 
 //dsc
 exports.dscTrio_id = `1068475776040710194`; //done
-exports.dscTrioF_id = `1042845559406473246`; //done
+exports.dscTrioF_id = `1068755349554872452`; //done 2.0
 exports.dscDuo_id = `1068475444120268872`; //done
-exports.dscDuoF_id = `1042843250257567824`; //done
+exports.dscDuoF_id = `1068755342097383434`; //done 2.0
 
 //gos
 exports.gosTrio_id = `1068475825046949948`; //done
-exports.gosTrioF_id = `1042845645419053056`; //done
+exports.gosTrioF_id = `1068755353078083625`; //done 2.0 
 exports.gosDuo_id = `1068475075088625735`; //done
 
 //lw
 exports.lwTrio_id = `1068475874170654830`; //done
-exports.lwTrioF_id = `1042845641023434793`; //done
+exports.lwTrioF_id = `1068755354923573278`; //done 2.0
 exports.lwDuo_id = `1068475198522802196`; //done
 exports.lwSolo_id = `1068475259168247949`; //done
 
