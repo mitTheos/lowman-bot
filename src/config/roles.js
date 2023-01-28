@@ -52,4 +52,6 @@ exports.leviDuo_id = `1068553092997595136`; //done
 //eow
 exports.eowSolo_id = `1068474886785339402`; //done
 
+//monthly roles
 exports.fast_id = `1068483442150486077`;
+exports.mentor_id = `1068484666832715796`;

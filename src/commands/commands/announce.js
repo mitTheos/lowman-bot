@@ -6,6 +6,7 @@ const { kfEmoji_id, wishEmoji_id, kfEmoji_name, vowEmoji_id, vowEmoji_name, vogE
   wishEmoji_name
 } = require("../../config/emojis");
 const {guild_id, announce_channel_id} = require("../../config/guild");
+const {assignMonthlyRoles, getMonthlyIds} = require("../../functions/helpers/rolesHelper");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -83,6 +84,9 @@ module.exports = {
               break;
           }
         }
+
+        // assign fast and community leader roles
+        await assignMonthlyRoles(guild, getMonthlyIds(users, best));
 
         // send messages
         for (const message of messageArray) {
