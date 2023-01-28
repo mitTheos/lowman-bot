@@ -8,6 +8,7 @@ module.exports = {
     .setName("update")
     .setDescription("Remove all of your current Lowman roles.")
     .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .addSubcommand(subcommand => subcommand.setName("roles").setDescription("Update all of your current Lowman roles.")),
   async execute(interaction, client) {
       // loading message

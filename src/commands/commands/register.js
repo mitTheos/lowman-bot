@@ -5,6 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("register")
     .setDescription("Register your Bungie account with Lowman Bot.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .setDMPermission(false),
   async execute(interaction, client) {
     // loading message
