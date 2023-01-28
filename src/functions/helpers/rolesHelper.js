@@ -126,8 +126,8 @@ exports.rolesUpdate = async function rolesUpdate(interaction, client, commandMem
           // check if this was the last user to update roles for
           if (userCounter === users.length) {
             await interaction.editReply({
-              content: `You are not registered yet.
-Make sure you register with \`/register\` before you use this command!`
+              content: `User not registered yet.
+Make sure to sign up with \`/register\` before you use this command!`
             });
             console.log("User not registered!");
           } else {
