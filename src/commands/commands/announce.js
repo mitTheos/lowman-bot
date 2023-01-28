@@ -12,7 +12,7 @@ module.exports = {
     .setName("announce")
     .setDescription("Send an announcement for the fastest raid times and most sherpas.")
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addStringOption(option =>
       option.setName("only")
         .setDescription("Specify an individual raid or mentor.")

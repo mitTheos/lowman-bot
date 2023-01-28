@@ -14,7 +14,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("achievements")
     .setDescription("Display a full list of all of your accomplishments.")
-    .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
     .setDMPermission(false),
   async execute(interaction, client) {
 
