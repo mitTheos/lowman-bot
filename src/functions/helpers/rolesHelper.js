@@ -263,7 +263,7 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
         if (player.vog.normCount === 1) {
             promiseArray.push(member.roles.add(roles.vogSolo).catch(console.error));
         }
-    } else if (player.vogMaster === 3) {
+    } else if (player.vogMaster.flawCount === 3) {
         promiseArray.push(member.roles.add(roles.vogTrioMF).catch(console.error));
 
         if (player.vog.flawless === 2) {
