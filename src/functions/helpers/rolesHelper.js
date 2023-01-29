@@ -95,7 +95,7 @@ exports.updateRoles = async function updateRoles(add, interaction, client, membe
         //not registered
         if (user === null) {
             await interaction.editReply({
-                content: `User not registered! User /register to register`
+                content: `User not registered! Use /register to register with the Bot`
             }).then(() => console.log(`User (id: ${member.id})not registered!`))
         } else {
             getPlayer(user["d2MembershipId"], async (player) => {
