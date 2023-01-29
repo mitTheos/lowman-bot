@@ -12,7 +12,7 @@ const {guild_id} = require("../config/guild");
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
-// let discordId = null;
+let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
@@ -51,8 +51,7 @@ app.get("/discord", async ({ query }, response) => {
       }).catch(console.error);
 
       const response = await userResult.body.json();
-      const discordId = response["id"];
-      localStorage.setItem("discordId", discordId)
+      discordId = response["id"];
       console.log(`User ${discordId} Authenticated Discord`)
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
@@ -66,8 +65,6 @@ app.get("/discord", async ({ query }, response) => {
 
 app.get("/bungie/", async ({ query }, response) => {
   const { code } = query;
-  const discordId = localStorage.getItem("discordId");
-  console.log("discordId")
 
   if (code) {
     try {
