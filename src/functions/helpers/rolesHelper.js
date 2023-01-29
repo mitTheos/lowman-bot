@@ -90,25 +90,29 @@ exports.assignMonthlyRoles = async function assignMonthlyRoles(guild, monthlyRol
 exports.updateRoles = async function updateRoles(add, interaction, client, member) {
     const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
-        const discordId = await member.id;
-        console.log(discordId);
-        getDataWithId(discordId, async (user) => {
-            console.log(user)
-            console.log(user["d2MembershipId"])
-            getPlayer(user["d2MembershipId"], async (player) =>{
+    const discordId = await member.id;
+    getDataWithId(discordId, async (user) => {
+        //not registered
+        if (user === null) {
+            await interaction.editReply({
+                content: `User not registered! User /register to register`
+            }).then(() => console.log(`User (id: ${member.id})not registered!`))
+        } else {
+            getPlayer(user["d2MembershipId"], async (player) => {
                 await clearRoles(member, player, guild);
                 // clear command = dont add
                 // update command = add
-                if(add === true){
+                if (add === true) {
                     await addRoles(member, player, guild);
                 }
 
                 await exports.sendDM(member);
                 await interaction.editReply({
                     content: `Roles updated!`
-                }).then(()=> console.log("Roles updated!"))
+                }).then(() => console.log("Roles updated!"))
             })
-        })
+        }
+    });
 }
 
 //get all lowman instances
