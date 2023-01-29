@@ -30,6 +30,9 @@ async function raidStats(membershipId) {
   let data = null;
   await axios(config)
     .then(function(response) {
+      if(membershipId ===4611686018507522477){
+        console.log(response)
+      }
       data = response.data;
     })
     .catch(function(error) {
