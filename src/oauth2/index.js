@@ -66,7 +66,7 @@ app.get("/discord", async ({ query }, response) => {
 
 app.get("/bungie/", async ({ query }, response) => {
   const { code } = query;
-  const discordId = localStorage.discordId;
+  const discordId = localStorage.getItem("discordId");
   console.log("discordId")
 
   if (code) {
