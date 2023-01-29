@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
-const { rolesUpdate, rolesClear } = require("../../functions/helpers/rolesHelper");
+const { rolesUpdate, rolesClear, updateRoles} = require("../../functions/helpers/rolesHelper");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,11 +19,12 @@ module.exports = {
     await interaction.deferReply({
       fetchReply: true
     });
+    const member = interaction.options._hoistedOptions[0].member;
 
     if (interaction.options.getSubcommand() === "refresh") {
-      await rolesUpdate(interaction, client);
+      await updateRoles(true, interaction, client, member);
     } else if (interaction.options.getSubcommand() === "remove") {
-      await rolesClear(interaction, client);
+      await updateRoles(false, interaction, client, member);
     }
   }
 };

@@ -4,7 +4,7 @@ const {
     vogTrioMF_id, vogDuoMF_id, vogSolo_id, dscTrio_id, dscTrioF_id, dscDuo_id, dscDuoF_id, gosTrio_id, gosTrioF_id, gosDuo_id, lwTrio_id, lwTrioF_id, lwDuo_id, lwSolo_id,
     eowSolo_id, mentor_id, fast_id
 } = require("../../config/roles");
-const {getData} = require("./db");
+const {getData, getDataWithId} = require("./db");
 const {guild_id} = require("../../config/guild");
 
 exports.dmArray = dmArray = [];
@@ -85,95 +85,32 @@ exports.assignMonthlyRoles = async function assignMonthlyRoles(guild, monthlyRol
     }
 }
 
-exports.rolesClear = async function rolesClear(interaction, client) {
-    // get Guild
+//if add = false => clear Roles of member
+//if add = true => clear & add roles
+exports.updateRoles = async function updateRoles(add, interaction, client, member) {
     const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
-    // processing command
-    console.log("getting data to clear roles...");
-    getData(async (users) => {
-        console.log("db data received, calculating roles...");
-
-        let userCounter = 1;
-        for (const user of users) {
-            getPlayer(user["d2MembershipId"], async (player) => {
-                const member = await guild.members.fetch(user["discordId"]);
-                if (interaction.options.get("user") === null) {
-                    await clearRoles(member, player, guild);
-                } else if (interaction.options.get("user").value === user["discordId"]) {
-                    await clearRoles(member, player, guild);
+        const discordId = await member.id;
+        console.log(discordId);
+        getDataWithId(discordId, async (user) => {
+            console.log(user)
+            console.log(user["d2MembershipId"])
+            getPlayer(user["d2MembershipId"], async (player) =>{
+                await clearRoles(member, player, guild);
+                // clear command = dont add
+                // update command = add
+                if(add === true){
+                    await addRoles(member, player, guild);
                 }
 
-                // check if this was the last user to clear roles for
-                if (userCounter === users.length) {
-                    await interaction.editReply({
-                        content: `Roles cleared!`
-                    });
-                    console.log("Roles cleared!");
-                    await exports.sendDM(member);
-                } else {
-                    userCounter++;
-                }
-            });
-        }
-    });
-};
+                await exports.sendDM(member);
+                await interaction.editReply({
+                    content: `Roles updated!`
+                }).then(()=> console.log("Roles updated!"))
+            })
+        })
+}
 
-exports.rolesUpdate = async function rolesUpdate(interaction, client, commandMember) {
-
-    // get Guild
-    const guild = await client.guilds.fetch(guild_id).catch(console.error);
-
-    // processing command
-    console.log("getting data for update...");
-    getData(async (users) => {
-        console.log("db data received, calculating roles...");
-
-        let userCounter = 1;
-        for (const user of users) {
-            getPlayer(user["d2MembershipId"], async (player) => {
-                if (commandMember === undefined) {
-                    const member = await guild.members.fetch(user["discordId"]);
-                    if (interaction.options.get("user") === null) {
-                        await addRoles(member, player, guild);
-                    } else if (interaction.options.get("user").value === user["discordId"]) {
-                        await addRoles(member, player, guild);
-                    }
-
-                    // check if this was the last user to update roles for
-                    if (userCounter === users.length) {
-                        await interaction.editReply({
-                            content: `Roles updated!`
-                        });
-                        console.log("Roles updated!");
-                        await exports.sendDM(member);
-                    } else {
-                        userCounter++;
-                    }
-                } else if (commandMember.user.id === user["discordId"]) {
-                    await addRoles(commandMember, player, guild);
-
-                    await interaction.editReply({
-                        content: `Roles updated!`
-                    });
-                    console.log("Roles updated!");
-                    await exports.sendDM(commandMember);
-                } else {
-                    // check if this was the last user to update roles for
-                    if (userCounter === users.length) {
-                        await interaction.editReply({
-                            content: `User not registered yet.
-Make sure to sign up with \`/register\` before you use this command!`
-                        });
-                        console.log("User not registered!");
-                    } else {
-                        userCounter++;
-                    }
-                }
-            });
-        }
-    });
-};
 //get all lowman instances
 const getLowmans = (membershipId, callback) => {
     let lowmanArray = [];

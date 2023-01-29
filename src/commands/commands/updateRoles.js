@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
-const { rolesUpdate } = require("../../functions/helpers/rolesHelper");
+const { rolesUpdate, updateRoles} = require("../../functions/helpers/rolesHelper");
 
 
 module.exports = {
@@ -16,6 +16,6 @@ module.exports = {
           fetchReply: true,
           ephemeral: true
       });
-      await rolesUpdate(interaction, client, interaction.member);
+      await updateRoles(true, interaction, client, interaction.member);
   }
 };
