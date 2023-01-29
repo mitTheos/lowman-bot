@@ -37,5 +37,7 @@ async function raidStats(membershipId) {
           console.log(error);
         });
     return data;
+  } else {
+    console.error("Invalid D2 Membership ID !!!!!!!")
   }
 }
