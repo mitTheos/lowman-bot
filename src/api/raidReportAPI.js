@@ -24,7 +24,7 @@ async function raidStats(membershipId) {
   if(membershipId !=="4611686018507522477") {
     const config = {
       method: "get",
-      url: `https://api.raidreport.dev/raid/player/${membershipId}`,
+      url: `https://api.raidreport.dev/raid/player/${membershipId}`.replace("'", ""),
       headers: {}
     };
 
