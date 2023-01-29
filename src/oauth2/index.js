@@ -12,7 +12,7 @@ const {guild_id} = require("../config/guild");
 
 const app = express();
 connect(DATABASE_TOKEN).catch(console.error);
-let discordId = null;
+// let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
@@ -51,7 +51,9 @@ app.get("/discord", async ({ query }, response) => {
       }).catch(console.error);
 
       const response = await userResult.body.json();
-      discordId = response["id"];
+      const discordId = response["id"];
+      localStorage.setItem("discordId", discordId)
+      console.log(`User ${discordId} Authenticated Discord`)
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
       // tokenResponseData.statusCode will be 401
@@ -64,6 +66,8 @@ app.get("/discord", async ({ query }, response) => {
 
 app.get("/bungie/", async ({ query }, response) => {
   const { code } = query;
+  const discordId = localStorage.discordId;
+  console.log("discordId")
 
   if (code) {
     try {
@@ -91,6 +95,11 @@ app.get("/bungie/", async ({ query }, response) => {
       const response = await userResult.body.json();
       d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"];
 
+      try {
+      } catch(ex){
+        console.error(ex)
+        console.log(response)
+      }
       if (discordId != null && d2MembershipId != null) {
         let userProfile = await User.findOne({ discordId: discordId });
         if (!userProfile) userProfile = await new User({
@@ -101,12 +110,12 @@ app.get("/bungie/", async ({ query }, response) => {
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
 
-
-        let member;
+        //add Roles
         client.guilds.fetch(guild_id).catch(console.error).then(async (guild) => {
-          member = await guild.members.fetch(discordId);
+          const member = await guild.members.fetch(discordId);
           getPlayer(d2MembershipId, async (player) => {
             await addRoles(member, player, guild);
+            await member.send("You've registered with the bot successfully!");
           });
         })
       }
