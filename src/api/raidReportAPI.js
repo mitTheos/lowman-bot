@@ -31,7 +31,6 @@ async function raidStats(membershipId) {
     let data = null;
     await axios(config)
         .then(function (response) {
-            console.log(response)
           data = response.data;
         })
         .catch(function (error) {
