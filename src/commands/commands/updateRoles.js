@@ -13,8 +13,7 @@ module.exports = {
       // loading message
       console.log("===Update Roles===");
       await interaction.deferReply({
-          fetchReply: true,
-          ephemeral: true
+          fetchReply: true
       });
       await updateRoles(true, interaction, client, interaction.member);
   }
