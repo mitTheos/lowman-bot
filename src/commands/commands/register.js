@@ -18,7 +18,7 @@ module.exports = {
       .setThumbnail("https://i.imgur.com/lhmYMyI.png")
       .addFields({
         name: "Authorize your Discord and Bungie account to be registered.",
-        value: `*After registering, please wait till you get a DM from the Bot. After that your roles should be automatically updated!*`
+        value: `*After registering, please wait till you get a DM from the Bot. Following that your roles should be automatically updated!*`
       })
       .setColor(0xfa5c04)
       .setFooter({
