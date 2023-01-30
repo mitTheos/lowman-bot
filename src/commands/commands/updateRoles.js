@@ -15,6 +15,6 @@ module.exports = {
       await interaction.deferReply({
           fetchReply: true
       });
-      await updateRoles(true, interaction, client, interaction.member);
+      await updateRoles(true, "Roles updated!", interaction, client, interaction.member);
   }
 };

@@ -23,9 +23,9 @@ module.exports = {
     const member = interaction.options._hoistedOptions[0].member;
 
     if (interaction.options.getSubcommand() === "refresh") {
-      await updateRoles(true, interaction, client, member);
+      await updateRoles(true, "Roles updated!", interaction, client, member);
     } else if (interaction.options.getSubcommand() === "remove") {
-      await updateRoles(false, interaction, client, member);
+      await updateRoles(false, "Roles removed!", interaction, client, member);
     }
   }
 };

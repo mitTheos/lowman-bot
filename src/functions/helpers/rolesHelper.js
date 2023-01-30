@@ -87,7 +87,7 @@ exports.assignMonthlyRoles = async function assignMonthlyRoles(guild, monthlyRol
 
 //if add = false => clear Roles of member
 //if add = true => clear & add roles
-exports.updateRoles = async function updateRoles(add, interaction, client, member) {
+exports.updateRoles = async function updateRoles(add, reply, interaction, client, member) {
     const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
     const discordId = await member.id;
@@ -108,8 +108,8 @@ exports.updateRoles = async function updateRoles(add, interaction, client, membe
 
                 await exports.sendDM(member);
                 await interaction.editReply({
-                    content: `Roles updated!`
-                }).then(() => console.log("Roles updated!"))
+                    content: reply
+                }).then(() => console.log(reply))
             })
         }
     });
