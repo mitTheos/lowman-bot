@@ -97,6 +97,7 @@ app.get("/bungie/", async ({ query }, response) => {
         console.error(response)
       }
       d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"];
+      console.log(`User ${d2MembershipId} Authenticated Discord`)
 
       try {
       } catch(ex){
@@ -121,6 +122,7 @@ app.get("/bungie/", async ({ query }, response) => {
             await member.send("You've registered with the bot successfully!");
           });
         })
+        console.log(`Finished Registration for User{discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`)
       }
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
