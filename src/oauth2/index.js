@@ -120,9 +120,9 @@ app.get("/bungie/", async ({ query }, response) => {
           getPlayer(d2MembershipId, async (player) => {
             await addRoles(member, player, guild);
             await member.send("You've registered with the bot successfully!");
+            console.log(`Finished Registration for User{discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`)
           });
         })
-        console.log(`Finished Registration for User{discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`)
       }
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
