@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { deleteUser } = require("../../functions/helpers/db");
+const { updateRoles } = require("../../functions/helpers/rolesHelper");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,6 +14,10 @@ module.exports = {
       fetchReply: true
     });
 
+    //clear roles before unregistering
+    await updateRoles(false, interaction, client, interaction.member);
+
+    //delete document in DB
     const discordId = interaction.member.id;
     deleteUser(discordId, async (user) => {
       await interaction.editReply({

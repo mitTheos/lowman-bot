@@ -29,7 +29,7 @@ module.exports = {
         )),
 
   async execute(interaction, client) {
-    // Discord server and channel from .env
+    // Discord server and channel from config
     const guild = await client.guilds.fetch(guild_id).catch(console.error);
     const channel = await guild.channels.fetch(announce_channel_id).catch(console.error);
 
