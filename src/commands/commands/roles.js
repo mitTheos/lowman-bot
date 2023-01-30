@@ -17,7 +17,8 @@ module.exports = {
     // loading message
     console.log("===Force Refresh===");
     await interaction.deferReply({
-      fetchReply: true
+      fetchReply: true,
+      ephemeral: true
     });
     const member = interaction.options._hoistedOptions[0].member;
 
