@@ -90,12 +90,7 @@ app.get("/bungie/", async ({ query }, response) => {
         }
       }).catch(console.error);
       const response = await userResult.body.json();
-      try {
-        Object.values(response["Response"]["destinyMemberships"])
-      }catch(error){
-        console.error(error)
-        console.error(response)
-      }
+      console.log(response)
       d2MembershipId = Object.values(response["Response"]["destinyMemberships"])[0]["membershipId"];
       console.log(`User ${d2MembershipId} Authenticated Discord`)
 
