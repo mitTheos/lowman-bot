@@ -14,15 +14,18 @@ module.exports = {
       fetchReply: true
     });
 
-    //clear roles before unregistering
-    await updateRoles(false, interaction, client, interaction.member);
-
-    //delete document in DB
     const discordId = interaction.member.id;
-    deleteUser(discordId, async (user) => {
-      await interaction.editReply({
-        content: "Unregistered successfully!"
-      }).then(() => console.log(`Unregistered user: { discordId: ${user["discordId"]}, d2MembershipId: ${user["d2MembershipId"]}}`))
+
+    //clear roles before unregistering
+    await updateRoles(false, interaction, client, interaction.member).then(()=>{
+      //delete document in DB
+      deleteUser(discordId, async (user) => {
+        await interaction.editReply({
+          content: "Unregistered successfully!"
+        }).then(() => console.log(`Unregistered user: { discordId: ${user["discordId"]}, d2MembershipId: ${user["d2MembershipId"]}}`))
+      })
     })
+
+
   }
 };
