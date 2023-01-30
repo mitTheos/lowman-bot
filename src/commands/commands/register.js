@@ -18,7 +18,7 @@ module.exports = {
       .setThumbnail("https://i.imgur.com/lhmYMyI.png")
       .addFields({
         name: "Authorize your Discord and Bungie account to be registered.",
-        value: `*Multiple Bungie accounts can be linked to a single Discord account.*`
+        value: `*After registering, please wait till you get a DM from the Bot. After that your roles should be automatically updated!*`
       })
       .setColor(0xfa5c04)
       .setFooter({
