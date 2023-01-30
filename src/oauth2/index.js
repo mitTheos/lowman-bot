@@ -84,7 +84,7 @@ app.get("/bungie/", async ({ query }, response) => {
 
       const oauthData = await tokenResponseData.body.json();
       console.log(oauthData)
-      const bungieMembershipId = oauthData["membershipId"];
+      const bungieMembershipId = oauthData["membership_id"];
       const userResult = await request(`https://www.bungie.net/Platform/Destiny2/254/Profile/${bungieMembershipId}/LinkedProfiles/`, {
         headers: {
           "X-API-Key": `${API_KEY}`,
