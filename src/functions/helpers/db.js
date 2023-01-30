@@ -20,3 +20,13 @@ exports.getDataWithId = (discordId, callback) => {
         }
     });
 };
+
+exports.deleteUser = (discordId, callback) => {
+    User.findOneAndDelete({discordId: discordId}, function (err, result) {
+        if (err) {
+            console.error(err);
+        } else {
+            callback(result);
+        }
+    });
+};
