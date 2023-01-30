@@ -93,7 +93,12 @@ app.get("/bungie/", async ({ query }, response) => {
       }).catch(console.error);
       const response = await userResult.body.json();
       console.log(response)
-      d2MembershipId = Object.values(response["Response"]["profiles"]);
+      const profile = Object.values(response["Response"]["profiles"])[0];
+      if (profile["isCrossSavePrimary"] === true){
+        d2MembershipId = profile["membershipId"]
+      }else {
+        console.error("==============Was not the PrimaryCrossSave Profile!")
+      }
       console.log(d2MembershipId)
       // console.log(`User ${d2MembershipId} Authenticated Discord`)
 
