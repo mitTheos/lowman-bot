@@ -83,7 +83,6 @@ app.get("/bungie/", async ({ query }, response) => {
       });
 
       const oauthData = await tokenResponseData.body.json();
-      console.log(oauthData)
       const bungieMembershipId = oauthData["membership_id"];
       const userResult = await request(`https://www.bungie.net/Platform/Destiny2/254/Profile/${bungieMembershipId}/LinkedProfiles/`, {
         headers: {
@@ -91,15 +90,18 @@ app.get("/bungie/", async ({ query }, response) => {
           Authorization: `${oauthData.token_type} ${oauthData.access_token}`
         }
       }).catch(console.error);
+
       const response = await userResult.body.json();
-      console.log(response)
-      const profile = Object.values(response["Response"]["profiles"])[0];
-      if (profile["isCrossSavePrimary"] === true){
-        d2MembershipId = profile["membershipId"]
+      const profile = Object.values(response["Response"]["profiles"]);
+      let id = 0;
+      if (profile[id]["isCrossSavePrimary"] === true){
+        d2MembershipId = profile[id]["membershipId"]
       }else {
+        while (profile[id]["isCrossSavePrimary"] !== true){
+          id++;
+        }
         console.error("==============Was not the PrimaryCrossSave Profile!")
       }
-      console.log(d2MembershipId)
       // console.log(`User ${d2MembershipId} Authenticated Discord`)
 
       if (discordId != null && d2MembershipId != null) {
@@ -117,7 +119,7 @@ app.get("/bungie/", async ({ query }, response) => {
           const member = await guild.members.fetch(discordId);
           getPlayer(d2MembershipId, async (player) => {
             await addRoles(member, player, guild);
-            await member.send("You've registered with the bot successfully!");
+            await member.send("You've registered with the bot successfully!").catch(console.error);
             console.log(`Finished Registration for User{discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`)
           });
         })
