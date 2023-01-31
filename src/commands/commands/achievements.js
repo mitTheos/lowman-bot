@@ -87,7 +87,7 @@ module.exports = {
                     trioArray.push(`<:${vowEmoji_name}:${vowEmoji_id}> **Trio Flawless:** Vow of the Disciple`);
                     break;
                 case vowTrio_id:
-                    trioArray.push(`<:${vowEmoji_name}:${vowEmoji_id}> **Trio:** Trio Vow of the Disciple`);
+                    trioArray.push(`<:${vowEmoji_name}:${vowEmoji_id}> **Trio:** Vow of the Disciple`);
                     break;
                 case vogTrioMF_id:
                     trioArray.push(`<:${vogEmoji_name}:${vogEmoji_id}> **Trio Flawless:** Vault of Glass (Master)`);
