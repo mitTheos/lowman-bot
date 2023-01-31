@@ -78,7 +78,7 @@ async function getClearCount(interaction) {
         return clearCount;
     })
 
-    const mentorEmbed = new EmbedBuilder()
+    const totalEmbed = new EmbedBuilder()
         .setTitle(`Total lowman clears:`)
         .setColor(0xfa5c04)
         .addFields([
@@ -125,7 +125,7 @@ async function getClearCount(interaction) {
         ]);
     
     await interaction.editReply({
-        content: []
+        content: [totalEmbed, raidEmbed]
     })
 }
 
