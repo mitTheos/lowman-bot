@@ -55,7 +55,7 @@ async function getClearCount(interaction) {
                                 clearCount.vow++;
                             }
                             //vog
-                            else if (activity["activityHash"] === 3881495763) {]
+                            else if (activity["activityHash"] === 3881495763) {
                                 clearCount.vow++;
                             }
                             //dsc
