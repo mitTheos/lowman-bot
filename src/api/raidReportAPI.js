@@ -3,42 +3,39 @@ const axios = require("axios");
 module.exports = { search, raidStats };
 
 async function search(username) {
-  const encodedURL = encodeURI(encodeURI(`https://api.raidreport.dev/search/${username}`)).toLowerCase().replace('#', '%2523')
+  const encodedURL = encodeURI(encodeURI(`https://api.raidreport.dev/search/${username}`)).toLowerCase().replace("#", "%2523");
   const config = {
     method: "get",
     url: encodedURL,
     headers: {}
   };
-  let data;
-  await axios(config)
-    .then(function(response) {
-      data = response.data;
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+  let data = null;
+  try {
+    await axios(config)
+      .then(function(response) {
+        data = response.data;
+      });
+  } catch (err) {
+    console.error(err);
+  }
   return data;
 }
 
 async function raidStats(membershipId) {
-    const config = {
-      method: "get",
-      url: `https://api.raidreport.dev/raid/player/${membershipId}`.replace("'", ""),
-      headers: {}
-    };
+  const config = {
+    method: "get",
+    url: `https://api.raidreport.dev/raid/player/${membershipId}`.replace("'", ""),
+    headers: {}
+  };
 
-    let data = null;
-    try{
+  let data = null;
+  try {
     await axios(config)
-        .then(function (response) {
-          data = response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      }
-      catch(err){
-      console.log(err);
-      }
-    return data;
+      .then(function(response) {
+        data = response.data;
+      });
+  } catch (err) {
+    console.error(err);
+  }
+  return data;
 }

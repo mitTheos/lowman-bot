@@ -11,7 +11,7 @@ exports.getBest = (data, callback) => {
     getPb(e["d2MembershipId"], (pb) => {
       //membership invalid?
       if (pb !== null) {
-        console.log(`calculated pb for ${pb.membershipId}`);
+        console.log(`calculated pb for user Nr: ${counter} | MembershipId: ${pb.membershipId}`);
         if (pb.mentor.playerCount > best.mentor.playerCount || best.mentor.playerCount === undefined) {
           if (pb.mentor.playerCount !== undefined) {
             best.mentor = new Mentor(pb.mentor.name, pb.membershipId, pb.mentor.players, pb.mentor.playerCount);
