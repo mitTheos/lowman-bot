@@ -132,29 +132,31 @@ async function getInstanceInfo(id, instance, hashcodeMap) {
   let monthlyLowmans = [];
   let username;
   await bungieAPI.getPGCR(instance).then((data) => {
-    const response = data.Response;
+    if (data !== null) {
+      const response = data.Response;
 
-    // get dates
-    const dateNow = new Date();
-    dateNow.setMonth(dateNow.getMonth() - 1);
-    const instanceISODate = response["period"];
-    const instanceDate = new Date(instanceISODate);
+      // get dates
+      const dateNow = new Date();
+      dateNow.setMonth(dateNow.getMonth() - 1);
+      const instanceISODate = response["period"];
+      const instanceDate = new Date(instanceISODate);
 
-    //only get data from instances that are in the prior month
-    if (dateNow.getMonth() === instanceDate.getMonth()) {
+      //only get data from instances that are in the prior month
+      if (dateNow.getMonth() === instanceDate.getMonth()) {
 
-      //players
-      for (const entry of response.entries) {
-        const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
-        const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
-        const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
-        if (membershipId === id) {
-          username = `${name}#${tag}`;
+        //players
+        for (const entry of response.entries) {
+          const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
+          const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
+          const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
+          if (membershipId === id) {
+            username = `${name}#${tag}`;
+          }
+          monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
         }
-        monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
+        //speed times
+        monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
       }
-      //speed times
-      monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
     }
   });
   return [username, monthlyLowmans];
