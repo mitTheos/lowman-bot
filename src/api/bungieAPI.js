@@ -12,14 +12,16 @@ async function getPGCR(activityID) {
     }
   };
   let data = null;
-    setTimeout( async function (){
-    await axios(config)
-      .then(function(response) {
-        data = response.data;
-      }).catch(function (error){
-        if(error.response){
-          console.error(`PGCR error: ${error.response.status}`)
-        }
-      })}, 1000);
+  try {
+    setTimeout(async function() {
+      await axios(config)
+        .then(function(response) {
+          data = response.data;
+          console.log(`status code for pgcr(${activityID}.`);
+        });
+    }, 1000);
+  } catch (err) {
+
+  }
   return data;
 }

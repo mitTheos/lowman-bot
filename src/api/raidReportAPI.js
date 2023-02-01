@@ -11,14 +11,17 @@ async function search(username) {
     headers: {}
   };
   let data = null;
+  try {
+    setTimeout(async function() {
+      await axios(config)
+        .then(function(response) {
+          data = response.data;
+          console.log(`status code for search(${username}.`);
+        });
+    }, 1000);
+  } catch (err) {
 
-  setTimeout(async function (){
-    await axios(config)
-      .then(function(response) {
-        data = response.data;
-      }).catch(function (error){
-        console.error(`search error: ${error.response.status}`);
-      })}, 1000);
+  }
   return data;
 }
 
@@ -31,12 +34,16 @@ async function raidStats(membershipId) {
 
   let data = null;
 
-    setTimeout( async function (){
-    await axios(config)
-      .then(function(response) {
-        data = response.data;
-      }).catch(function (error){
-        console.error(`RaidStats error: ${error.response.status}`);
-      })}, 1000);
+  try {
+    setTimeout(async function() {
+      await axios(config)
+        .then(function(response) {
+          data = response.data;
+          console.log(`status code for raidStats(${membershipId}.`);
+        });
+    }, 1000);
+  } catch (err) {
+
+  }
   return data;
 }
