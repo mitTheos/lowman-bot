@@ -31,8 +31,8 @@ async function raidStats(membershipId) {
   };
 
   let data = null;
-
-  await axios.get(`https://api.raidreport.dev/raid/player/${membershipId}`).catch( function (error){
+setTimeout(async function () {
+  await axios.get(`https://api.raidreport.dev/raid/player/${membershipId}`).catch(function(error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
@@ -50,5 +50,6 @@ async function raidStats(membershipId) {
     }
     console.log(error.config);
   })
+}, 2000);
   return data;
 }
