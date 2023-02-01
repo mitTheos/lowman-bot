@@ -35,7 +35,6 @@ async function raidStats(membershipId) {
         data = response.data;
       });
   } catch (err) {
-    console.error(err);
   }
   return data;
 }

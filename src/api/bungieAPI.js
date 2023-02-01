@@ -17,7 +17,6 @@ async function getPGCR(activityID) {
         data = response.data;
       });
   } catch (err) {
-    console.error(err);
   }
   return data;
 }
