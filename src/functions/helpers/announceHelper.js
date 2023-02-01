@@ -8,51 +8,53 @@ exports.getBest = (data, callback) => {
   let best = new exports.Best();
   let counter = 0;
   for (const e of data) {
-    getPb(e["d2MembershipId"], (pb) => {
-      //membership invalid?
-      if (pb !== null) {
-        if (pb.mentor.playerCount > best.mentor.playerCount || best.mentor.playerCount === undefined) {
-          if (pb.mentor.playerCount !== undefined) {
-            best.mentor = new Mentor(pb.mentor.name, pb.membershipId, pb.mentor.players, pb.mentor.playerCount);
+    getPb(e["d2MembershipId"], async (pb) => {
+      setTimeout(function() {
+        //membership invalid?
+        if (pb !== null) {
+          if (pb.mentor.playerCount > best.mentor.playerCount || best.mentor.playerCount === undefined) {
+            if (pb.mentor.playerCount !== undefined) {
+              best.mentor = new Mentor(pb.mentor.name, pb.membershipId, pb.mentor.players, pb.mentor.playerCount);
+            }
           }
-        }
-        if (pb.kf.activityTime < best.kf.activityTime || best.kf.activityTime === undefined) {
-          if (pb.kf.activityTime !== undefined) {
-            best.kf = new Activity(pb.kf.activityTime, pb.kf.players);
+          if (pb.kf.activityTime < best.kf.activityTime || best.kf.activityTime === undefined) {
+            if (pb.kf.activityTime !== undefined) {
+              best.kf = new Activity(pb.kf.activityTime, pb.kf.players);
+            }
           }
-        }
-        if (pb.vow.activityTime < best.vow.activityTime || best.vow.activityTime === undefined) {
-          if (pb.vow.activityTime !== undefined) {
-            best.vow = new Activity(pb.vow.activityTime, pb.vow.players);
+          if (pb.vow.activityTime < best.vow.activityTime || best.vow.activityTime === undefined) {
+            if (pb.vow.activityTime !== undefined) {
+              best.vow = new Activity(pb.vow.activityTime, pb.vow.players);
+            }
           }
-        }
-        if (pb.vog.activityTime < best.vog.activityTime || best.vog.activityTime === undefined) {
-          if (pb.vog.activityTime !== undefined) {
-            best.vog = new Activity(pb.vog.activityTime, pb.vog.players);
+          if (pb.vog.activityTime < best.vog.activityTime || best.vog.activityTime === undefined) {
+            if (pb.vog.activityTime !== undefined) {
+              best.vog = new Activity(pb.vog.activityTime, pb.vog.players);
+            }
           }
-        }
-        if (pb.dsc.activityTime < best.dsc.activityTime || best.dsc.activityTime === undefined) {
-          if (pb.dsc.activityTime !== undefined) {
-            best.dsc = new Activity(pb.dsc.activityTime, pb.dsc.players);
+          if (pb.dsc.activityTime < best.dsc.activityTime || best.dsc.activityTime === undefined) {
+            if (pb.dsc.activityTime !== undefined) {
+              best.dsc = new Activity(pb.dsc.activityTime, pb.dsc.players);
+            }
           }
-        }
-        if (pb.gos.activityTime < best.gos.activityTime || best.gos.activityTime === undefined) {
-          if (pb.gos.activityTime !== undefined) {
-            best.gos = new Activity(pb.gos.activityTime, pb.gos.players);
+          if (pb.gos.activityTime < best.gos.activityTime || best.gos.activityTime === undefined) {
+            if (pb.gos.activityTime !== undefined) {
+              best.gos = new Activity(pb.gos.activityTime, pb.gos.players);
+            }
           }
-        }
-        if (pb.lw.activityTime < best.lw.activityTime || best.lw.activityTime === undefined) {
-          if (pb.lw.activityTime !== undefined) {
-            best.lw = new Activity(pb.lw.activityTime, pb.lw.players);
+          if (pb.lw.activityTime < best.lw.activityTime || best.lw.activityTime === undefined) {
+            if (pb.lw.activityTime !== undefined) {
+              best.lw = new Activity(pb.lw.activityTime, pb.lw.players);
+            }
           }
+          if (counter === data.length - 1) {
+            callback(best);
+          } else {
+            counter++;
+          }
+          console.log(`calculated pb for user Nr: ${counter} | MembershipId: ${pb.membershipId}`);
         }
-        if (counter === data.length - 1) {
-          callback(best);
-        } else {
-          counter++;
-        }
-        console.log(`calculated pb for user Nr: ${counter} | MembershipId: ${pb.membershipId}`);
-      }
+      }, 1000);
     });
   }
 };
