@@ -16,8 +16,8 @@ const {
   wishEmoji_id
 } = require("../../config/emojis");
 
-exports.getClearCount = function getClearCount(interaction, member){
-  let clearCount = new ClearCount(0,0,0,0,0,0,0);
+exports.getClearCount = function getClearCount(interaction, member) {
+  let clearCount = new ClearCount(0, 0, 0, 0, 0, 0, 0);
 
   getDataWithId(member.id, (user) => {
     const membershipId = user["d2MembershipId"];
@@ -33,7 +33,7 @@ exports.getClearCount = function getClearCount(interaction, member){
             for (const lowman of lowmans) {
               clearCount.total++;
 
-              console.log(clearCount)
+              console.log(clearCount);
               //kf
               if (activity["activityHash"] === 1374392663) {
                 clearCount.kf++;
@@ -62,20 +62,15 @@ exports.getClearCount = function getClearCount(interaction, member){
           }
         }
       }
-      const totalEmbed = new EmbedBuilder()
-        .setTitle(`Total lowman clears:`)
+      const raidEmbed = new EmbedBuilder()
+        .setTitle(`Lowman clears per Raid`)
+        .setAuthor({ name: `${member.displayName}\`s clears:`, iconURL: `${member.displayAvatarURL()}` })
         .setColor(0xfa5c04)
         .addFields([
           {
-            name: "clears:",
+            name: "total:",
             value: clearCount.total.toString()
-          }
-        ]);
-
-      const raidEmbed = new EmbedBuilder()
-        .setTitle(`Lowman clears per Raid`)
-        .setColor(0xfa5c04)
-        .addFields([
+          },
           {
             name: `<:${kfEmoji_name}:${kfEmoji_id}> KF`,
             value: clearCount.kf.toString(),
@@ -109,11 +104,11 @@ exports.getClearCount = function getClearCount(interaction, member){
         ]);
 
       await interaction.editReply({
-        embeds: [totalEmbed, raidEmbed]
+        embeds: [raidEmbed]
       });
     });
   });
-}
+};
 
 class ClearCount {
   total;
