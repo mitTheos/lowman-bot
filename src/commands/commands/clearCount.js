@@ -6,8 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("clear-count")
     .setDescription("Display your total lowman clears.")
-    .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname),
+    .setDMPermission(false),
   async execute(interaction, client) {
 
     // loading message
