@@ -49,8 +49,10 @@ exports.scourgeTrioF_id = `1068544100422393876`; //done
 
 //levi
 exports.leviDuo_id = `1068553092997595136`; //done
+
 //eow
 exports.eowSolo_id = `1068474886785339402`; //done
+exports.eowDuo_id = `1070261707055833118`; //done
 
 //monthly roles
 exports.fast_id = `1068483442150486077`;
