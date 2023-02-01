@@ -21,7 +21,6 @@ async function search(username) {
 }
 
 async function raidStats(membershipId) {
-  if(membershipId !=="4611686018507522477" && membershipId !== "4611686018507522477") {
     const config = {
       method: "get",
       url: `https://api.raidreport.dev/raid/player/${membershipId}`.replace("'", ""),
@@ -29,6 +28,7 @@ async function raidStats(membershipId) {
     };
 
     let data = null;
+    try{
     await axios(config)
         .then(function (response) {
           data = response.data;
@@ -36,8 +36,9 @@ async function raidStats(membershipId) {
         .catch(function (error) {
           console.log(error);
         });
+      }
+      catch(err){
+      console.log(err);
+      }
     return data;
-  } else {
-    console.error("Invalid D2 Membership ID !!!!!!!")
-  }
 }
