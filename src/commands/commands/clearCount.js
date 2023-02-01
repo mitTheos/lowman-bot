@@ -13,13 +13,13 @@ const { raidStats } = require("../../api/raidReportAPI");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("clear-count")
-    .setDescription("Display your total lowman clears ")
+    .setDescription("Display your total lowman clears.")
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname),
   async execute(interaction, client) {
 
     // loading message
-    console.log("===ClearCount===");
+    console.log("===Clear Count===");
     const message = await interaction.deferReply({
       fetchReply: true
     });
