@@ -11,10 +11,11 @@ async function search(username) {
   };
   let data = null;
   try {
+    setTimeout(
     await axios(config)
       .then(function(response) {
         data = response.data;
-      });
+      }), 500);
   } catch (err) {
     console.error(err);
   }
@@ -30,10 +31,11 @@ async function raidStats(membershipId) {
 
   let data = null;
   try {
-    await axios(config)
+    setTimeout(
+      await axios(config)
       .then(function(response) {
         data = response.data;
-      });
+      }), 500);
   } catch (err) {
   }
   return data;
