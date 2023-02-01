@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { response } = require("express");
-import {setTimeout} from "timers/promises";
+const {setTimeout} =  require("timers/promises");
 
 module.exports = { search, raidStats };
 
@@ -13,13 +13,12 @@ async function search(username) {
   };
   let data = null;
   try {
-    setTimeout(async function() {
+    await setTimeout(1000);
       await axios(config)
         .then(function(response) {
           data = response.data;
           console.log(`status code for search(${username}): ${response.status}.`);
         });
-    }, 1000);
   } catch (err) {}
   return data;
 }
