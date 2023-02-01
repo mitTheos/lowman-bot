@@ -116,7 +116,7 @@ module.exports = {
           ]);
 
         await interaction.editReply({
-          content: [totalEmbed, raidEmbed]
+          embeds: [totalEmbed, raidEmbed]
         });
       });
     });
