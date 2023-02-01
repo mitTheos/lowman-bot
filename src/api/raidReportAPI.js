@@ -15,7 +15,7 @@ async function search(username) {
     await axios(config)
       .then(function(response) {
         data = response.data;
-      }), 1000);
+      }), 500);
   } catch (err) {
     console.error(err);
   }
@@ -35,7 +35,7 @@ async function raidStats(membershipId) {
       await axios(config)
       .then(function(response) {
         data = response.data;
-      }), 1000);
+      }), 500);
   } catch (err) {
   }
   return data;
