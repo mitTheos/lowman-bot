@@ -116,7 +116,7 @@ module.exports = {
           ]);
 
         await interaction.editReply({
-          content: `${clearCount.total}`
+          embeds: [totalEmbed, raidEmbed]
         });
       });
     });
