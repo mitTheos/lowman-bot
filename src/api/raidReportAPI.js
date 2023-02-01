@@ -16,12 +16,10 @@ async function search(username) {
       await axios(config)
         .then(function(response) {
           data = response.data;
-          console.log(`status code for search(${username}.`);
+          console.log(`status code for search(${username}): ${response.status}.`);
         });
     }, 1000);
-  } catch (err) {
-
-  }
+  } catch (err) {}
   return data;
 }
 
@@ -39,11 +37,9 @@ async function raidStats(membershipId) {
       await axios(config)
         .then(function(response) {
           data = response.data;
-          console.log(`status code for raidStats(${membershipId}.`);
+          console.log(`status code for raidStats(${membershipId}: ${response.status}.`);
         });
     }, 1000);
-  } catch (err) {
-
-  }
+  } catch (err) {}
   return data;
 }
