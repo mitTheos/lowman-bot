@@ -1,5 +1,4 @@
 const axios = require("axios");
-const { response } = require("express");
 
 module.exports = { getPGCR };
 
@@ -13,13 +12,12 @@ async function getPGCR(activityID) {
   };
   let data = null;
   try {
-    setTimeout(async function() {
-      await axios(config)
+    await axios(config)
         .then(function(response) {
           data = response.data;
-          console.log(`status code for pgcr(${activityID}: ${response.status}.`);
         });
-    }, 1000);
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
   return data;
 }
