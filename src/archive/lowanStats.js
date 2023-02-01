@@ -1,6 +1,6 @@
-require("../api/lowmanVerifierAPI.js");
+require("./lowmanVerifierAPI.js");
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const api = require("../api/lowmanVerifierAPI");
+const api = require("./lowmanVerifierAPI");
 
 module.exports = {
   data: new SlashCommandBuilder()
