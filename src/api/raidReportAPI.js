@@ -12,13 +12,13 @@ async function search(username) {
   };
   let data = null;
 
-    setTimeout(
+  setTimeout(async function (){
     await axios(config)
       .then(function(response) {
         data = response.data;
       }).catch(function (error){
         console.error(`search error: ${error.response.status}`);
-      }), 1000);
+      })}, 1000);
   return data;
 }
 
@@ -31,12 +31,12 @@ async function raidStats(membershipId) {
 
   let data = null;
 
-    setTimeout(
+    setTimeout( async function (){
     await axios(config)
       .then(function(response) {
         data = response.data;
       }).catch(function (error){
         console.error(`RaidStats error: ${error.response.status}`);
-      }), 1000);
+      })}, 1000);
   return data;
 }
