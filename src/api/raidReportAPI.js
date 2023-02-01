@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { response } = require("express");
 
 module.exports = { search, raidStats };
 
@@ -10,15 +11,14 @@ async function search(username) {
     headers: {}
   };
   let data = null;
-  try {
+
     setTimeout(
     await axios(config)
       .then(function(response) {
         data = response.data;
+      }).catch(function (error){
+        console.error(`search error: ${error.response.status}`);
       }), 1000);
-  } catch (err) {
-    console.error(err);
-  }
   return data;
 }
 
@@ -31,13 +31,12 @@ async function raidStats(membershipId) {
 
   let data = null;
 
-  try {
     setTimeout(
     await axios(config)
       .then(function(response) {
         data = response.data;
+      }).catch(function (error){
+        console.error(`RaidStats error: ${error.response.status}`);
       }), 1000);
-  } catch (err) {
-  }
   return data;
 }
