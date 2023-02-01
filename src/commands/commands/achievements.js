@@ -162,7 +162,7 @@ module.exports = {
           soloArray.push(`<:${leviEmoji_name}:${leviEmoji_id}> **Solo:** Argos`);
           break;
         case eowDuo_id:
-          soloArray.push(`<:${leviEmoji_name}:${leviEmoji_id}> **Duo:** Argos`);
+          duoArray.push(`<:${leviEmoji_name}:${leviEmoji_id}> **Duo:** Argos`);
           break;
       }
     });
