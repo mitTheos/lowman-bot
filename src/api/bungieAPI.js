@@ -16,7 +16,7 @@ async function getPGCR(activityID) {
     await axios(config)
       .then(function(response) {
         data = response.data;
-      }), 1000);
+      }), 500);
   } catch (err) {
   }
   return data;
