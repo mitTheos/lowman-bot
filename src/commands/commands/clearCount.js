@@ -25,7 +25,7 @@ module.exports = {
     });
 
     const member = interaction.member;
-    const clearCount = new ClearCount();
+    const clearCount = new ClearCount(0,0,0,0,0,0,0);
 
     getDataWithId(member.id, (user) => {
       const membershipId = user["d2MembershipId"];
@@ -85,38 +85,38 @@ module.exports = {
           .addFields([
             {
               name: `<:${kfEmoji_name}:${kfEmoji_id}> KF`,
-              value: clearCount.kf,
+              value: clearCount.kf.toString(),
               inline: true
             },
             {
               name: `<:${vowEmoji_name}:${vowEmoji_id}> VoTD`,
-              value: clearCount.vow,
+              value: clearCount.vow.toString(),
               inline: true
             },
             {
               name: `<:${vogEmoji_name}:${vogEmoji_id}> VoG`,
-              value: clearCount.vog,
+              value: clearCount.vog.toString(),
               inline: true
             },
             {
               name: `<:${dscEmoji_name}:${dscEmoji_id}> DSC`,
-              value: clearCount.dsc,
+              value: clearCount.dsc.toString(),
               inline: true
             },
             {
               name: `<:${gosEmoji_name}:${gosEmoji_id}> GoS`,
-              value: clearCount.gos,
+              value: clearCount.gos.toString(),
               inline: true
             },
             {
               name: `<:${wishEmoji_name}:${wishEmoji_id}> Wish`,
-              value: clearCount.lw,
+              value: clearCount.lw.toString(),
               inline: true
             }
           ]);
 
         await interaction.editReply({
-          embeds: [totalEmbed, raidEmbed]
+          content: `${clearCount.total}`
         });
       });
     });
