@@ -280,7 +280,7 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   }
   //levi
   if(player.levi.normCount === 2){
-    promiseArray.push(member.roles.add(roles.levi))
+    promiseArray.push(member.roles.add(roles.leviDuo))
   }
   await Promise.all(promiseArray);
   console.log(`finished adding Roles for ${player.membershipId}`);
