@@ -68,7 +68,7 @@ exports.getClearCount = function getClearCount(interaction, member) {
         .setColor(0xfa5c04)
         .addFields([
           {
-            name: "total:",
+            name: "Total:",
             value: clearCount.total.toString()
           },
           {
