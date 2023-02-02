@@ -34,7 +34,6 @@ exports.getClearCount = function getClearCount(interaction, member) {
               for (const lowman of lowmans) {
                 clearCount.total++;
 
-                console.log(clearCount);
                 //kf
                 if (activity["activityHash"] === 1374392663) {
                   clearCount.kf++;
