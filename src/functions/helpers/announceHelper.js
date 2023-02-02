@@ -5,12 +5,16 @@ const bungieAPI = require("../../api/bungieAPI");
 const { EmbedBuilder } = require("discord.js");
 const { convertTime } = require("./convertTime");
 exports.getBest = (data, callback) => {
+  data = data.slice(0, 20);
+  console.log(`=== total users: ${data.length} ===`);
   let best = new exports.Best();
   let counter = 0;
+  let i = 0;
   for (const e of data) {
-    getPb(e["d2MembershipId"], async (pb) => {
-      setTimeout(function() {
-        //membership invalid?
+    i++;
+    setTimeout(async () => {
+      console.log(`getting pb for Nr. ${counter}, membershipID: `);
+      getPb(e["d2MembershipId"], (pb) => {
         if (pb !== null) {
           if (pb.mentor.playerCount > best.mentor.playerCount || best.mentor.playerCount === undefined) {
             if (pb.mentor.playerCount !== undefined) {
@@ -47,15 +51,16 @@ exports.getBest = (data, callback) => {
               best.lw = new Activity(pb.lw.activityTime, pb.lw.players);
             }
           }
-          if (counter === data.length - 1) {
-            callback(best);
-          } else {
-            counter++;
-          }
-          console.log(`calculated pb for user Nr: ${counter} | MembershipId: ${pb.membershipId}`);
         }
-      }, 1000);
-    });
+      });
+
+      counter++;
+      if (counter === data.length) {
+        console.log(best);
+        callback(best);
+        console.log("done!");
+      }
+    }, 400 * i);
   }
 };
 
@@ -151,13 +156,20 @@ async function getInstanceInfo(id, instance, hashcodeMap) {
           const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
           const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
           const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
-          if (membershipId === id) {
-            username = `${name}#${tag}`;
-          }
+          // if (membershipId === id) {
+          //   username = `${name}#${tag}`;
+          // }
+
           monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
         }
         //speed times
         monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
+
+        //username
+        username = monthlyPlayers.sort((a, b) =>
+          monthlyPlayers.filter(v => v === a).length
+          - monthlyPlayers.filter(v => v === b).length
+        ).pop().name;
       }
     }
   });
@@ -203,6 +215,7 @@ exports.createRaidMessage = function createRaidMessage(players, activityTime, em
 
 // create the message to acknowledge the player that played with the most, unique players this month
 exports.createPlayersMessage = function createPlayersMessage(mentor, img) {
+  console.log(mentor);
   return {
     embeds: [
       {
