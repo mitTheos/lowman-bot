@@ -107,11 +107,11 @@ const getInstances = (membershipId, callback) => {
 const addPlayers = async (id, hashcodeMap, callback) => {
   let lowmans = [];
   let players = [];
-  let username;
+  let username = [];
   for (const instance of Array.from(hashcodeMap.keys())) {
     const promise = await getInstanceInfo(id, instance, hashcodeMap);
-    if (promise[0] !== undefined){
-      username = promise[0];
+    if(promise[0] !== undefined){
+      username.push(promise[0]);
     }
     const lowmanArray = promise[1];
     lowmanArray.forEach((e) => lowmans.push(e));
