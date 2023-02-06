@@ -5,8 +5,6 @@ const bungieAPI = require("../../api/bungieAPI");
 const { EmbedBuilder } = require("discord.js");
 const { convertTime } = require("./convertTime");
 exports.getBest = (data, callback) => {
-  //TODO REMOVE THIS AFTER TESTING!!!
-  // data = data.slice(0, 20);
   console.log(`=== total users: ${data.length} ===`);
   let best = new exports.Best();
   let counter = 0;
@@ -51,17 +49,19 @@ exports.getBest = (data, callback) => {
               best.lw = new Activity(pb.lw.activityTime, pb.lw.players);
             }
           }
+        } else{
+          console.log(`{ pb == null } for Nr ${counter} | id: ${e["d2MembershipId"]} `)
         }
       });
 
-      console.log(`pb Nr ${counter} processed | id: ${e["d2MembershipId"]}`)
+      console.log(`pb Nr ${counter} processed | id: ${e["d2MembershipId"]}`);
       counter++;
       if (counter === data.length) {
         console.log(best);
         callback(best);
         console.log("done!");
       }
-    }, 700 * i);
+    }, 1000 * i);
   }
 };
 
@@ -71,8 +71,12 @@ const getPb = (membershipId, callback) => {
     //membership invalid?
     if (hashcodeMap.size !== 0) {
       addPlayers(membershipId, hashcodeMap, (array) => {
-        const pb = new Pb(membershipId, array[0], array[1], array[2]);
-        callback(pb);
+        if(array !== null) {
+          const pb = new Pb(membershipId, array[0], array[1], array[2]);
+          callback(pb);
+        } else{
+          callback(null);
+        }
       });
     }
   });
@@ -107,27 +111,34 @@ const getInstances = (membershipId, callback) => {
 const addPlayers = async (id, hashcodeMap, callback) => {
   let lowmans = [];
   let players = [];
-  let username = [];
+  let username = null;
   for (const instance of Array.from(hashcodeMap.keys())) {
     const promise = await getInstanceInfo(id, instance, hashcodeMap);
-    if(promise[0] !== undefined){
-      username.push(promise[0]);
-    }
-    const lowmanArray = promise[1];
-    lowmanArray.forEach((e) => lowmans.push(e));
-    lowmanArray.forEach((e) => e.players.forEach((f) => players.push(f)));
-    //make players unique
-    players = [...new Map(players.filter(Boolean).map(item =>
-      [item["membershipId"], item])).values()];
-    //make players in lowmanArray unique
-    lowmans.forEach(lowman => {
-      lowman.players = [...new Map(lowman.players.filter(Boolean).map(item =>
+    if (promise != null) {
+      if (promise[0] !== undefined) {
+        username = promise[0];
+      }
+      const lowmanArray = promise[1];
+      lowmanArray.forEach((e) => lowmans.push(e));
+      lowmanArray.forEach((e) => e.players.forEach((f) => players.push(f)));
+      //make players unique
+      players = [...new Map(players.filter(Boolean).map(item =>
         [item["membershipId"], item])).values()];
-    });
+      //make players in lowmanArray unique
+      lowmans.forEach(lowman => {
+        lowman.players = [...new Map(lowman.players.filter(Boolean).map(item =>
+          [item["membershipId"], item])).values()];
+      });
+    }
   }
-  const returnArray = [username, players, lowmans];
-  callback(returnArray);
+  if (username !== null && players.length >= 1 && lowmans.length >= 1) {
+    const returnArray = [username, players, lowmans];
+    callback(returnArray);
+  } else {
+    callback(null);
+  }
 };
+
 // get the speed times and the players from the instance
 async function getInstanceInfo(id, instance, hashcodeMap) {
   let monthlyPlayers = [];
@@ -146,18 +157,24 @@ async function getInstanceInfo(id, instance, hashcodeMap) {
       //only get data from instances that are in the prior month
       if (dateNow.getMonth() === instanceDate.getMonth()) {
 
-        //players
-        for (const entry of response.entries) {
-          const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
-          const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
-          const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
-          if (membershipId === id) {
-            username = `${name}#${tag}`;
+        //return null if no clears this month
+        if (response.entries.length >= 1) {
+          //players
+          for (const entry of response.entries) {
+            const name = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayName"];
+            const tag = entry["player"]["destinyUserInfo"]["bungieGlobalDisplayNameCode"];
+            const membershipId = entry["player"]["destinyUserInfo"]["membershipId"];
+            if (membershipId === id) {
+              username = `${name}#${tag}`;
+            }
+            monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
           }
-          monthlyPlayers.push(new Player(`${name}#${tag}`, membershipId));
+          //speed times
+          monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
+
+        } else {
+          return null;
         }
-        //speed times
-        monthlyLowmans.push(new Lowman(instance, response.entries["0"]["values"]["activityDurationSeconds"]["basic"]["value"], monthlyPlayers, hashcodeMap.get(instance)));
       }
     }
   });
