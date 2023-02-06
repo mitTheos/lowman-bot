@@ -483,7 +483,9 @@ class Player {
                 // 3089205900 = norm, 809170886 = prestige
                 else if (lowman.raid === 3089205900 || lowman.raid === 809170886) {
                     if (lowman.playerCount === 1 || lowman.playerCount === 2) {
-                        this.eow.normCount = lowman.playerCount;
+                        if(lowman.playerCount <= this.eow.normCount) {
+                            this.eow.normCount = lowman.playerCount;
+                        }
                     }
                 }
 
