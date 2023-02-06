@@ -7,7 +7,10 @@ async function search(username) {
   const config = {
     method: "get",
     url: encodedURL,
-    headers: {}
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 OPR/93.0.0.0',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3;q=0.9'
+    }
   };
   let data = null;
   try {
@@ -24,8 +27,11 @@ async function search(username) {
 async function raidStats(membershipId) {
   const config = {
     method: "get",
-    url: `https://api.raidreport.dev/raid/player/${membershipId}`.replace("'", ""),
-    headers: {}
+    url: `https://api.raidreport.dev/raid/player/${membershipId}`,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 OPR/93.0.0.0',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3;q=0.9'
+    }
   };
 
   let data = null;
