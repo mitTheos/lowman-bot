@@ -5,7 +5,7 @@ module.exports = {
     async execute(client) {
         const guild = await client.guilds.fetch(guild_id).catch(console.error);
         guild.members.fetch().then((members) => members.cache)
-        client.user.setActivity("User /register !", {type: 'PLAYING'});
+        client.user.setActivity("Use /register!", {type: 4});
         console.log(`Ready! ${client.user.tag} is logged in and online`);
     }
 }
