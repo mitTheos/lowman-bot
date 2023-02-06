@@ -170,6 +170,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setAuthor({ name: `${member.displayName}\`s Achievements:`, iconURL: `${member.displayAvatarURL()}` })
       .setColor(0xfa5c04)
+      .setFooter({text: "Any accomplishment completed prior to Witch Queen launch is not detected."})
       .addFields([
         {
           name: `**─ Solo ─**`,
