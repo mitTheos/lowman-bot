@@ -2,7 +2,7 @@ const raidReportAPI = require("../../api/raidReportAPI");
 const {
     legendF_id, masterF_id, kfTrio_id, kfTrioF_id, kfDuo_id, kfTrioMF_id, vowTrio_id, vowTrioF_id, vowTrioMF_id, vogTrio_id, vogTrioF_id, vogDuo_id, vogDuoF_id,
     vogTrioMF_id, vogDuoMF_id, vogSolo_id, dscTrio_id, dscTrioF_id, dscDuo_id, dscDuoF_id, gosTrio_id, gosTrioF_id, gosDuo_id, lwTrio_id, lwTrioF_id, lwDuo_id, lwSolo_id,
-    eowSolo_id, mentor_id, fast_id, eowDuo_id, leviDuo_id
+    eowSolo_id, mentor_id, fast_id, eowDuo_id, leviDuo_id, scourgeTrioF_id, scourgeDuo_id, crownDuoF_id, crownTrioF_id
 } = require("../../config/roles");
 const {getDataWithId} = require("./db");
 const {guild_id} = require("../../config/guild");
@@ -636,8 +636,10 @@ class Roles {
             await guild.roles.fetch(eowSolo_id),
             await guild.roles.fetch(eowDuo_id),
             await guild.roles.fetch(leviDuo_id),
-            await guild.roles.fetch(scourgeEmoji_id),
-            await guild.roles.fetch(crownEmoji_id)
+            await guild.roles.fetch(scourgeTrioF_id),
+            await guild.roles.fetch(scourgeDuo_id),
+            await guild.roles.fetch(crownDuoF_id),
+            await guild.roles.fetch(crownTrioF_id)
         );
     }
 
