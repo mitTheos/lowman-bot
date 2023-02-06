@@ -483,7 +483,7 @@ class Player {
                 // 3089205900 = norm, 809170886 = prestige
                 else if (lowman.raid === 3089205900 || lowman.raid === 809170886) {
                     if (lowman.playerCount === 1 || lowman.playerCount === 2) {
-                        if(lowman.playerCount <= this.eow.normCount) {
+                        if(lowman.playerCount < this.eow.normCount || this.eow.normCount === undefined) {
                             this.eow.normCount = lowman.playerCount;
                         }
                     }
@@ -502,8 +502,8 @@ class Player {
                         this.scourge.normCount = lowman.playerCount;
                     }
                     if (lowman.flawless === true) {
-                        if (this.lw.flawCount > lowman.playerCount || this.lw.flawCount === undefined) {
-                            this.lw.flawCount = lowman.playerCount;
+                        if (this.scourge.flawCount > lowman.playerCount || this.scourge.flawCount === undefined) {
+                            this.scourge.flawCount = lowman.playerCount;
                         }
                     }
                 }
