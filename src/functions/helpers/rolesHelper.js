@@ -507,13 +507,14 @@ class Player {
                 }
 
                 //cos
-                else if(lowman.raid === 3333172150){}
-                if (this.cos.normCount > lowman.playerCount || this.cos.normCount === undefined) {
-                    this.cos.normCount = lowman.playerCount;
-                }
-                if (lowman.flawless === true) {
-                    if (this.cos.flawCount > lowman.playerCount || this.cos.flawCount === undefined) {
-                        this.cos.flawCount = lowman.playerCount;
+                else if(lowman.raid === 3333172150) {
+                    if (this.cos.normCount > lowman.playerCount || this.cos.normCount === undefined) {
+                        this.cos.normCount = lowman.playerCount;
+                    }
+                    if (lowman.flawless === true) {
+                        if (this.cos.flawCount > lowman.playerCount || this.cos.flawCount === undefined) {
+                            this.cos.flawCount = lowman.playerCount;
+                        }
                     }
                 }
             });
