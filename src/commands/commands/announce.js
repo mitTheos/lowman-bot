@@ -87,7 +87,7 @@ module.exports = {
         }
 
         // assign fast and community leader roles
-        // await assignMonthlyRoles(guild, getMonthlyIds(users, best));
+        await assignMonthlyRoles(guild, getMonthlyIds(users, best));
 
         // send messages
         for (const message of messageArray) {
