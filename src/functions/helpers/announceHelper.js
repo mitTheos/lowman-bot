@@ -57,9 +57,7 @@ exports.getBest = (data, callback) => {
       console.log(`pb Nr ${counter} processed | id: ${e["d2MembershipId"]}`);
       counter++;
       if (counter === data.length) {
-        console.log(best);
         callback(best);
-        console.log("done!");
       }
     }, 1000 * i);
   }

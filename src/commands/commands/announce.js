@@ -47,7 +47,6 @@ module.exports = {
       getBest(users, async (best) => {
         console.log("data for announcement ready!");
 
-        console.log(best.mentor)
         const mentorMessage = createPlayersMessage(best.mentor, "https://i.imgur.com/vFAFjAZ.png");
         const kfMessage = createRaidMessage(best.kf.players, best.kf.activityTime, `<:${kfEmoji_name}:${kfEmoji_id}>`, "King's Fall", "https://i.imgur.com/ShWT8Nq.png");
         const vowMessage = createRaidMessage(best.vow.players, best.vow.activityTime, `<:${vowEmoji_name}:${vowEmoji_id}>`, "Vow of the Disciple", "https://i.imgur.com/MSwQTW1.png");
