@@ -6,6 +6,7 @@ const {
 } = require("../../config/roles");
 const {getDataWithId} = require("./db");
 const {guild_id} = require("../../config/guild");
+const { scourgeEmoji_id, crownEmoji_id } = require("../../config/emojis");
 
 exports.dmArray = dmArray = [];
 
@@ -284,6 +285,22 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
     if (player.levi.normCount === 2) {
         promiseArray.push(member.roles.add(roles.leviDuo))
     }
+
+    //scourge
+    if(player.scourge.normCount === 2){
+        promiseArray.push(member.roles.add(roles.scourgeDuo))
+    }
+    if(player.scourge.flawCount === 3){
+        promiseArray.push(member.roles.add(roles.scourgeTrioF))
+    }
+
+    //cos
+    if(player.cos.flawCount === 2){
+        promiseArray.push(member.roles.add(roles.cosDuoF))
+    } else if( player.normCount=== 2){
+        promiseArray.push(member.roles.add(roles.cosDuo))
+    }
+
     await Promise.all(promiseArray);
     console.log(`finished adding Roles for ${player.membershipId}`);
 };
@@ -339,6 +356,8 @@ class Player {
     gos;
     lw;
     eow;
+    scourge;
+    cos;
 
     constructor(membershipId, lowmans) {
         this.membershipId = membershipId;
@@ -353,6 +372,8 @@ class Player {
         this.lw = new Raid();
         this.eow = new Raid();
         this.levi = new Raid();
+        this.scourge = new Raid();
+        this.cos = new Raid();
 
         if (lowmans != null) {
             lowmans.forEach(lowman => {
@@ -472,6 +493,29 @@ class Player {
                         this.levi.normCount = lowman.playerCount;
                     }
                 }
+
+                //scourge
+                else if(lowman.raid === 548750096){
+                    if (this.scourge.normCount > lowman.playerCount || this.scourge.normCount === undefined) {
+                        this.scourge.normCount = lowman.playerCount;
+                    }
+                    if (lowman.flawless === true) {
+                        if (this.lw.flawCount > lowman.playerCount || this.lw.flawCount === undefined) {
+                            this.lw.flawCount = lowman.playerCount;
+                        }
+                    }
+                }
+
+                //cos
+                else if(lowman.raid === 3333172150){}
+                if (this.cos.normCount > lowman.playerCount || this.cos.normCount === undefined) {
+                    this.cos.normCount = lowman.playerCount;
+                }
+                if (lowman.flawless === true) {
+                    if (this.cos.flawCount > lowman.playerCount || this.cos.flawCount === undefined) {
+                        this.cos.flawCount = lowman.playerCount;
+                    }
+                }
             });
         }
     }
@@ -518,9 +562,12 @@ class Roles {
     eowSolo;
     eowDuo;
     leviDuo;
+    scourgeDuo;
+    scourgeTrioF;
+    cosDuoF;
+    cosDuo;
 
-
-    constructor(legendF, masterF, kfTrio, kfTrioF, kfDuo, kfTrioMF, vowTrio, vowTrioF, vowTrioMF, vogTrio, vogTrioF, vogDuo, vogDuoF, vogTrioMF, vogDuoMF, vogSolo, dscTrio, dscTrioF, dscDuo, dscDuoF, gosTrio, gosTrioF, gosDuo, lwTrio, lwTrioF, lwDuo, lwSolo, eowSolo, eowDuo, leviDuo) {
+    constructor(legendF, masterF, kfTrio, kfTrioF, kfDuo, kfTrioMF, vowTrio, vowTrioF, vowTrioMF, vogTrio, vogTrioF, vogDuo, vogDuoF, vogTrioMF, vogDuoMF, vogSolo, dscTrio, dscTrioF, dscDuo, dscDuoF, gosTrio, gosTrioF, gosDuo, lwTrio, lwTrioF, lwDuo, lwSolo, eowSolo, eowDuo, leviDuo, scourgeDuo, scourgeTrioF, cosDuoF, cosDuo) {
         this.legendF = legendF;
         this.masterF = masterF;
         this.kfTrio = kfTrio;
@@ -551,6 +598,10 @@ class Roles {
         this.eowSolo = eowSolo;
         this.eowDuo = eowDuo;
         this.leviDuo = leviDuo;
+        this.scourgeDuo = scourgeDuo;
+        this.scourgeTrioF = scourgeTrioF;
+        this.cosDuoF = cosDuoF;
+        this.cosDuo = cosDuo;
     }
 
     async getRoles(guild) {
@@ -584,7 +635,9 @@ class Roles {
             await guild.roles.fetch(lwSolo_id),
             await guild.roles.fetch(eowSolo_id),
             await guild.roles.fetch(eowDuo_id),
-            await guild.roles.fetch(leviDuo_id)
+            await guild.roles.fetch(leviDuo_id),
+            await guild.roles.fetch(scourgeEmoji_id),
+            await guild.roles.fetch(crownEmoji_id)
         );
     }
 
@@ -619,7 +672,11 @@ class Roles {
             this.lwSolo,
             this.eowSolo,
             this.eowDuo,
-            this.leviDuo
+            this.leviDuo,
+            this.scourgeDuo,
+            this.scourgeTrioF,
+            this.cosDuoF,
+            this.cosDuo
         ];
     }
 }
