@@ -19,7 +19,7 @@ const {
 exports.getClearCount = function getClearCount(interaction, member) {
   let clearCount = new ClearCount(0, 0, 0, 0, 0, 0, 0);
 
-  getDataWithId(member.id, (user) => {
+  getDataWithId(member.id, async (user) => {
     if (user !== null) {
       const membershipId = user["d2MembershipId"];
 
@@ -107,6 +107,10 @@ exports.getClearCount = function getClearCount(interaction, member) {
           embeds: [raidEmbed]
         });
       });
+    } else {
+      await interaction.editReply({
+        content: `User not registered! Use /register to register with the Bot`
+      }).then(() => console.log(`User (id: ${member.id})not registered!`));
     }
   });
 };
