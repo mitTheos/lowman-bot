@@ -14,7 +14,7 @@ module.exports = {
     });
 
     const embed = new EmbedBuilder()
-      .setTitle("Lowman Bot - Registration")
+      .setTitle("Click Here to register")
       .setThumbnail("https://i.imgur.com/lhmYMyI.png")
       .addFields({
         name: "Authorize your Discord and Bungie account to be registered.",
