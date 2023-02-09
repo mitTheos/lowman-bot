@@ -157,200 +157,168 @@ exports.getPlayer = getPlayer = (membershipId, callback) => {
 };
 
 exports.addRoles = addRoles = async function addRoles(member, player, guild) {
-  await clearRoles(member, player, guild);
 
   const roleInit = new Roles();
   const roles = await roleInit.getRoles(guild);
   const allRoles = roles.getArray();
-  const addRoles = [];
-  let promiseArray = [];
+  const newRoles = [];
   //flawless
   if (player.kfMaster.flawCount === 3 && player.vowMaster.flawCount === 3 && player.vogMaster.flawCount === 2) {
-    promiseArray.push(member.roles.add(roles.masterF).catch(console.error));
-    addRoles.push(roles.masterF);
+    newRoles.push(roles.masterF);
   }
   if (player.kf.flawCount === 3 && player.vow.flawCount === 3 && player.vog.flawCount === 2 && player.dsc.flawCount === 2 && player.gos.flawCount === 3 && player.lw.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.legendF).catch(console.error));
-    addRoles.push(roles.legendF);
+    newRoles.push(roles.legendF);
   }
 
   //kf
   if (player.kfMaster.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.kfTrioMF).catch(console.error));
-    addRoles.push(roles.kfTrioMF);
+    newRoles.push(roles.kfTrioMF);
 
     if (player.kf.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.kfDuo).catch(console.error));
-      addRoles.push(roles.kfDuo);
+      newRoles.push(roles.kfDuo);
     }
   } else if (player.kf.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.kfTrioF).catch(console.error));
-    addRoles.push(roles.kfTrioF);
+    newRoles.push(roles.kfTrioF);
 
     if (player.kf.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.kfDuo).catch(console.error));
-      addRoles.push(roles.kfDuo);
+      newRoles.push(roles.kfDuo);
     }
   } else if (player.kf.normCount === 2) {
-    promiseArray.push(member.roles.add(roles.kfDuo).catch(console.error));
-    addRoles.push(roles.kfDuo);
+    newRoles.push(roles.kfDuo);
   } else if (player.kf.normCount === 3) {
-    promiseArray.push(member.roles.add(roles.kfTrio).catch(console.error));
-    addRoles.push(roles.kfTrio);
+    newRoles.push(roles.kfTrio);
   }
 
   //vow
   if (player.vowMaster.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.vowTrioMF).catch(console.error));
-    addRoles.push(roles.vowTrioMF);
+    newRoles.push(roles.vowTrioMF);
   } else if (player.vow.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.vowTrioF).catch(console.error));
-    addRoles.push(roles.vowTrioF);
+    newRoles.push(roles.vowTrioF);
   } else if (player.vow.normCount === 3) {
-    promiseArray.push(member.roles.add(roles.vowTrio).catch(console.error));
-    addRoles.push(roles.vowTrio);
+    newRoles.push(roles.vowTrio);
   }
   //vog
   if (player.vogMaster.flawCount === 2) {
-    promiseArray.push(member.roles.add(roles.vogDuoMF).catch(console.error));
-    addRoles.push(roles.vogDuoMF);
+    newRoles.push(roles.vogDuoMF);
 
     if (player.vog.normCount === 1) {
-      promiseArray.push(member.roles.add(roles.vogSolo).catch(console.error));
-      addRoles.push(roles.vogSolo);
+      newRoles.push(roles.vogSolo);
     }
   } else if (player.vogMaster.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.vogTrioMF).catch(console.error));
-    addRoles.push(roles.vogTrioMF);
+    newRoles.push(roles.vogTrioMF);
 
     if (player.vog.flawCount === 2) {
-      promiseArray.push(member.roles.add(roles.vogDuoF).catch(console.error));
-      addRoles.push(roles.vogDuoF);
+      newRoles.push(roles.vogDuoF);
     } else if (player.vog.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.vogDuo).catch(console.error));
-      addRoles.push(roles.vogDuo);
+      newRoles.push(roles.vogDuo);
     }
     if (player.vog.normCount === 1) {
-      promiseArray.push(member.roles.add(roles.vogSolo).catch(console.error));
-      addRoles.push(roles.vogSolo);
+      newRoles.push(roles.vogSolo);
     }
   } else if (player.vog.flawCount === 2) {
-    promiseArray.push(member.roles.add(roles.vogDuoF).catch(console.error));
-    addRoles.push(roles.vogDuoF);
 
     if (player.vog.normCount === 1) {
-      promiseArray.push(member.roles.add(roles.vogSolo).catch(console.error));
-      addRoles.push(roles.vogSolo);
+      newRoles.push(roles.vogSolo);
     }
   } else if (player.vog.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.vogTrioF).catch(console.error));
-    addRoles.push(roles.vogTrioF);
+    newRoles.push(roles.vogTrioF);
 
     if (player.vog.normCount === 1) {
-      promiseArray.push(member.roles.add(roles.vogSolo).catch(console.error));
-      addRoles.push(roles.vogSolo);
+      newRoles.push(roles.vogSolo);
     } else if (player.vog.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.vogDuo).catch(console.error));
-      addRoles.push(roles.vogDuo);
+      newRoles.push(roles.vogDuo);
     }
   } else if (player.vog.normCount === 1) {
-    promiseArray.push(member.roles.add(roles.vogSolo).catch(console.error));
-    addRoles.push(roles.vogSolo);
+    newRoles.push(roles.vogSolo);
   } else if (player.vog.normCount === 2) {
-    promiseArray.push(member.roles.add(roles.vogDuo).catch(console.error));
-    addRoles.push(roles.vogDuo);
+    newRoles.push(roles.vogDuo);
   } else if (player.vog.normCount === 3) {
-    promiseArray.push(member.roles.add(roles.vogTrio).catch(console.error));
-    addRoles.push(roles.vogTrio);
+    newRoles.push(roles.vogTrio);
   }
   //dsc
   if (player.dsc.flawCount === 2) {
-    promiseArray.push(member.roles.add(roles.dscDuoF).catch(console.error));
-    addRoles.push(roles.dscDuoF);
+    newRoles.push(roles.dscDuoF);
   } else if (player.dsc.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.dscTrioF).catch(console.error));
-    addRoles.push(roles.dscTrioF);
+    newRoles.push(roles.dscTrioF);
   }
   if (player.dsc.normCount < player.dsc.flawCount || player.dsc.flawCount === undefined) {
     if (player.dsc.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.dscDuo).catch(console.error));
-      addRoles.push(roles.dscDuo);
+      newRoles.push(roles.dscDuo);
     } else if (player.dsc.normCount === 3) {
-      promiseArray.push(member.roles.add(roles.dscTrio).catch(console.error));
-      addRoles.push(roles.dscTrio);
+      newRoles.push(roles.dscTrio);
     }
   }
   //gos
   if (player.gos.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.gosTrioF).catch(console.error));
-    addRoles.push(roles.gosTrioF);
+    newRoles.push(roles.gosTrioF);
   }
   if (player.gos.normCount < player.gos.flawCount || player.gos.flawCount === undefined) {
     if (player.gos.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.gosDuo).catch(console.error));
-      addRoles.push(roles.gosDuo);
+      newRoles.push(roles.gosDuo);
     } else if (player.gos.normCount === 3) {
-      promiseArray.push(member.roles.add(roles.gosTrio).catch(console.error));
-      addRoles.push(roles.gosTrio);
+      newRoles.push(roles.gosTrio);
     }
   }
   //lw
   if (player.lw.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.lwTrioF).catch(console.error));
-    addRoles.push(roles.lwTrioF);
+    newRoles.push(roles.lwTrioF);
 
   }
   if (player.lw.normCount < player.lw.flawCount || player.lw.flawCount === undefined) {
     if (player.lw.normCount === 1) {
-      promiseArray.push(member.roles.add(roles.lwSolo).catch(console.error));
-      addRoles.push(roles.lwSolo);
+      newRoles.push(roles.lwSolo);
     } else if (player.lw.normCount === 2) {
-      promiseArray.push(member.roles.add(roles.lwDuo).catch(console.error));
-      addRoles.push(roles.lwDuo);
+      newRoles.push(roles.lwDuo);
     } else if (player.lw.normCount === 3) {
-      promiseArray.push(member.roles.add(roles.lwTrio).catch(console.error));
-      addRoles.push(roles.lwTrio);
+      newRoles.push(roles.lwTrio);
     }
   }
 
   //eow
   if (player.eow.normCount === 1) {
-    promiseArray.push(member.roles.add(roles.eowSolo).catch(console.error));
-    addRoles.push(roles.eowSolo);
+    newRoles.push(roles.eowSolo);
   } else if (player.eow.normCount === 2) {
-    promiseArray.push(member.roles.add(roles.eowDuo).catch(console.error));
-    addRoles.push(roles.eowDuo);
+    newRoles.push(roles.eowDuo);
   }
   //levi
   if (player.levi.normCount === 2) {
-    promiseArray.push(member.roles.add(roles.leviDuo));
-    addRoles.push(roles.leviDuo);
+    newRoles.push(roles.leviDuo);
   }
 
   //scourge
   if (player.scourge.normCount === 2) {
-    promiseArray.push(member.roles.add(roles.scourgeDuo));
-    addRoles.push(roles.scourgeDuo);
+    newRoles.push(roles.scourgeDuo);
   }
   if (player.scourge.flawCount === 3) {
-    promiseArray.push(member.roles.add(roles.scourgeTrioF));
-    addRoles.push(roles.scourgeTrioF);
+    newRoles.push(roles.scourgeTrioF);
   }
 
   //cos
   if (player.cos.flawCount === 2) {
-    promiseArray.push(member.roles.add(roles.cosDuoF));
-    addRoles.push(roles.cosDuoF);
+    newRoles.push(roles.cosDuoF);
   } else if (player.normCount === 3) {
-    promiseArray.push(member.roles.add(roles.cosTrioF));
-    addRoles.push(roles.cosTrioF);
+    newRoles.push(roles.cosTrioF);
   }
-console.log('add roles');
-  addRoles.forEach((e)=> console.log(e.name));
-  console.log("intersecting roles")
-  let intersection = addRoles.filter(x => allRoles.includes(x));
-  intersection.forEach((e)=> console.log(e.name));
-  await Promise.all(promiseArray);
+  const memberRoles = Array.from(await member.roles.cache);
+  let addRoles = newRoles.filter(x => ! memberRoles.includes(x)); // in newRoles but not in memberRoles
+
+  let intersection = memberRoles.filter(x => allRoles.includes(x)); // in memberRoles & in allRoles
+  let removeRoles = intersection.filter(x => ! newRoles.includes(x)); // in memberRoles & in allRoles but not in newRoles
+
+  // remove all roles that need to be removed
+  let promiseRemove = [];
+  removeRoles.forEach((role) =>{
+    promiseRemove.push(member.roles.add(role));
+  })
+  await Promise.all(promiseRemove)
+  console.log(`finished removing Roles for ${player.membershipId}`);
+
+  // add all roles that need to be added
+  let promiseAdd = [];
+  addRoles.forEach((role) =>{
+    promiseAdd.push(member.roles.add(role));
+  })
+  await Promise.all(promiseAdd)
   console.log(`finished adding Roles for ${player.membershipId}`);
 };
 
