@@ -507,7 +507,7 @@ class Player {
         }
 
         //levi
-        else if (lowman.raid === 2693136600 || lowman.raid === 2693136601 || lowman.raid === 2693136602 || lowman.raid === 2693136603 || lowman.raid === 2693136604 || lowman.raid === 7072393624) {
+        else if (lowman.raid === 2693136600 || lowman.raid === 2693136601 || lowman.raid === 2693136602 || lowman.raid === 2693136603 || lowman.raid === 2693136604 || lowman.raid === 2693136605 || lowman.raid === 7072393624) {
           if (lowman.playerCount === 2) {
             this.levi.normCount = lowman.playerCount;
           }
