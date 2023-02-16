@@ -69,7 +69,8 @@ app.get("/discord", async ({ query }, response) => {
   return response.redirect("https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code");
 });
 
-app.get("/bungie/", async (req, { query }, response) => {
+app.get("/bungie/", async (req, response) => {
+  var query = req.query;
   const { code } = query;
   var res = response;
 
