@@ -13,13 +13,13 @@ const {guild_id} = require("../config/guild");
 const app = express();
 // Awesome
 var cookieParser = require('cookie-parser')
-app.use(cookieParser);
 
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
+  console.log("Redirecting")
   return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&redirect_uri=https%3A%2F%2Flowman.app%2Fdiscord&response_type=code&scope=identify%20guilds%20role_connections.write");
 });
 
@@ -110,7 +110,7 @@ app.get("/bungie/", async ({ query }, response) => {
       //     id++;
       //   }
       d2MembershipId = profiles[0]["membershipId"];
-      //res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
+      res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
         // console.error("==============Was not the PrimaryCrossSave Profile!")
       // }
       console.log(`User ${d2MembershipId} Authenticated Discord`)
@@ -144,4 +144,5 @@ app.get("/bungie/", async ({ query }, response) => {
   return response.sendFile("src/oauth2/index.html", { root: "." });
 });
 
+app.use(cookieParser());
 app.listen(PORT, () => console.log(`Server started at https://lowman.app/`));
