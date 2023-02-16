@@ -11,7 +11,9 @@ const { client } = require("../bot");
 const {guild_id} = require("../config/guild");
 
 const app = express();
-app.use(express.cookieParser());
+// Awesome
+var cookieParser = require('cookie-parser')
+app.use(cookieParser);
 
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;

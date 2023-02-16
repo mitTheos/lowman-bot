@@ -15,6 +15,7 @@
     "axios": "^0.21.1",
     "chalk": "^4.1.2",
     "class-converter": "^1.2.0",
+    "cookie-parser": "^1.4.6",
     "dataclass": "^2.1.1",
     "discord-api-types": "0.36.2",
     "discord.js": "^14.7.1",
