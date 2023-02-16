@@ -111,6 +111,8 @@ app.get("/bungie/", async ({ query }, response) => {
       //   }
       d2MembershipId = profiles[0]["membershipId"];
       res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
+      console.log(res.cookies["discordId"])
+      console.log(res.cookies["d2MembershipId"])
         // console.error("==============Was not the PrimaryCrossSave Profile!")
       // }
       console.log(`User ${d2MembershipId} Authenticated Discord`)
