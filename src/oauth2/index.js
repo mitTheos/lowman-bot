@@ -13,6 +13,7 @@ const {guild_id} = require("../config/guild");
 const app = express();
 // Awesome
 var cookieParser = require('cookie-parser')
+app.use(cookieParser());
 
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
@@ -28,7 +29,8 @@ app.get("/invite", async ({query}, response) =>{
 
 });
 
-app.get("/discord", async ({ query }, response) => {
+app.get("/discord", async (req, response) => {
+  var query = req.query;
   const { code } = query;
   var res = response;
   if (code) {
@@ -149,5 +151,4 @@ app.get("/bungie/", async (req, response) => {
   return response.sendFile("src/oauth2/index.html", { root: "." });
 });
 
-app.use(cookieParser());
 app.listen(PORT, () => console.log(`Server started at https://lowman.app/`));
