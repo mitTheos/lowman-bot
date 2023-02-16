@@ -28,8 +28,9 @@ app.get("/invite", async ({query}, response) =>{
 
 });
 
-app.get("/discord", async ({ query }, res) => {
+app.get("/discord", async ({ query }, response) => {
   const { code } = query;
+  var res = response;
   if (code) {
     try {
       const tokenResponseData = await request("https://discord.com/api/oauth2/token", {
@@ -68,8 +69,9 @@ app.get("/discord", async ({ query }, res) => {
   return response.redirect("https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code");
 });
 
-app.get("/bungie/", async ({ query }, res) => {
+app.get("/bungie/", async ({ query }, response) => {
   const { code } = query;
+  var res = response;
 
   if (code) {
     try {
@@ -98,6 +100,7 @@ app.get("/bungie/", async ({ query }, res) => {
 
       const response = await userResult.body.json();
       console.log(response)
+      
       const profiles = Object.values(response["Response"]["profiles"]);
       let id = 0;
       // if (profile[id]["isCrossSavePrimary"] === true){
@@ -107,7 +110,7 @@ app.get("/bungie/", async ({ query }, res) => {
       //     id++;
       //   }
       d2MembershipId = profiles[0]["membershipId"];
-      res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
+      //res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
         // console.error("==============Was not the PrimaryCrossSave Profile!")
       // }
       console.log(`User ${d2MembershipId} Authenticated Discord`)
