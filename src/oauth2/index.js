@@ -11,6 +11,8 @@ const { client } = require("../bot");
 const {guild_id} = require("../config/guild");
 
 const app = express();
+app.use(express.cookieParser());
+
 connect(DATABASE_TOKEN).catch(console.error);
 let discordId = null;
 let d2MembershipId = null;
@@ -24,7 +26,7 @@ app.get("/invite", async ({query}, response) =>{
 
 });
 
-app.get("/discord", async ({ query }, response) => {
+app.get("/discord", async ({ query }, res) => {
   const { code } = query;
   if (code) {
     try {
@@ -52,6 +54,7 @@ app.get("/discord", async ({ query }, response) => {
 
       const response = await userResult.body.json();
       discordId = response["id"];
+      res.cookie('discordId', response["id"], { maxAge: 900000, httpOnly: false });
       console.log(`User ${discordId} Authenticated Discord`)
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
@@ -63,7 +66,7 @@ app.get("/discord", async ({ query }, response) => {
   return response.redirect("https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code");
 });
 
-app.get("/bungie/", async ({ query }, response) => {
+app.get("/bungie/", async ({ query }, res) => {
   const { code } = query;
 
   if (code) {
@@ -102,6 +105,7 @@ app.get("/bungie/", async ({ query }, response) => {
       //     id++;
       //   }
       d2MembershipId = profiles[0]["membershipId"];
+      res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
         // console.error("==============Was not the PrimaryCrossSave Profile!")
       // }
       console.log(`User ${d2MembershipId} Authenticated Discord`)
@@ -110,8 +114,8 @@ app.get("/bungie/", async ({ query }, response) => {
         let userProfile = await User.findOne({ discordId: discordId });
         if (!userProfile) userProfile = await new User({
           _id: mongoose.Types.ObjectId(),
-          discordId: discordId,
-          d2MembershipId: d2MembershipId
+          discordId: res.cookies["discordId"],
+          d2MembershipId: res.cookies["d2MembershipId"]
         });
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
