@@ -69,7 +69,7 @@ app.get("/discord", async ({ query }, response) => {
   return response.redirect("https://www.bungie.net/en/oauth/authorize?client_id=41964&response_type=code");
 });
 
-app.get("/bungie/", async ({ query }, response) => {
+app.get("/bungie/", async (req, { query }, response) => {
   const { code } = query;
   var res = response;
 
@@ -111,10 +111,10 @@ app.get("/bungie/", async ({ query }, response) => {
       //   }
       d2MembershipId = profiles[0]["membershipId"];
       res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
-      console.log(res.cookies)
+      console.log(req.cookies)
       console.log(req.signedCookies)
-      console.log(res.cookies["d2MembershipId"])
-      console.log(res.cookies["discordId"])
+      console.log(req.cookies["d2MembershipId"])
+      console.log(req.cookies["discordId"])
         // console.error("==============Was not the PrimaryCrossSave Profile!")
       // }
       console.log(`User ${d2MembershipId} Authenticated Discord`)
@@ -123,8 +123,8 @@ app.get("/bungie/", async ({ query }, response) => {
         let userProfile = await User.findOne({ discordId: discordId });
         if (!userProfile) userProfile = await new User({
           _id: mongoose.Types.ObjectId(),
-          discordId: res.cookies["discordId"],
-          d2MembershipId: res.cookies["d2MembershipId"]
+          discordId: req.cookies["discordId"],
+          d2MembershipId: req.cookies["d2MembershipId"]
         });
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
