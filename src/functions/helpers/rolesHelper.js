@@ -216,7 +216,7 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
       newRoles.push(roles.vogSolo);
     }
   } else if (player.vog.flawCount === 2) {
-
+    newRoles.push(roles.vogDuoF);
     if (player.vog.normCount === 1) {
       newRoles.push(roles.vogSolo);
     }
