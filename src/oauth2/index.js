@@ -9,15 +9,13 @@ const { connect } = require("mongoose");
 const { getPlayer, addRoles } = require("../functions/helpers/rolesHelper");
 const { client } = require("../bot");
 const {guild_id} = require("../config/guild");
+const cookieParser = require("cookie-parser");
 
 const app = express();
-// Awesome
-var cookieParser = require('cookie-parser')
+// use cookies for app
 app.use(cookieParser());
 
 connect(DATABASE_TOKEN).catch(console.error);
-let discordId = null;
-let d2MembershipId = null;
 
 app.get("/", async ({ query }, response) => {
   console.log("Redirecting")
@@ -26,13 +24,11 @@ app.get("/", async ({ query }, response) => {
 
 app.get("/invite", async ({query}, response) =>{
   return response.redirect("https://discord.com/api/oauth2/authorize?client_id=1038048624493469806&scope=applications.commands");
-
 });
 
 app.get("/discord", async (req, response) => {
-  var query = req.query;
+  const query = req.query;
   const { code } = query;
-  var res = response;
   if (code) {
     try {
       const tokenResponseData = await request("https://discord.com/api/oauth2/token", {
@@ -58,8 +54,8 @@ app.get("/discord", async (req, response) => {
       }).catch(console.error);
 
       const response = await userResult.body.json();
-      discordId = response["id"];
-      res.cookie('discordId', response["id"], { maxAge: 900000, httpOnly: false });
+      const discordId = response["id"];
+      response.cookie('discordId', response["id"], { maxAge: 900000, httpOnly: false });
       console.log(`User ${discordId} Authenticated Discord`)
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
@@ -72,10 +68,8 @@ app.get("/discord", async (req, response) => {
 });
 
 app.get("/bungie/", async (req, response) => {
-  var query = req.query;
+  const query = req.query;
   const { code } = query;
-  var res = response;
-
   if (code) {
     try {
       const tokenResponseData = await request("https://www.bungie.net/platform/app/oauth/token/", {
@@ -112,8 +106,9 @@ app.get("/bungie/", async (req, response) => {
       //   while (profile[id]["isCrossSavePrimary"] !== true){
       //     id++;
       //   }
-      d2MembershipId = profiles[0]["membershipId"];
-      res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
+      const d2MembershipId = profiles[0]["membershipId"];
+      const discordId = req.cookies["discordId"];
+      response.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
       console.log(req.cookies)
       console.log(req.signedCookies)
       console.log(req.cookies["d2MembershipId"])
