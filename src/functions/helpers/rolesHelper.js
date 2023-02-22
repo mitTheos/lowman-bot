@@ -91,7 +91,7 @@ exports.updateRoles = async function updateRoles(add, reply, interaction, client
   const discordId = await member.id;
   getDataWithId(discordId, async (user) => {
     //not registered
-    if (user === null) {
+    if (user === null || user["d2MembershipId"] === undefined) {
       await interaction.editReply({
         content: `User not registered! Use /register to register with the Bot`
       }).then(() => console.log(`User (id: ${member.id})not registered!`));

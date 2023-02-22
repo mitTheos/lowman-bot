@@ -108,9 +108,9 @@ app.get("/bungie/", async (req, response) => {
       //   while (profile[id]["isCrossSavePrimary"] !== true){
       //     id++;
       //   }
-      const d2MembershipId = profiles[0]["membershipId"];
-      const discordId = req.cookies["discordId"];
       res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
+      const d2MembershipId = res.cookies["d2MembershipId"];
+      const discordId = req.cookies["discordId"];
       console.log(req.cookies)
       console.log(req.signedCookies)
       console.log(req.cookies["d2MembershipId"])
