@@ -506,8 +506,15 @@ class Player {
           }
         }
 
-        //levi
-        else if (lowman.raid === 2693136600 || lowman.raid === 2693136601 || lowman.raid === 2693136602 || lowman.raid === 2693136603 || lowman.raid === 2693136604 || lowman.raid === 2693136605 || lowman.raid === 7072393624) {
+          //levi
+          // 0-5 = norm, rest = prestige
+        // 7072393624 dk about this one (it's not in the manifest, but I remember some1 having an instance with this hash)
+        else if (
+          lowman.raid === 7072393624
+          || lowman.raid === 2693136600 || lowman.raid === 2693136601 || lowman.raid === 2693136602 || lowman.raid === 2693136603 || lowman.raid === 2693136604 || lowman.raid === 2693136605
+          || lowman.raid === 1800508819 || lowman.raid === 2449714930 || lowman.raid === 771164842 || lowman.raid === 3446541099 || lowman.raid === 508802457 || lowman.raid === 417231112
+          || lowman.raid === 4206123728 || lowman.raid === 1685065161 || lowman.raid === 3912437239 || lowman.raid === 757116822 || lowman.raid === 3857338478 || lowman.raid === 3879860661
+        ) {
           if (lowman.playerCount === 2) {
             this.levi.normCount = lowman.playerCount;
           }
