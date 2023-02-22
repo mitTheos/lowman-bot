@@ -296,7 +296,7 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   //cos
   if (player.cos.flawCount === 2) {
     newRoles.push(roles.cosDuoF);
-  } else if (player.flawCount === 3) {
+  } else if (player.cos.flawCount === 3) {
     newRoles.push(roles.cosTrioF);
   }
   const memberRoles = Array.from(await member.roles.cache);
