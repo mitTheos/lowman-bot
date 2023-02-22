@@ -101,7 +101,7 @@ exports.updateRoles = async function updateRoles(add, reply, interaction, client
         // update command = add
         if (add === true) {
           await addRoles(member, player, guild);
-        } else if (add === false){
+        } else if (add === false) {
           await clearRoles(member, player, guild);
         }
 
@@ -300,25 +300,25 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
     newRoles.push(roles.cosTrioF);
   }
   const memberRoles = Array.from(await member.roles.cache);
-  let addRoles = newRoles.filter(x => ! memberRoles.includes(x)); // in newRoles but not in memberRoles
+  let addRoles = newRoles.filter(x => !memberRoles.includes(x)); // in newRoles but not in memberRoles
 
   let intersection = memberRoles.filter(x => allRoles.includes(x)); // in memberRoles & in allRoles
-  let removeRoles = intersection.filter(x => ! newRoles.includes(x)); // in memberRoles & in allRoles but not in newRoles
+  let removeRoles = intersection.filter(x => !newRoles.includes(x)); // in memberRoles & in allRoles but not in newRoles
 
   // remove all roles that need to be removed
   let promiseRemove = [];
-  removeRoles.forEach((role) =>{
+  removeRoles.forEach((role) => {
     promiseRemove.push(member.roles.add(role));
-  })
-  await Promise.all(promiseRemove)
+  });
+  await Promise.all(promiseRemove);
   console.log(`finished removing Roles for ${player.membershipId}`);
 
   // add all roles that need to be added
   let promiseAdd = [];
-  addRoles.forEach((role) =>{
+  addRoles.forEach((role) => {
     promiseAdd.push(member.roles.add(role));
-  })
-  await Promise.all(promiseAdd)
+  });
+  await Promise.all(promiseAdd);
   console.log(`finished adding Roles for ${player.membershipId}`);
 };
 
