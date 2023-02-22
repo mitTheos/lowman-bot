@@ -98,9 +98,9 @@ app.get("/bungie/", async (req, response) => {
       }).catch(console.error);
 
       const response = await userResult.body.json();
-      console.log(response)
-      
+
       const profiles = Object.values(response["Response"]["profiles"]);
+      console.log(profiles);
       let id = 0;
       // if (profile[id]["isCrossSavePrimary"] === true){
       //   d2MembershipId = profile[id]["membershipId"]
