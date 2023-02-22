@@ -109,7 +109,7 @@ app.get("/bungie/", async (req, response) => {
       //     id++;
       //   }
       res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
-      const d2MembershipId = profiles[0][id]["membershipId"]
+      const d2MembershipId = profiles[0]["membershipId"]
       const discordId = req.cookies["discordId"];
       console.log(req.cookies)
       console.log(req.signedCookies)
