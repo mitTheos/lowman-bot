@@ -37,11 +37,13 @@ const {
   wishEmoji_id, crownEmoji_name, crownEmoji_id, scourgeEmoji_name, scourgeEmoji_id, leviEmoji_name, leviEmoji_id
 } = require("../../config/emojis");
 const { PermissionFlagsBits } = require("discord-api-types/v10");
+const { lock_perms } = require("../../config/perms");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("achievements")
     .setDescription("Display a full list of all of your accomplishments.")
+    .setDefaultMemberPermissions(lock_perms)
     .setDMPermission(false).addUserOption(option =>
       option.setName("user").setDescription("Get Achievements from specified Player").setRequired(false)),
   async execute(interaction, client) {

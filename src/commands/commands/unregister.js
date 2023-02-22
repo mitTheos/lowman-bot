@@ -1,11 +1,13 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { deleteUser } = require("../../functions/helpers/db");
 const { updateRoles } = require("../../functions/helpers/rolesHelper");
+const { lock_perms } = require("../../config/perms");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("unregister")
     .setDescription("Unregisters you from the Lowman Bot")
+    .setDefaultMemberPermissions(lock_perms)
     .setDMPermission(false),
   async execute(interaction, client) {
     // loading message
