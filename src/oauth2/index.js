@@ -29,6 +29,7 @@ app.get("/invite", async ({query}, response) =>{
 app.get("/discord", async (req, response) => {
   const query = req.query;
   const { code } = query;
+  const res = response;
   if (code) {
     try {
       const tokenResponseData = await request("https://discord.com/api/oauth2/token", {
@@ -55,7 +56,7 @@ app.get("/discord", async (req, response) => {
 
       const response = await userResult.body.json();
       const discordId = response["id"];
-      response.cookie('discordId', response["id"], { maxAge: 900000, httpOnly: false });
+      res.cookie('discordId', response["id"], { maxAge: 900000, httpOnly: false });
       console.log(`User ${discordId} Authenticated Discord`)
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
@@ -70,6 +71,7 @@ app.get("/discord", async (req, response) => {
 app.get("/bungie/", async (req, response) => {
   const query = req.query;
   const { code } = query;
+  const res = response;
   if (code) {
     try {
       const tokenResponseData = await request("https://www.bungie.net/platform/app/oauth/token/", {
@@ -108,7 +110,7 @@ app.get("/bungie/", async (req, response) => {
       //   }
       const d2MembershipId = profiles[0]["membershipId"];
       const discordId = req.cookies["discordId"];
-      response.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
+      res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
       console.log(req.cookies)
       console.log(req.signedCookies)
       console.log(req.cookies["d2MembershipId"])
