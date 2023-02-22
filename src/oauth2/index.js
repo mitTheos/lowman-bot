@@ -109,7 +109,7 @@ app.get("/bungie/", async (req, response) => {
       //     id++;
       //   }
       res.cookie('d2MembershipId', profiles[0]["membershipId"], { maxAge: 900000, httpOnly: false });
-      const d2MembershipId = req.cookies["d2MembershipId"];
+      const d2MembershipId = profiles[0][id]["membershipId"]
       const discordId = req.cookies["discordId"];
       console.log(req.cookies)
       console.log(req.signedCookies)
@@ -124,7 +124,7 @@ app.get("/bungie/", async (req, response) => {
         if (!userProfile) userProfile = await new User({
           _id: mongoose.Types.ObjectId(),
           discordId: req.cookies["discordId"],
-          d2MembershipId: req.cookies["d2MembershipId"]
+          d2MembershipId: d2MembershipId
         });
         await userProfile.save().catch(console.error);
         console.log(chalk.green(`User created with {discordId: ${discordId}, d2MembershipId: ${d2MembershipId}}`));
