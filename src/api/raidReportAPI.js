@@ -42,7 +42,7 @@ async function raidStats(membershipId) {
         });
   } catch (err) {
     console.error("!!== Axios request error on raid/player ==!!")
-    console.error(err.response.statusCode + " " +  err.res.statusMessage);
+    console.error(err.response.statusCode + " " +  err.response.statusMessage);
     console.error(err.response.url);
   }
   return data;
