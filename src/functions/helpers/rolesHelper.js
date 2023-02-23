@@ -86,32 +86,36 @@ exports.assignMonthlyRoles = async function assignMonthlyRoles(guild, monthlyRol
 //if add = false => clear Roles of member
 //if add = true => clear & add roles
 exports.updateRoles = async function updateRoles(add, reply, interaction, client, member) {
-  const guild = await client.guilds.fetch(guild_id).catch(console.error);
+  try {
+    const guild = await client.guilds.fetch(guild_id).catch(console.error);
 
-  const discordId = await member.id;
-  getDataWithId(discordId, async (user) => {
-    //not registered
-    if (user === null || user["d2MembershipId"] === undefined) {
-      await interaction.editReply({
-        content: `User not registered! Use /register to register with the Bot`
-      }).then(() => console.log(`User (id: ${member.id})not registered!`));
-    } else {
-      getPlayer(user["d2MembershipId"], async (player) => {
-        // clear command = dont add
-        // update command = add
-        if (add === true) {
-          await addRoles(member, player, guild);
-        } else if (add === false) {
-          await clearRoles(member, player, guild);
-        }
-
-        await exports.sendDM(member);
+    const discordId = await member.id;
+    getDataWithId(discordId, async (user) => {
+      //not registered
+      if (user === null || user["d2MembershipId"] === undefined) {
         await interaction.editReply({
-          content: reply
-        }).then(() => console.log(reply));
-      });
-    }
-  });
+          content: `User not registered! Use /register to register with the Bot`
+        }).then(() => console.log(`User (id: ${member.id})not registered!`));
+      } else {
+        getPlayer(user["d2MembershipId"], async (player) => {
+          if (add === true) {
+            await addRoles(member, player, guild);
+          } else if (add === false) {
+            await clearRoles(member, player, guild);
+          }
+
+          await exports.sendDM(member);
+          await interaction.editReply({
+            content: reply
+          }).then(() => console.log(reply));
+        });
+      }
+    });
+  }catch(ex){
+    await interaction.editReply({
+      content: "An error occurred, the command failed to complete!"
+    }).then(() => console.error(ex));
+  }
 };
 
 //get all lowman instances

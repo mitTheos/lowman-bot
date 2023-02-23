@@ -28,62 +28,68 @@ module.exports = {
       fetchReply: true
     });
 
-    const username = interaction.options.get("username").value;
-    getPlayedWith(username, async (callback) => {
-      if (callback !== null) {
-        const mentorEmbed = new EmbedBuilder()
-          .setTitle(`Mentors - (${getMessageDate(0)})`)
-          .setColor(0xfa5c04)
-          .addFields([
-            {
-              name: "Unique players that you've played with:",
-              value: callback.playerCount.toString()
-            }
-          ]);
-        const raidEmbed = new EmbedBuilder()
-          .setTitle(`Fastest Lowmans - (${getMessageDate(0)})`)
-          .setColor(0xfa5c04)
-          .addFields([
-            {
-              name: `<:${kfEmoji_name}:${kfEmoji_id}> KF`,
-              value: convertTime(callback.pb.kf),
-              inline: true
-            },
-            {
-              name: `<:${vowEmoji_name}:${vowEmoji_id}> VoTD`,
-              value: convertTime(callback.pb.vow),
-              inline: true
-            },
-            {
-              name: `<:${vogEmoji_name}:${vogEmoji_id}> VoG`,
-              value: convertTime(callback.pb.vog),
-              inline: true
-            },
-            {
-              name: `<:${dscEmoji_name}:${dscEmoji_id}> DSC`,
-              value: convertTime(callback.pb.dsc),
-              inline: true
-            },
-            {
-              name: `<:${gosEmoji_name}:${gosEmoji_id}> GoS`,
-              value: convertTime(callback.pb.gos),
-              inline: true
-            },
-            {
-              name: `<:${wishEmoji_name}:${wishEmoji_id}> Wish`,
-              value: convertTime(callback.pb.lw),
-              inline: true
-            }
-          ]);
+    try {
+      const username = interaction.options.get("username").value;
+      getPlayedWith(username, async (callback) => {
+        if (callback !== null) {
+          const mentorEmbed = new EmbedBuilder()
+            .setTitle(`Mentors - (${getMessageDate(0)})`)
+            .setColor(0xfa5c04)
+            .addFields([
+              {
+                name: "Unique players that you've played with:",
+                value: callback.playerCount.toString()
+              }
+            ]);
+          const raidEmbed = new EmbedBuilder()
+            .setTitle(`Fastest Lowmans - (${getMessageDate(0)})`)
+            .setColor(0xfa5c04)
+            .addFields([
+              {
+                name: `<:${kfEmoji_name}:${kfEmoji_id}> KF`,
+                value: convertTime(callback.pb.kf),
+                inline: true
+              },
+              {
+                name: `<:${vowEmoji_name}:${vowEmoji_id}> VoTD`,
+                value: convertTime(callback.pb.vow),
+                inline: true
+              },
+              {
+                name: `<:${vogEmoji_name}:${vogEmoji_id}> VoG`,
+                value: convertTime(callback.pb.vog),
+                inline: true
+              },
+              {
+                name: `<:${dscEmoji_name}:${dscEmoji_id}> DSC`,
+                value: convertTime(callback.pb.dsc),
+                inline: true
+              },
+              {
+                name: `<:${gosEmoji_name}:${gosEmoji_id}> GoS`,
+                value: convertTime(callback.pb.gos),
+                inline: true
+              },
+              {
+                name: `<:${wishEmoji_name}:${wishEmoji_id}> Wish`,
+                value: convertTime(callback.pb.lw),
+                inline: true
+              }
+            ]);
 
-        await interaction.editReply({
-          embeds: [mentorEmbed, raidEmbed]
-        }).then(() => console.log("Monthly statistics posted!"));
-      } else {
-        await interaction.editReply({
-          content: "No user was found with that username! Please try again."
-        }).then(() => console.log("Error, no user was found"));
-      }
-    });
+          await interaction.editReply({
+            embeds: [mentorEmbed, raidEmbed]
+          }).then(() => console.log("Monthly statistics posted!"));
+        } else {
+          await interaction.editReply({
+            content: "No user was found with that username! Please try again."
+          }).then(() => console.log("Error, no user was found"));
+        }
+      });
+    } catch (ex) {
+      await interaction.editReply({
+        content: "An error occurred, the command failed to complete!"
+      }).then(() => console.error(ex));
+    }
   }
 };
