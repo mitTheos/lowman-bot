@@ -303,7 +303,15 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   } else if (player.cos.flawCount === 3) {
     newRoles.push(roles.cosTrioF);
   }
-  const memberRoles = Array.from(await member.roles.cache);
+
+  //convert tempMemberRoles format [roleID, role] =>  to [role]
+  const tempMemberRoles = Array.from(await member.roles.cache);
+  let memberRoles = [];
+  tempMemberRoles.forEach((role)=>{
+    //only keep role and get rid of id in [id, role]
+    memberRoles.push(role[1]);
+  })
+
   let addRoles = newRoles.filter(x => !memberRoles.includes(x)); // in newRoles but not in memberRoles
 
   let intersection = memberRoles.filter(x => allRoles.includes(x)); // in memberRoles & in allRoles
@@ -312,7 +320,7 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   // remove all roles that need to be removed
   let promiseRemove = [];
   removeRoles.forEach((role) => {
-    promiseRemove.push(member.roles.add(role));
+    promiseRemove.push(member.roles.remove(role));
   });
   await Promise.all(promiseRemove);
   console.log(`finished removing Roles for ${player.membershipId}`);
