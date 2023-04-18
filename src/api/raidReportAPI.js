@@ -37,7 +37,7 @@ async function raidStats(membershipId) {
   };
 
   let data = null;
-  axios.request(config)
+  await axios.request(config)
     .then((response) => {
       console.log(response.data);
       data = response.data;
