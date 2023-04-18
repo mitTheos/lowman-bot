@@ -34,7 +34,7 @@ exports.gosTrioF_id = `1063101959546089502`; //done 2.0
 exports.gosDuo_id = `1063101994136518698`; //done
 
 //lw
-exports.lwTrio_id = `1063102087673679882`; //done
+exports.lwTrio_id = `1063102039363702895`; //done
 exports.lwTrioF_id = `1063102087673679882`; //done 2.0
 exports.lwDuo_id = `1063102121035186186`; //done
 exports.lwSolo_id = `1064135645028683816`; //done

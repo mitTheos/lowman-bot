@@ -86,7 +86,8 @@ module.exports = {
         }
 
         // assign fast and community leader roles
-        await assignMonthlyRoles(guild, getMonthlyIds(users, best));
+        //TODO whole Monthly role auto-assign needs review
+        // await assignMonthlyRoles(guild, getMonthlyIds(users, best));
 
         // send messages
         for (const message of messageArray) {

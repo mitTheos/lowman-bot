@@ -6,59 +6,40 @@ const {
 } = require("../../config/roles");
 const { getDataWithId } = require("./db");
 const { guild_id } = require("../../config/guild");
-const { scourgeEmoji_id, crownEmoji_id } = require("../../config/emojis");
 
 exports.dmArray = dmArray = [];
 
-exports.sendDM = async function sendDM(member) {
-  dmArray.forEach((dm) => {
-    if (member !== undefined && member.user.id === dm.member.user.id || member === undefined) {
-      const removedRoles = [];
-      const removedMap = dm.rolesRemoved;
-      for (let value of removedMap.values()) {
-        removedRoles.push(value.name);
-      }
-      const addedRoles = [];
-      const addedMap = dm.rolesAdded;
-      for (let value of addedMap.values()) {
-        addedRoles.push(value.name);
-      }
-
-      const addedSet = new Set(addedRoles);
-      const noAddedRemoveArray = removedRoles.filter((role) => {
-        return !addedSet.has(role);
-      });
-
-      const removedSet = new Set(removedRoles);
-      const noRemovedAddedArray = addedRoles.filter((role) => {
-        return !removedSet.has(role);
-      });
-
-      if (noRemovedAddedArray.length >= 1) {
-        const formattedAddedRoles = noRemovedAddedArray.join(", ");
-        dm.member.send(
-          `> \`The roles ${formattedAddedRoles} were added to you.\``
-        );
-      }
-      if (noAddedRemoveArray.length >= 1) {
-        const formattedRemovedRoles = noAddedRemoveArray.join(", ");
-        dm.member.send(
-          `> \`The roles ${formattedRemovedRoles} were removed from you.\``
-        );
-      }
-    }
-  });
+sendDM = async function sendDM(member, addRoles, removeRoles) {
+  if (addRoles.length >= 1) {
+    await dm(member, addRoles, "added");
+  }
+  if (removeRoles.length >= 1) {
+    await dm(member, removeRoles, "removed");
+  }
 };
 
+async function dm(member, array, action){
+  let rolesArray = [];
+  array.forEach(role =>{
+    rolesArray.push(role["name"]);
+  });
+  const rolesString = rolesArray.join(", ");
+  if(array.length === 1){
+    member.send(`> \`The role: ${rolesString} was ${action}.\``);
+  }else{
+    member.send(`> \`The roles: ${rolesString} were ${action}.\``);
+  }
+}
 
+//TODO whole Monthly role auto-assign needs review
 exports.getMonthlyIds = function getMonthlyIds(users, best) {
   let monthlyRoles = new MonthlyRoles(null, []);
-  let playerArray = [...best.kf.players, ...best.lw.players];
+  let playerArray = [...best?.kf?.players, ...best?.lw?.players];
   users.forEach((user) => {
     if (best.mentor.membershipId === user["d2MembershipId"]) {
       monthlyRoles.mentorId = user["discordId"];
     }
-    if (playerArray.some(player => player.membershipId === user["d2MembershipId"])) {
+    if (playerArray?.some(player => player.membershipId === user["d2MembershipId"])) {
       monthlyRoles.fastIds.push(user["discordId"]);
     }
   });
@@ -104,14 +85,13 @@ exports.updateRoles = async function updateRoles(add, reply, interaction, client
             await clearRoles(member, player, guild);
           }
 
-          await exports.sendDM(member);
           await interaction.editReply({
             content: reply
           }).then(() => console.log(reply));
         });
       }
     });
-  }catch(ex){
+  } catch (ex) {
     await interaction.editReply({
       content: "An error occurred, the command failed to complete!"
     }).then(() => console.error(ex));
@@ -161,12 +141,12 @@ exports.getPlayer = getPlayer = (membershipId, callback) => {
 };
 
 exports.addRoles = addRoles = async function addRoles(member, player, guild) {
-
   const roleInit = new Roles();
   const roles = await roleInit.getRoles(guild);
   const allRoles = roles.getArray();
   const newRoles = [];
-  //flawless
+
+  //flawless mastery
   if (player.kfMaster.flawCount === 3 && player.vowMaster.flawCount === 3 && player.vogMaster.flawCount === 2) {
     newRoles.push(roles.masterF);
   }
@@ -266,7 +246,6 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   //lw
   if (player.lw.flawCount === 3) {
     newRoles.push(roles.lwTrioF);
-
   }
   if (player.lw.normCount < player.lw.flawCount || player.lw.flawCount === undefined) {
     if (player.lw.normCount === 1) {
@@ -307,10 +286,10 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   //convert tempMemberRoles format [roleID, role] =>  to [role]
   const tempMemberRoles = Array.from(await member.roles.cache);
   let memberRoles = [];
-  tempMemberRoles.forEach((role)=>{
+  tempMemberRoles.forEach((role) => {
     //only keep role and get rid of id in [id, role]
     memberRoles.push(role[1]);
-  })
+  });
 
   let addRoles = newRoles.filter(x => !memberRoles.includes(x)); // in newRoles but not in memberRoles
 
@@ -332,6 +311,8 @@ exports.addRoles = addRoles = async function addRoles(member, player, guild) {
   });
   await Promise.all(promiseAdd);
   console.log(`finished adding Roles for ${player.membershipId}`);
+
+  await sendDM(member, addRoles, removeRoles);
 };
 
 clearRoles = async function clearRoles(member, player, guild) {
