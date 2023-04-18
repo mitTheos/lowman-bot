@@ -36,12 +36,14 @@ async function raidStats(membershipId) {
     }
   };
 
+  let data = null;
   axios.request(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data));
-      return response.data;
+      console.log(response.data);
+      data = response.data;
     })
     .catch((error) => {
       console.log(error);
     });
+  return data;
 }
