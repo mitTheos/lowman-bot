@@ -1,2 +1,2 @@
-exports.guild_id = '1042662691774406686' //LOWMAN HUB
-exports.announce_channel_id = '1068482259620986952' //announce channel
+exports.guild_id = '1049409432431378532' //LOWMAN bot test hub
+exports.announce_channel_id = '1049411588031008808' //playground channel
