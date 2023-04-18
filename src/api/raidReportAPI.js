@@ -26,6 +26,7 @@ async function search(username) {
 }
 
 async function raidStats(membershipId) {
+
   let config = {
     method: 'get',
     maxBodyLength: Infinity,
