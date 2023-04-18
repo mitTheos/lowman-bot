@@ -39,7 +39,7 @@ async function raidStats(membershipId) {
   axios.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
-      return (JSON.stringify(response.data));
+      return response.data;
     })
     .catch((error) => {
       console.log(error);
