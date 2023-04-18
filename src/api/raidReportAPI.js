@@ -5,6 +5,7 @@ module.exports = { search, raidStats };
 async function search(username) {
   const encodedURL = encodeURI(encodeURI(`https://api.raidreport.dev/search/${username}`)).toLowerCase().replace("#", "%2523");
   const config = {
+    withCredentials: true,
     method: "get",
     url: encodedURL,
     headers: {
@@ -26,6 +27,7 @@ async function search(username) {
 
 async function raidStats(membershipId) {
   const config = {
+    withCredentials: true,
     method: "get",
     url: `https://api.raidreport.dev/raid/player/${membershipId}`,
     headers: {

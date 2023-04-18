@@ -57,7 +57,7 @@ app.get("/discord", async (req, response) => {
       const response = await userResult.body.json();
       const discordId = response["id"];
       res.cookie("discordId", response["id"], { maxAge: 900000, httpOnly: false });
-      console.log(`User ${discordId} Authenticated Discord`);
+      console.log(`User DC_ID:{${discordId}} Authenticated Discord`);
     } catch (error) {
       // NOTE: An unauthorized token will not throw an error
       // tokenResponseData.statusCode will be 401
@@ -113,12 +113,10 @@ app.get("/bungie/", async (req, response) => {
         const d2MembershipId = profiles[0]["membershipId"];
         const discordId = req.cookies["discordId"];
         console.log(req.cookies);
-        console.log(req.signedCookies);
-        console.log(req.cookies["d2MembershipId"]);
-        console.log(req.cookies["discordId"]);
+        console.log("cookies[\"discordId\"]: "+req.cookies["discordId"]);
         // console.error("==============Was not the PrimaryCrossSave Profile!")
         // }
-        console.log(`User ${d2MembershipId} Authenticated Discord`);
+        console.log(`User D2_ID:{${d2MembershipId}} Authenticated Bungie`);
 
         if (discordId != null && d2MembershipId != null) {
           let userProfile = await User.findOne({ discordId: discordId });
