@@ -40,11 +40,17 @@ async function raidStats(membershipId) {
   let data = null;
   await axios.request(config)
     .then((response) => {
-      console.log(response.data);
       data = response.data;
     })
     .catch((error) => {
       console.log(error);
+      if(error.response){
+        console.log(error.response.status)
+        console.log(error.response.data)
+      }else if (error.request){
+        console.log(error.request.status)
+        console.log(error.request)
+      }
     });
   return data;
 }
