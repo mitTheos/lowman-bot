@@ -45,6 +45,7 @@ async function raidStats(membershipId) {
     .catch((error) => {
       if(error.response){
         console.log(error.response.status)
+        console.log(error.config)
         console.log(error.response.data)
       }else if (error.request){
         console.log(error.request.status)
