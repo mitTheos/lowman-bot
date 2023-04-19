@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { PermissionFlagsBits } = require("discord-api-types/v10");
-const { rolesUpdate, updateRoles} = require("../../functions/helpers/rolesHelper");
+const { updateRoles} = require("../../functions/helpers/rolesHelper");
 const { lock_perms } = require("../../config/perms");
 
 
