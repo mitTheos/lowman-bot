@@ -32,33 +32,40 @@ exports.getClearCount = async function getClearCount(interaction, member) {
               const lowmans = activity["values"]["lowAccountCountActivities"];
 
               if (lowmans != null) {
-                for (const lowman of lowmans) {
-                  clearCount.total++;
-
-                  //kf
-                  if (activity["activityHash"] === 1374392663) {
-                    clearCount.kf++;
-                  }
-                  //vow
-                  else if (activity["activityHash"] === 1441982566) {
-                    clearCount.vow++;
-                  }
-                  //vog
-                  else if (activity["activityHash"] === 3881495763) {
-                    clearCount.vog++;
-                  }
-                  //dsc
-                  else if (activity["activityHash"] === 910380154) {
-                    clearCount.dsc++;
-                  }
-                  //gos
-                  else if (activity["activityHash"] === 3458480158 || activity["activityHash"] === 2659723068) {
-                    clearCount.gos++;
-                  }
-                  //lw
-                  else if (activity["activityHash"] === 2122313384) {
-                    clearCount.lw++;
-                  }
+                //TODO add master clears
+                //kf
+                if (activity["activityHash"] === 1374392663) {
+                  clearCount.kf+= lowmans.length;
+                  clearCount.total += lowmans.length;
+                }
+                //vow
+                else if (activity["activityHash"] === 1441982566) {
+                  clearCount.vow+= lowmans.length;
+                  clearCount.total += lowmans.length;
+                }
+                //vog
+                else if (activity["activityHash"] === 3881495763) {
+                  clearCount.vog+= lowmans.length;
+                  clearCount.total += lowmans.length;
+                }
+                //dsc
+                else if (activity["activityHash"] === 910380154) {
+                  clearCount.dsc+= lowmans.length;
+                  clearCount.total += lowmans.length;
+                }
+                //gos
+                else if (activity["activityHash"] === 3458480158 || activity["activityHash"] === 2659723068) {
+                  clearCount.gos+= lowmans.length;
+                  clearCount.total += lowmans.length;
+                }
+                //lw
+                else if (activity["activityHash"] === 2122313384) {
+                  clearCount.lw+= lowmans.length;
+                  clearCount.total += lowmans.length;
+                } else{
+                  console.log(activity["activityHash"])
+                  console.log(lowmans)
+                  console.log(lowmans.length)
                 }
               }
             }
@@ -78,7 +85,7 @@ exports.getClearCount = async function getClearCount(interaction, member) {
                 inline: true
               },
               {
-                name: `<:${vowEmoji_name}:${vowEmoji_id}> VoTD`,
+                name: `<:${vowEmoji_name}:${vowEmoji_id}> Vow`,
                 value: clearCount.vow.toString(),
                 inline: true
               },
