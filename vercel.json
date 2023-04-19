@@ -1,10 +1,7 @@
 {
   "version": 2,
-  "name": "music-album",
+  "name": "lowman-bot",
   "builds": [
-    { "src": "app.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/app.js" }
+    { "src": "/src/oauth2/index.js", "use": "@vercel/node" }
   ]
 }
